@@ -66,6 +66,7 @@ jobs:
           name: docker_tag
           path: .docker_tag
 
+
   deploy:
     name: Deploy environment
     if: github.event.deployment.payload.triggered # Deploy if triggered by cli
