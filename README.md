@@ -1,6 +1,5 @@
 # k9-joark
 
-[![CircleCI](https://circleci.com/gh/navikt/k9-joark/tree/master.svg?style=svg)](https://circleci.com/gh/navikt/k9-joark/tree/master)
 
 Inneholder integrasjon mot joark for å opprette jornalpost i forbindelse med søknad om K9.
 
