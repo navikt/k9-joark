@@ -7,7 +7,6 @@ internal data class JournalPostRequest(
     val bruker: AvsenderMottaker,
     val avsenderMottaker: AvsenderMottaker,
     val tema: String, /// OMS
-    val kanalReferanseId: String, // Vår unike ID
     val datoMottat: String, // yyyy-MM-dd'T'HH:mm:ssZ
     val forsendelseInnsendt: String, // yyyy-MM-dd'T'HH:mm:ssZ
     val mottaksKanal: String, // NAV_NO
