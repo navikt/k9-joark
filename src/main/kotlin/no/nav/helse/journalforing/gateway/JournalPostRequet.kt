@@ -1,14 +1,7 @@
 package no.nav.helse.journalforing.gateway
 
 internal data class JournalPostRequest(
-    val forsokEndeligJF: Boolean,
-    val forsendelseInformasjon: ForsendelseInformasjon,
-    val dokumentInfoHoveddokument: JoarkDokument,
-    val dokumentInfoVedlegg : List<JoarkDokument>
-)
-
-
-internal data class ForsendelseInformasjon(
+    val dokumenter : List<JoarkDokument>,
     val journalposttype: String, // INNGAAENDE
     val tittel: String,
     val bruker: AvsenderMottaker,

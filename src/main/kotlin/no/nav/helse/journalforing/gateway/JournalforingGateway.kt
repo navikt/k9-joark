@@ -29,7 +29,7 @@ import java.net.URI
 class JournalforingGateway(
     baseUrl: URI,
     private val accessTokenClient: AccessTokenClient,
-    private val oppretteJournalPostScopes : Set<String>
+    private val oppretteJournalPostScopes: Set<String>
 ) : HealthCheck {
 
     private companion object {
@@ -38,7 +38,7 @@ class JournalforingGateway(
 
     private val mottaInngaaendeForsendelseUrl = Url.buildURL(
         baseUrl = baseUrl,
-        pathParts = listOf("rest", "journalpostapi","v1","journalpost")
+        pathParts = listOf("rest", "journalpostapi", "v1", "journalpost")
     ).toString()
 
     private val cachedAccessTokenClient = CachedAccessTokenClient(accessTokenClient)
@@ -55,8 +55,9 @@ class JournalforingGateway(
         }
     }
 
-    internal suspend fun jorunalfor(journalPostRequest: JournalPostRequest) : JournalPostResponse {
-        val authorizationHeader = cachedAccessTokenClient.getAccessToken(oppretteJournalPostScopes).asAuthoriationHeader()
+    internal suspend fun jorunalfor(journalPostRequest: JournalPostRequest): JournalPostResponse {
+        val authorizationHeader =
+            cachedAccessTokenClient.getAccessToken(oppretteJournalPostScopes).asAuthoriationHeader()
 
         logger.trace("Genererer body for request")
         val body = objectMapper.writeValueAsBytes(journalPostRequest)
@@ -75,11 +76,11 @@ class JournalforingGateway(
         val (request, _, result) = Operation.monitored(
             app = "k9-joark",
             operation = "opprette-journalpost",
-            resultResolver = { 200 == it.second.statusCode}
+            resultResolver = { 200 == it.second.statusCode }
         ) { httpRequest.awaitStringResponseResult() }
 
         logger.trace("Håndterer response")
-        val journalPostResponse : JournalPostResponse = result.fold(
+        val journalPostResponse: JournalPostResponse = result.fold(
             { success -> objectMapper.readValue(success) },
             { error ->
                 logger.error("Error response = '${error.response.body().asString("text/plain")}' fra '${request.url}'")
@@ -88,14 +89,10 @@ class JournalforingGateway(
             }
         )
 
-        if (journalPostRequest.forsokEndeligJF && JournalTilstand.ENDELIG_JOURNALFOERT != journalTilstandFraString(journalPostResponse.journalTilstand)) {
-            throw IllegalStateException("Journalføring '$journalPostResponse' var forventet å bli endelig journalført, men ble det ikke..")
-        } else {
-            return journalPostResponse
-        }
+        return journalPostResponse
     }
 
-    private fun configuredObjectMapper() : ObjectMapper {
+    private fun configuredObjectMapper(): ObjectMapper {
         val objectMapper = jacksonObjectMapper()
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
         return objectMapper

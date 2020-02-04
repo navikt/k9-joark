@@ -35,7 +35,14 @@ object JournalPostRequestV1Factory {
             throw IllegalStateException("Det må sendes minst ett dokument")
         }
 
-        val forsendelseInformasjon = ForsendelseInformasjon(
+        val vedlegg = mutableListOf<JoarkDokument>()
+
+        dokumenter.forEach { dokumentBolk ->
+                vedlegg.add(mapDokument(dokumentBolk, typeReferanse))
+        }
+
+        return JournalPostRequest(
+            dokumenter = vedlegg,
             journalposttype = journalposttype.value,
             avsenderMottaker = AvsenderMottaker(mottaker.value, avsenderMottakerIdType.value), // I Versjon 1 er det kun innlogget bruker som laster opp vedlegg og fyller ut søknad, så bruker == avsender
             tittel = tittel,
@@ -45,44 +52,13 @@ object JournalPostRequestV1Factory {
             datoMottat = formatDate(mottatt),
             forsendelseInnsendt = formatDate(ZonedDateTime.now()),
             mottaksKanal = kanal.value,
-            journalfoerendeEnhet = "9999" //NAV-enheten som har journalført, eventuelt skal journalføre, forsendelsen. Ved automatisk journalføring uten mennesker involvert skal enhet settes til "9999".
-        )
-
-        var hovedDokument : JoarkDokument? = null
-        val vedlegg = mutableListOf<JoarkDokument>()
-
-        dokumenter.forEach { dokumentBolk ->
-            if (hovedDokument == null) {
-                hovedDokument = mapDokument(dokumentBolk, typeReferanse)
-            } else {
-                vedlegg.add(mapDokument(dokumentBolk, typeReferanse))
-            }
-        }
-
-        return JournalPostRequest(
-            // Så lenge det blir opprettet jorunalføringsoppgave i Gosys settes denne til false.
-            forsokEndeligJF = false,
-            forsendelseInformasjon = forsendelseInformasjon,
-            dokumentInfoHoveddokument = hovedDokument!!,
-            dokumentInfoVedlegg = vedlegg
+            journalfoerendeEnhet = "9999" //  NAV-enheten som har journalført, eventuelt skal journalføre, forsendelsen. Ved automatisk journalføring uten mennesker involvert skal enhet settes til "9999".
         )
     }
 
     private fun formatDate(dateTime: ZonedDateTime) : String {
         val utc = ZonedDateTime.ofInstant(dateTime.toInstant(), ZoneOffset.UTC)
         return DATE_TIME_FORMATTER.format(utc)
-    }
-
-    private fun lagAktorStruktur(aktorId: AktoerId): Map<String, Map<String, Map<String, String>>> {
-        return mapOf(
-            Pair(
-                AKTOR_ID_KEY, mapOf(
-                Pair(
-                    PERSON_KEY, mapOf(
-                    Pair(IDENT_KEY, aktorId.value)
-                ))
-            )
-        ))
     }
 
     private fun mapDokument(dokumentBolk : List<Dokument>, typeReferanse: TypeReferanse) : JoarkDokument {
