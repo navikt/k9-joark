@@ -7,7 +7,6 @@ internal data class JournalPostRequest(
     val bruker: AvsenderMottaker,
     val avsenderMottaker: AvsenderMottaker,
     val tema: String, /// OMS
-    val datoMottat: String, // yyyy-MM-dd'T'HH:mm:ssZ
     val forsendelseInnsendt: String, // yyyy-MM-dd'T'HH:mm:ssZ
     val mottaksKanal: String, // NAV_NO
     val arkivSak: ArkivSak? = null, // Referense til sak. Per nå opprettes sak i Gosys så denne blir ikke satt.
