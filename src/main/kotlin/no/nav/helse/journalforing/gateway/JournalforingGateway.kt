@@ -38,7 +38,7 @@ class JournalforingGateway(
 
     private val mottaInngaaendeForsendelseUrl = Url.buildURL(
         baseUrl = baseUrl,
-        pathParts = listOf("rest", "mottaInngaaendeForsendelse")
+        pathParts = listOf("rest", "journalpostapi","v1","journalpost")
     ).toString()
 
     private val cachedAccessTokenClient = CachedAccessTokenClient(accessTokenClient)
