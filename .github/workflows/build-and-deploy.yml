@@ -22,6 +22,9 @@ jobs:
         with:
           java-version: 11
       - name: Test Code
+        env:
+          GITHUB_USERNAME: x-access-token
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: ./gradlew clean test
 
   build-code-and-push-docker:
@@ -68,7 +71,6 @@ jobs:
         with:
           name: docker_tag
           path: .docker_tag
-
 
   deploy:
     name: Deploy environment
