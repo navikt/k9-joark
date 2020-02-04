@@ -6,7 +6,6 @@ import no.nav.helse.journalforing.gateway.*
 import java.time.ZoneOffset
 import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
-import java.util.*
 
 private const val AKTOR_ID_KEY = "aktoer"
 private const val IDENT_KEY = "ident"
@@ -48,7 +47,6 @@ object JournalPostRequestV1Factory {
             tittel = tittel,
             bruker = AvsenderMottaker(mottaker.value, avsenderMottakerIdType.value),
             tema = tema.value,
-            kanalReferanseId = UUID.randomUUID().toString(), // Har ingen unik ID å sette her..
             datoMottat = formatDate(mottatt),
             forsendelseInnsendt = formatDate(ZonedDateTime.now()),
             mottaksKanal = kanal.value,
