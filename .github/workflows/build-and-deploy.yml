@@ -37,6 +37,9 @@ jobs:
         with:
           java-version: 11
       - name: Build JAR
+        env:
+          GITHUB_USERNAME: x-access-token
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: ./gradlew clean build # Creates a combined JAR of project and runTime dependencies.
       - name: Create Docker tag
         env:
