@@ -43,7 +43,7 @@ jobs:
         env:
           GITHUB_USERNAME: x-access-token
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: ./gradlew clean build # Creates a combined JAR of project and runTime dependencies.
+        run: ./gradlew clean shadowjar # Creates a combined JAR of project and runTime dependencies.
       - name: Create Docker tag
         env:
           NAME: k9-joark
