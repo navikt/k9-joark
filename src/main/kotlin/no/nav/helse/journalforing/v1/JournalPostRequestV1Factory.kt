@@ -80,7 +80,7 @@ object JournalPostRequestV1Factory {
             is DokumentType -> {
                 return JoarkDokument(
                     tittel = title,
-                    dokumentVariant = dokumenterVarianter.toList()
+                    dokumentVarianter = dokumenterVarianter.toList()
                 )
             }
             is BrevKode -> {
@@ -88,7 +88,7 @@ object JournalPostRequestV1Factory {
                     tittel = title,
                     brevkode = typeReferanse.brevKode,
                     dokumentkategori = typeReferanse.dokumentKategori,
-                    dokumentVariant = dokumenterVarianter.toList()
+                    dokumentVarianter = dokumenterVarianter.toList()
                 )
             }
             else -> throw IllegalStateException("Ikke støtttet type referense ${typeReferanse.javaClass.simpleName}")
