@@ -6,7 +6,7 @@ import no.nav.helse.dusseldorf.ktor.core.fromResources
 import java.util.*
 
 private const val dokmotinngaaendeBasePath = "/dokmotinngaaende-mock"
-private const val dokmotinngaaendeMottaInngaaendeForsendelsePath = "$dokmotinngaaendeBasePath/rest/mottaInngaaendeForsendelse"
+private const val dokmotinngaaendeMottaInngaaendeForsendelsePath = "$dokmotinngaaendeBasePath/rest/journalpostapi/v1/journalpost"
 private const val pleiepengerDokumentPath = "/pleiepenger-dokument-mock"
 
 internal fun stubMottaInngaaendeForsendelseOk(
