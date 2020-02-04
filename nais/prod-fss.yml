@@ -39,7 +39,7 @@ spec:
   webproxy: true
   env:
     - name: DOKMOTINNGAAENDE_BASE_URL
-      value: https://dokmotinngaaende.nais.adeo.no
+      value: https://dokarkiv.nais.adeo.no
     - name: NAIS_STS_DISCOVERY_ENDPOINT
       value: https://security-token-service.nais.adeo.no/rest/v1/sts/.well-known/openid-configuration
     - name: AZURE_CLIENT_ID
