@@ -19,7 +19,7 @@ internal data class JoarkDokument(
     val tittel: String,
     val brevkode: String? = null, // Eller brevkode + dokumentkategori
     val dokumentkategori: String? = null,
-    val dokumentVariant: List<DokumentVariant>
+    val dokumentVarianter: List<DokumentVariant>
 )
 
 internal data class AvsenderMottaker(val id: String, val idType: String)
