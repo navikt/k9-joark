@@ -31,7 +31,7 @@ dependencies {
     compile("org.apache.pdfbox:pdfbox:$pdfBoxVersion")
 
     // Test
-    testCompile("no.nav.helse:dusseldorf-test-support:$dusseldorfKtorVersion")
+    testCompile ( "no.nav.helse:dusseldorf-test-support:$dusseldorfKtorVersion")
     testCompile ("io.ktor:ktor-server-test-host:1.3.0") {
         exclude(group = "org.eclipse.jetty")
     }
