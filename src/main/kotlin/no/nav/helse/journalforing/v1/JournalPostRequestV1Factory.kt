@@ -20,7 +20,7 @@ private val DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:m
 object JournalPostRequestV1Factory {
     internal fun instance(
         tittel: String,
-        mottaker: AktoerId,
+        mottaker: String,
         tema: Tema,
         kanal: Kanal,
         dokumenter: List<List<Dokument>>,
@@ -42,8 +42,8 @@ object JournalPostRequestV1Factory {
 
         return JournalPostRequest(
             journalposttype = journalposttype.value,
-            avsenderMottaker = AvsenderMottaker(mottaker.value, avsenderMottakerIdType.value), // I Versjon 1 er det kun innlogget bruker som laster opp vedlegg og fyller ut søknad, så bruker == avsender
-            bruker = AvsenderMottaker(mottaker.value, avsenderMottakerIdType.value),
+            avsenderMottaker = AvsenderMottaker(mottaker, avsenderMottakerIdType.value), // I Versjon 1 er det kun innlogget bruker som laster opp vedlegg og fyller ut søknad, så bruker == avsender
+            bruker = AvsenderMottaker(mottaker, avsenderMottakerIdType.value),
             tema = tema.value,
             tittel = tittel,
             kanal = kanal.value,

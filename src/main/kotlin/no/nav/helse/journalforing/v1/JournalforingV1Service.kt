@@ -84,7 +84,7 @@ class JournalforingV1Service(
         val request = JournalPostRequestV1Factory.instance(
             journalposttype = JOURNALPOSTTYPE,
             tittel = tittel,
-            mottaker = aktoerId,
+            mottaker = melding.norskIdent ,
             tema = OMSORG_TEMA,
             kanal = NAV_NO_KANAL,
             dokumenter = alleDokumenter.toList(),
