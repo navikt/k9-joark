@@ -104,7 +104,7 @@ class K9JoarkTest {
         stubMottaInngaaendeForsendelseOk(tilstand = "MIDLERTIDIG_JOURNALFOERT")
 
         val request = MeldingV1(
-            norskIdent = "1234",
+            norskIdent = "012345678901",
             mottatt = ZonedDateTime.now(),
             dokumenter = listOf(
                 listOf(

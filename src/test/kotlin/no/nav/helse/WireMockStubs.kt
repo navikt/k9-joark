@@ -20,7 +20,8 @@ internal fun stubMottaInngaaendeForsendelseOk(
                     .withBody("""
                             {
                                 "journalpostId": "1234",
-                                "journalTilstand": "$tilstand"
+                                "melding": "$tilstand",
+                                "dokumenter": ["Hei"]
                             }
                         """.trimIndent())
             )

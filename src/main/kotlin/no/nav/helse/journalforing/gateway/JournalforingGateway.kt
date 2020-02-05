@@ -80,7 +80,8 @@ class JournalforingGateway(
         ) { httpRequest.awaitStringResponseResult() }
 
         logger.trace("Håndterer response")
-        val journalPostResponse: JournalPostResponse = result.fold(
+
+        return result.fold(
             { success -> objectMapper.readValue(success) },
             { error ->
                 logger.error("Error response = '${error.response.body().asString("text/plain")}' fra '${request.url}'")
@@ -88,8 +89,6 @@ class JournalforingGateway(
                 throw IllegalStateException("Feil ved opperttelse av jorunalpost.")
             }
         )
-
-        return journalPostResponse
     }
 
     private fun configuredObjectMapper(): ObjectMapper {
