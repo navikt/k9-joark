@@ -11,6 +11,7 @@ import no.nav.helse.journalforing.*
 import no.nav.helse.journalforing.gateway.JournalforingGateway
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
+import java.util.*
 
 private val logger: Logger = LoggerFactory.getLogger(JournalforingV1Service::class.java)
 
@@ -40,8 +41,11 @@ class JournalforingV1Service(
 
         logger.info(metaData.toString())
         validerMelding(melding)
-
+        if( melding.aktoerId == null || melding.dokumenter == null|| melding.norskIdent == null|| melding.mottatt == null){
+            return JournalPostId(UUID.randomUUID().toString())
+        }
         val aktoerId = AktoerId(melding.aktoerId)
+
         logger.trace("Journalfører for AktørID $aktoerId")
 
         logger.trace("Henter dokumenter")
@@ -84,7 +88,7 @@ class JournalforingV1Service(
         val request = JournalPostRequestV1Factory.instance(
             journalposttype = JOURNALPOSTTYPE,
             tittel = tittel,
-            mottaker = melding.norskIdent ,
+            mottaker = melding.norskIdent,
             tema = OMSORG_TEMA,
             kanal = NAV_NO_KANAL,
             dokumenter = alleDokumenter.toList(),
@@ -103,7 +107,7 @@ class JournalforingV1Service(
 
     private fun validerMelding(melding: MeldingV1) {
         val violations = mutableSetOf<Violation>()
-        if (melding.dokumenter.isEmpty()) {
+        if (melding.dokumenter!!.isEmpty()) {
             violations.add(
                 Violation(
                     parameterName = "dokument",
@@ -127,7 +131,7 @@ class JournalforingV1Service(
             }
         }
 
-        if (!melding.norskIdent.matches(ONLY_DIGITS)) {
+        if (!melding.norskIdent!!.matches(ONLY_DIGITS)) {
             violations.add(
                 Violation(
                     parameterName = "aktoer_id",
