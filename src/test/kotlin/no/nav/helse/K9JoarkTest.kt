@@ -114,7 +114,8 @@ class K9JoarkTest {
                 listOf(
                     getDokumentUrl(jpegDokumentId)
                 )
-            )
+            ),
+            aktoerId = "12345"
         )
 
         requestAndAssert(
@@ -136,7 +137,8 @@ class K9JoarkTest {
             dokumenter = listOf(listOf(
                 getDokumentUrl("1234"),
                 getDokumentUrl("5678")
-            ))
+            )),
+            aktoerId = "12345"
         )
 
 
@@ -172,7 +174,8 @@ class K9JoarkTest {
             dokumenter = listOf(listOf(
                 getDokumentUrl("1234"),
                 getDokumentUrl("5678")
-            ))
+            )),
+            aktoerId = "12345"
         )
 
         requestAndAssert(
@@ -191,7 +194,8 @@ class K9JoarkTest {
             dokumenter = listOf(listOf(
                 getDokumentUrl("1234"),
                 getDokumentUrl("5678")
-            ))
+            )),
+            aktoerId = "12345"
         )
 
         requestAndAssert(
@@ -215,7 +219,8 @@ class K9JoarkTest {
         val request = MeldingV1(
             norskIdent = "012345678901F",
             mottatt = ZonedDateTime.now(),
-            dokumenter = listOf()
+            dokumenter = listOf(),
+            aktoerId = "12345"
         )
 
         requestAndAssert(
@@ -252,7 +257,8 @@ class K9JoarkTest {
             dokumenter = listOf(
                 listOf(getDokumentUrl("1234")),
                 listOf()
-            )
+            ),
+            aktoerId = "12345"
         )
 
         requestAndAssert(
