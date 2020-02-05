@@ -37,8 +37,3 @@ enum class VariantFormat  {
     ORIGINAL,
     ARKIV
 }
-
-internal class ArkivSak(
-    val arkivSakSystem: String,
-    val arkivSakId: String
-)

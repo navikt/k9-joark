@@ -4,7 +4,7 @@ import java.net.URI
 import java.time.ZonedDateTime
 
 data class MeldingV1 (
-    val aktoerId: String,
+    val norskIdent: String,
     val mottatt: ZonedDateTime,
     val dokumenter: List<List<URI>>
 )
