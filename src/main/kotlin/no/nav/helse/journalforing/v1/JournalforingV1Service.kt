@@ -40,10 +40,10 @@ class JournalforingV1Service(
         val correlationId = CorrelationId(metaData.correlationId)
 
         logger.info(metaData.toString())
-        validerMelding(melding)
         if( melding.aktoerId == null || melding.dokumenter == null|| melding.norskIdent == null|| melding.mottatt == null){
             return JournalPostId(UUID.randomUUID().toString())
         }
+        validerMelding(melding)
         val aktoerId = AktoerId(melding.aktoerId)
 
         logger.trace("Journalfører for AktørID $aktoerId")
