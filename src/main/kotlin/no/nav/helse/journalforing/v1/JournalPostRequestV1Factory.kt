@@ -41,15 +41,15 @@ object JournalPostRequestV1Factory {
         }
 
         return JournalPostRequest(
-            dokumenter = vedlegg,
             journalposttype = journalposttype.value,
             avsenderMottaker = AvsenderMottaker(mottaker.value, avsenderMottakerIdType.value), // I Versjon 1 er det kun innlogget bruker som laster opp vedlegg og fyller ut søknad, så bruker == avsender
-            tittel = tittel,
             bruker = AvsenderMottaker(mottaker.value, avsenderMottakerIdType.value),
             tema = tema.value,
-            forsendelseInnsendt = formatDate(ZonedDateTime.now()),
-            mottaksKanal = kanal.value,
-            journalfoerendeEnhet = "9999" //  NAV-enheten som har journalført, eventuelt skal journalføre, forsendelsen. Ved automatisk journalføring uten mennesker involvert skal enhet settes til "9999".
+            tittel = tittel,
+            kanal = kanal.value,
+            journalfoerendeEnhet = "9999", //  NAV-enheten som har journalført, eventuelt skal journalføre, forsendelsen. Ved automatisk journalføring uten mennesker involvert skal enhet settes til "9999".
+            datoMottatt = formatDate(ZonedDateTime.now()),
+            dokumenter = vedlegg
         )
     }
 
