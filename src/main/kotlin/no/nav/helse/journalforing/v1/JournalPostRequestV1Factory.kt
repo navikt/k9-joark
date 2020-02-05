@@ -48,7 +48,7 @@ object JournalPostRequestV1Factory {
             tittel = tittel,
             kanal = kanal.value,
             journalfoerendeEnhet = "9999", //  NAV-enheten som har journalført, eventuelt skal journalføre, forsendelsen. Ved automatisk journalføring uten mennesker involvert skal enhet settes til "9999".
-            datoMottatt = formatDate(ZonedDateTime.now()),
+            datoMottatt = formatDate(mottatt),
             dokumenter = vedlegg
         )
     }
