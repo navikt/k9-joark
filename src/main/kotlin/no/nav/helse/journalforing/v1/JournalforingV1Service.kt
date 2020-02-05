@@ -41,7 +41,7 @@ class JournalforingV1Service(
         logger.info(metaData.toString())
         validerMelding(melding)
 
-        val aktoerId = AktoerId(melding.aktoerId)
+        val aktoerId = AktoerId(melding.norskIdent)
         logger.trace("Journalfører for AktørID $aktoerId")
 
         logger.trace("Henter dokumenter")
@@ -127,13 +127,13 @@ class JournalforingV1Service(
             }
         }
 
-        if (!melding.aktoerId.matches(ONLY_DIGITS)) {
+        if (!melding.norskIdent.matches(ONLY_DIGITS)) {
             violations.add(
                 Violation(
                     parameterName = "aktoer_id",
                     reason = "Ugyldig AktørID. Kan kun være siffer.",
                     parameterType = ParameterType.ENTITY,
-                    invalidValue = melding.aktoerId
+                    invalidValue = melding.norskIdent
                 )
             )
         }

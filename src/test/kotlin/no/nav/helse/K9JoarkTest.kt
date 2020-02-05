@@ -104,7 +104,7 @@ class K9JoarkTest {
         stubMottaInngaaendeForsendelseOk(tilstand = "MIDLERTIDIG_JOURNALFOERT")
 
         val request = MeldingV1(
-            aktoerId = "1234",
+            norskIdent = "1234",
             mottatt = ZonedDateTime.now(),
             dokumenter = listOf(
                 listOf(
@@ -131,7 +131,7 @@ class K9JoarkTest {
     @Test
     fun `melding uten correlation id skal feile`() {
         val request = MeldingV1(
-            aktoerId = "12345",
+            norskIdent = "12345",
             mottatt = ZonedDateTime.now(),
             dokumenter = listOf(listOf(
                 getDokumentUrl("1234"),
@@ -167,7 +167,7 @@ class K9JoarkTest {
     @Test
     fun `mangler authorization header`() {
         val request = MeldingV1(
-            aktoerId = "12345",
+            norskIdent = "12345",
             mottatt = ZonedDateTime.now(),
             dokumenter = listOf(listOf(
                 getDokumentUrl("1234"),
@@ -186,7 +186,7 @@ class K9JoarkTest {
     @Test
     fun `request fra ikke tillatt system`() {
         val request = MeldingV1(
-            aktoerId = "12345",
+            norskIdent = "12345",
             mottatt = ZonedDateTime.now(),
             dokumenter = listOf(listOf(
                 getDokumentUrl("1234"),
@@ -212,9 +212,8 @@ class K9JoarkTest {
 
     @Test
     fun `melding uten dokumenter skal feile`() {
-        val aktoerId = "123456F"
         val request = MeldingV1(
-            aktoerId = aktoerId,
+            norskIdent = "012345678901F",
             mottatt = ZonedDateTime.now(),
             dokumenter = listOf()
         )
@@ -238,7 +237,7 @@ class K9JoarkTest {
                     "type": "entity",
                     "name": "aktoer_id",
                     "reason": "Ugyldig AktørID. Kan kun være siffer.",
-                    "invalid_value": "123456F"
+                    "invalid_value": "012345678901F"
                 }]
             }
             """.trimIndent()
@@ -247,9 +246,8 @@ class K9JoarkTest {
 
     @Test
     fun `melding med tomme dokumentbolker skal feile`() {
-        val aktoerId = "123456"
         val request = MeldingV1(
-            aktoerId = aktoerId,
+            norskIdent = "012345678901",
             mottatt = ZonedDateTime.now(),
             dokumenter = listOf(
                 listOf(getDokumentUrl("1234")),
