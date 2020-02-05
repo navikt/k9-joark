@@ -15,6 +15,7 @@ Inneholder integrasjon mot joark for √• opprette jornalpost i forbindelse med s√
 ```json
 {
 	"aktoer_id": "123561458",
+	"norsk_ident": "01234567890",
 	"mottatt": "2018-12-18T20:43:32Z",
 	"dokumenter": [
 		[
