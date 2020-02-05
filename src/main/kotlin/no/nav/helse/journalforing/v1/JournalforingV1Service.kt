@@ -41,7 +41,7 @@ class JournalforingV1Service(
         logger.info(metaData.toString())
         validerMelding(melding)
 
-        val aktoerId = AktoerId(melding.norskIdent)
+        val aktoerId = AktoerId(melding.aktoerId)
         logger.trace("Journalfører for AktørID $aktoerId")
 
         logger.trace("Henter dokumenter")
