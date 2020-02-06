@@ -19,7 +19,6 @@ import no.nav.helse.dusseldorf.testsupport.wiremock.WireMockBuilder
 import no.nav.helse.journalforing.v1.MeldingV1
 import org.junit.AfterClass
 import org.junit.BeforeClass
-import org.junit.Ignore
 import org.skyscreamer.jsonassert.JSONAssert
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
@@ -43,15 +42,18 @@ class K9JoarkTest {
             .stubDomotInngaaendeIsReady()
 
         private val objectMapper = jacksonObjectMapper().dusseldorfConfigured()
-        private val authorizedAccessToken = Azure.V1_0.generateJwt(clientId = "pleiepengesoknad-prosessering", audience = "k9-joark")
+        private val authorizedAccessToken =
+            Azure.V1_0.generateJwt(clientId = "pleiepengesoknad-prosessering", audience = "k9-joark")
 
-        fun getConfig() : ApplicationConfig {
+        fun getConfig(): ApplicationConfig {
             val fileConfig = ConfigFactory.load()
-            val testConfig = ConfigFactory.parseMap(TestConfiguration.asMap(
-                wireMockServer = wireMockServer,
-                azureAuthorizedClients = setOf("pleiepengesoknad-prosessering"),
-                pleiepengerJoarkAzureClientId = "k9-joark"
-            ))
+            val testConfig = ConfigFactory.parseMap(
+                TestConfiguration.asMap(
+                    wireMockServer = wireMockServer,
+                    azureAuthorizedClients = setOf("pleiepengesoknad-prosessering"),
+                    pleiepengerJoarkAzureClientId = "k9-joark"
+                )
+            )
             val mergedConfig = testConfig.withFallback(fileConfig)
 
             return HoconApplicationConfig(mergedConfig)
@@ -95,7 +97,6 @@ class K9JoarkTest {
     }
 
     @Test
-    @Ignore
     fun `gyldig melding til joark gir ok response med journalfoert jorunalpostID`() {
         val jpegDokumentId = "1234" // Default mocket som JPEG
         val pdfDokumentId = "4567"
@@ -122,11 +123,7 @@ class K9JoarkTest {
 
         requestAndAssert(
             request = request,
-            expectedResponse = """
-                {
-                    "journal_post_id" : "1234"
-                }
-            """.trimIndent(),
+            expectedResponse = """{"journal_post_id":"466985833"}""".trimIndent(),
             expectedCode = HttpStatusCode.Created
         )
     }
@@ -136,10 +133,12 @@ class K9JoarkTest {
         val request = MeldingV1(
             norskIdent = "12345",
             mottatt = ZonedDateTime.now(),
-            dokumenter = listOf(listOf(
-                getDokumentUrl("1234"),
-                getDokumentUrl("5678")
-            )),
+            dokumenter = listOf(
+                listOf(
+                    getDokumentUrl("1234"),
+                    getDokumentUrl("5678")
+                )
+            ),
             aktoerId = "12345"
         )
 
@@ -173,10 +172,12 @@ class K9JoarkTest {
         val request = MeldingV1(
             norskIdent = "12345",
             mottatt = ZonedDateTime.now(),
-            dokumenter = listOf(listOf(
-                getDokumentUrl("1234"),
-                getDokumentUrl("5678")
-            )),
+            dokumenter = listOf(
+                listOf(
+                    getDokumentUrl("1234"),
+                    getDokumentUrl("5678")
+                )
+            ),
             aktoerId = "12345"
         )
 
@@ -193,17 +194,22 @@ class K9JoarkTest {
         val request = MeldingV1(
             norskIdent = "12345",
             mottatt = ZonedDateTime.now(),
-            dokumenter = listOf(listOf(
-                getDokumentUrl("1234"),
-                getDokumentUrl("5678")
-            )),
+            dokumenter = listOf(
+                listOf(
+                    getDokumentUrl("1234"),
+                    getDokumentUrl("5678")
+                )
+            ),
             aktoerId = "12345"
         )
 
         requestAndAssert(
             request = request,
             expectedCode = HttpStatusCode.Forbidden,
-            accessToken = Azure.V1_0.generateJwt(clientId = "pleiepengesoknad-prosessering", audience = "feil-audience"),
+            accessToken = Azure.V1_0.generateJwt(
+                clientId = "pleiepengesoknad-prosessering",
+                audience = "feil-audience"
+            ),
             expectedResponse = """
             {
                 "type": "/problem-details/unauthorized",
@@ -217,7 +223,6 @@ class K9JoarkTest {
     }
 
     @Test
-    @Ignore
     fun `melding uten dokumenter skal feile`() {
         val request = MeldingV1(
             norskIdent = "012345678901F",
@@ -253,7 +258,6 @@ class K9JoarkTest {
     }
 
     @Test
-    @Ignore
     fun `melding med tomme dokumentbolker skal feile`() {
         val request = MeldingV1(
             norskIdent = "012345678901",
@@ -289,14 +293,16 @@ class K9JoarkTest {
     }
 
 
-    private fun getDokumentUrl(dokumentId : String) = URI("${wireMockServer.getPleiepengerDokumentUrl()}/$dokumentId")
+    private fun getDokumentUrl(dokumentId: String) = URI("${wireMockServer.getPleiepengerDokumentUrl()}/$dokumentId")
 
-    private fun requestAndAssert(request : MeldingV1,
-                                 expectedResponse : String?,
-                                 expectedCode : HttpStatusCode,
-                                 leggTilCorrelationId : Boolean = true,
-                                 leggTilAuthorization : Boolean = true,
-                                 accessToken : String = authorizedAccessToken) {
+    private fun requestAndAssert(
+        request: MeldingV1,
+        expectedResponse: String?,
+        expectedCode: HttpStatusCode,
+        leggTilCorrelationId: Boolean = true,
+        leggTilAuthorization: Boolean = true,
+        accessToken: String = authorizedAccessToken
+    ) {
         with(engine) {
             handleRequest(HttpMethod.Post, "/v1/pleiepenge/journalforing") {
                 if (leggTilAuthorization) {

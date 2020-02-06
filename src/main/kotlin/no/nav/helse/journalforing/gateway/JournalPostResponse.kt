@@ -7,7 +7,6 @@ private val logger: Logger = LoggerFactory.getLogger(JournalPostResponse::class.
 
 data class JournalPostResponse(
     val journalpostId: String,
-    val melding: String,
     val journalpostFerdigstilt: Boolean,
     val dokumenter: List<DokumentInfo>
 )
