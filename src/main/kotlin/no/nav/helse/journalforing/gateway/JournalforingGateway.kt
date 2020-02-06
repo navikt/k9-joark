@@ -59,12 +59,12 @@ class JournalforingGateway(
         val authorizationHeader =
             cachedAccessTokenClient.getAccessToken(oppretteJournalPostScopes).asAuthoriationHeader()
 
-        logger.trace("Genererer body for request")
+        logger.info("Genererer body for request")
         val body = objectMapper.writeValueAsBytes(journalPostRequest)
         val bodyS = objectMapper.writeValueAsString(journalPostRequest)
         logger.error(bodyS)
         val contentStream = { ByteArrayInputStream(body) }
-        logger.trace("Generer http request")
+        logger.info("Generer http request")
         val httpRequest = mottaInngaaendeForsendelseUrl
             .httpPost()
             .body(contentStream)
@@ -74,14 +74,14 @@ class JournalforingGateway(
                 Headers.ACCEPT to "application/json"
             )
 
-        logger.trace("Sender request")
+        logger.info("Sender request")
         val (request, _, result) = Operation.monitored(
             app = "k9-joark",
             operation = "opprette-journalpost",
             resultResolver = { 200 == it.second.statusCode }
         ) { httpRequest.awaitStringResponseResult() }
 
-        logger.trace("Håndterer response")
+        logger.info("Håndterer response")
 
         return result.fold(
             { success -> objectMapper.readValue(success) },
