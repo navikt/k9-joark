@@ -9,5 +9,8 @@ data class JournalPostResponse(
     val journalpostId: String,
     val melding: String,
     val journalpostFerdigstilt: Boolean,
-    val dokumenter: List<String>?
+    val dokumenter: List<DokumentInfo>
+)
+data class DokumentInfo(
+    val dokumentInfoId: String
 )

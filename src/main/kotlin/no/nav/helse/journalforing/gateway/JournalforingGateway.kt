@@ -82,16 +82,12 @@ class JournalforingGateway(
         logger.info("Håndterer response")
 
         return result.fold(
-            fun(success: String): JournalPostResponse {
-                logger.error(success)
-                return objectMapper.readValue(success)
-            },
-            { error ->
-                logger.error("Error response = '${error.response.body().asString("text/plain")}' fra '${request.url}'")
-                logger.error(error.toString())
-                throw IllegalStateException("Feil ved opperttelse av jorunalpost.")
-            }
-        )
+            { success -> objectMapper.readValue(success) }
+        ) { error ->
+            logger.error("Error response = '${error.response.body().asString("text/plain")}' fra '${request.url}'")
+            logger.error(error.toString())
+            throw IllegalStateException("Feil ved opperttelse av jorunalpost.")
+        }
     }
 
     private fun configuredObjectMapper(): ObjectMapper {
