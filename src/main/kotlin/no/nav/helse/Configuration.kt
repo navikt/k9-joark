@@ -18,7 +18,7 @@ internal data class Configuration(private val config : ApplicationConfig) {
 
     private val clients = config.clients()
 
-    internal fun getDokmotinngaaendeBaseUrl() = URI(config.getRequiredString("nav.dokmotinngaaende_base_url", secret = false))
+    internal fun getDokarkivBaseUrl() = URI(config.getRequiredString("nav.dokarkiv_base_url", secret = false))
 
     internal fun issuers() = config.issuers().withoutAdditionalClaimRules()
 

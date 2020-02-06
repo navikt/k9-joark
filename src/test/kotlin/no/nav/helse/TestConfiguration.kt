@@ -11,7 +11,7 @@ object TestConfiguration {
     fun asMap(
         wireMockServer: WireMockServer? = null,
         port : Int = 8080,
-        dokmotinngaaendeUrl : String? = wireMockServer?.getDokmotinngaaendeUrl(),
+        dokarkivUrl : String? = wireMockServer?.getDokarkivUrl(),
 
         azureAuthorizedClients: Set<String> = setOf("azure-client-1", "azure-client-2","azure-client-3"),
         pleiepengerJoarkAzureClientId: String = "k9-joark"
@@ -19,7 +19,7 @@ object TestConfiguration {
     ) : Map<String, String>{
         val map = mutableMapOf(
             Pair("ktor.deployment.port","$port"),
-            Pair("nav.dokmotinngaaende_base_url", "$dokmotinngaaendeUrl")
+            Pair("nav.dokarkiv_base_url", "$dokarkivUrl")
         )
 
         // Clients

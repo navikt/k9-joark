@@ -5,14 +5,14 @@ import com.github.tomakehurst.wiremock.client.WireMock
 import no.nav.helse.dusseldorf.ktor.core.fromResources
 import java.util.*
 
-private const val dokmotinngaaendeBasePath = "/dokmotinngaaende-mock"
-private const val dokmotinngaaendeMottaInngaaendeForsendelsePath = "$dokmotinngaaendeBasePath/rest/journalpostapi/v1/journalpost"
+private const val dokarkivBasePath = "/dokarkiv-mock"
+private const val dokarkivMottaInngaaendeForsendelsePath = "$dokarkivBasePath/rest/journalpostapi/v1/journalpost"
 private const val pleiepengerDokumentPath = "/pleiepenger-dokument-mock"
 
 internal fun stubMottaInngaaendeForsendelseOk(
     tilstand: String) {
     WireMock.stubFor(
-        WireMock.post(WireMock.urlMatching(".*$dokmotinngaaendeMottaInngaaendeForsendelsePath"))
+        WireMock.post(WireMock.urlMatching(".*$dokarkivMottaInngaaendeForsendelsePath"))
             .willReturn(
                 WireMock.aResponse()
                     .withStatus(200)
@@ -30,7 +30,7 @@ internal fun stubMottaInngaaendeForsendelseOk(
 
 internal fun WireMockServer.stubDomotInngaaendeIsReady() : WireMockServer {
     WireMock.stubFor(
-        WireMock.get(WireMock.urlMatching(".*$dokmotinngaaendeBasePath/isReady"))
+        WireMock.get(WireMock.urlMatching(".*$dokarkivBasePath/isReady"))
             .willReturn(
                 WireMock.aResponse().withStatus(200)
             )
@@ -104,5 +104,5 @@ internal fun stubGetDokumentPdf(
 }
 
 
-internal fun WireMockServer.getDokmotinngaaendeUrl() = baseUrl() + dokmotinngaaendeBasePath
+internal fun WireMockServer.getDokarkivUrl() = baseUrl() + dokarkivBasePath
 internal fun WireMockServer.getPleiepengerDokumentUrl() = baseUrl() + pleiepengerDokumentPath

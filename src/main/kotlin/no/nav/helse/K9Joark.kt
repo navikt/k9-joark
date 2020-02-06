@@ -69,7 +69,7 @@ fun Application.k9Joark() {
     )
 
     val journalforingGateway = JournalforingGateway(
-        baseUrl = configuration.getDokmotinngaaendeBaseUrl(),
+        baseUrl = configuration.getDokarkivBaseUrl(),
         accessTokenClient = accessTokenClientResolver.joark(),
         oppretteJournalPostScopes = configuration.getOppretteJournalpostScopes()
     )
@@ -84,7 +84,7 @@ fun Application.k9Joark() {
         dokumentGateway,
         HttpRequestHealthCheck(
             urlConfigMap = issuers.healthCheckMap(mutableMapOf(
-                Url.buildURL(baseUrl = configuration.getDokmotinngaaendeBaseUrl(), pathParts = listOf("isReady")) to HttpRequestHealthConfig(expectedStatus = HttpStatusCode.OK)
+                Url.buildURL(baseUrl = configuration.getDokarkivBaseUrl(), pathParts = listOf("isReady")) to HttpRequestHealthConfig(expectedStatus = HttpStatusCode.OK)
             ))
         ))
     )

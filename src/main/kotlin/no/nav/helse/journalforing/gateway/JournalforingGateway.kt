@@ -22,7 +22,7 @@ import java.io.ByteArrayInputStream
 import java.net.URI
 
 /*
-    https://dokmotinngaaende-q1.nais.preprod.local/rest/mottaInngaaendeForsendelse
+    https://dokarkiv-q1.nais.preprod.local/rest/mottaInngaaendeForsendelse
                                                   /rest/journalpostapi/v1/journalpost?foersoekFerdigstill=true/false
  */
 
@@ -61,8 +61,6 @@ class JournalforingGateway(
 
         logger.trace("Genererer body for request")
         val body = objectMapper.writeValueAsBytes(journalPostRequest)
-        val bodyy = objectMapper.writeValueAsString(journalPostRequest)
-        logger.error(bodyy)
         val contentStream = { ByteArrayInputStream(body) }
         logger.trace("Generer http request")
         val httpRequest = mottaInngaaendeForsendelseUrl
