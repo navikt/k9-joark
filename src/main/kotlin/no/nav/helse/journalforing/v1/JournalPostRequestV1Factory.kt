@@ -24,7 +24,7 @@ object JournalPostRequestV1Factory {
         tema: Tema,
         kanal: Kanal,
         dokumenter: List<List<Dokument>>,
-        mottatt: ZonedDateTime,
+        datoMottatt: ZonedDateTime,
         typeReferanse: TypeReferanse,
         journalposttype: JournalPostType,
         avsenderMottakerIdType: AvsenderMottakerIdType
@@ -48,7 +48,7 @@ object JournalPostRequestV1Factory {
             tittel = tittel,
             kanal = kanal.value,
             journalfoerendeEnhet = "9999", //  NAV-enheten som har journalført, eventuelt skal journalføre, forsendelsen. Ved automatisk journalføring uten mennesker involvert skal enhet settes til "9999".
-            datoMottatt = formatDate(mottatt),
+            datoMottatt = formatDate(datoMottatt),
             dokumenter = vedlegg
         )
     }

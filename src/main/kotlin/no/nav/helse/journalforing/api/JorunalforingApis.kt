@@ -19,7 +19,6 @@ import no.nav.helse.journalforing.v1.MetadataV1
 import no.nav.helse.journalforing.v1.Søknadstype
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
-import java.util.*
 
 private val logger: Logger = LoggerFactory.getLogger(JournalforingGateway::class.java)
 fun Route.journalforingApis(
@@ -27,12 +26,9 @@ fun Route.journalforingApis(
 ) {
 
     post("/v1/pleiepenge/journalforing") {
-        val melding = call.receive<String>()
-        logger.error(melding)
-       // val melding1 = jacksonObjectMapper().readValue(melding, MeldingV1::class.java)
-       // val metadata = MetadataV1(version = 1, correlationId = call.request.getCorrelationId(), requestId = call.response.getRequestId(), søknadstype = Søknadstype.PLEIEPENGESØKNAD)
-        // journalfør(journalforingV1Service, melding1, metadata)
-        call.respond(HttpStatusCode.Created, JournalforingResponse(journalPostId = UUID.randomUUID().toString()))
+        val melding = call.receive<MeldingV1>()
+        val metadata = MetadataV1(version = 1, correlationId = call.request.getCorrelationId(), requestId = call.response.getRequestId(), søknadstype = Søknadstype.PLEIEPENGESØKNAD)
+        journalfør(journalforingV1Service, melding, metadata)
     }
     post("/v1/omsorgspenge/journalforing") {
         val melding = call.receive<MeldingV1>()

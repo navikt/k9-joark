@@ -92,7 +92,7 @@ class JournalforingV1Service(
             tema = OMSORG_TEMA,
             kanal = NAV_NO_KANAL,
             dokumenter = alleDokumenter.toList(),
-            mottatt = melding.mottatt,
+            datoMottatt = melding.mottatt,
             typeReferanse = typeReferanse,
             avsenderMottakerIdType = AVSENDER_MOTTAKER_ID_TYPE
         )
