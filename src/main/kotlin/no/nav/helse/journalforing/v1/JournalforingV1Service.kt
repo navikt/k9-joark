@@ -97,11 +97,11 @@ class JournalforingV1Service(
             avsenderMottakerIdType = AVSENDER_MOTTAKER_ID_TYPE
         )
 
-        logger.trace("Sender melding til Joark")
+        logger.info("Sender melding til Joark")
 
         val response = journalforingGateway.jorunalfor(request)
 
-        logger.trace("JournalPost med ID ${response.journalpostId} opprettet")
+        logger.info("JournalPost med ID ${response.journalpostId} opprettet")
         return JournalPostId(response.journalpostId)
     }
 

@@ -61,6 +61,8 @@ class JournalforingGateway(
 
         logger.trace("Genererer body for request")
         val body = objectMapper.writeValueAsBytes(journalPostRequest)
+        val bodyy = objectMapper.writeValueAsString(journalPostRequest)
+        logger.error(bodyy)
         val contentStream = { ByteArrayInputStream(body) }
         logger.trace("Generer http request")
         val httpRequest = mottaInngaaendeForsendelseUrl
