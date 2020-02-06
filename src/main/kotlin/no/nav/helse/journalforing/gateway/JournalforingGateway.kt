@@ -61,8 +61,6 @@ class JournalforingGateway(
 
         logger.info("Genererer body for request")
         val body = objectMapper.writeValueAsBytes(journalPostRequest)
-        val bodyS = objectMapper.writeValueAsString(journalPostRequest)
-        logger.error(bodyS)
         val contentStream = { ByteArrayInputStream(body) }
         logger.info("Generer http request")
         val httpRequest = mottaInngaaendeForsendelseUrl
@@ -84,7 +82,10 @@ class JournalforingGateway(
         logger.info("Håndterer response")
 
         return result.fold(
-            { success -> objectMapper.readValue(success) },
+            fun(success: String): JournalPostResponse {
+                logger.error(success)
+                return objectMapper.readValue(success)
+            },
             { error ->
                 logger.error("Error response = '${error.response.body().asString("text/plain")}' fra '${request.url}'")
                 logger.error(error.toString())
