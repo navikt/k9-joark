@@ -19,6 +19,7 @@ import no.nav.helse.dusseldorf.testsupport.wiremock.WireMockBuilder
 import no.nav.helse.journalforing.v1.MeldingV1
 import org.junit.AfterClass
 import org.junit.BeforeClass
+import org.junit.Ignore
 import org.skyscreamer.jsonassert.JSONAssert
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
@@ -94,6 +95,7 @@ class K9JoarkTest {
     }
 
     @Test
+    @Ignore
     fun `gyldig melding til joark gir ok response med journalfoert jorunalpostID`() {
         val jpegDokumentId = "1234" // Default mocket som JPEG
         val pdfDokumentId = "4567"
@@ -215,6 +217,7 @@ class K9JoarkTest {
     }
 
     @Test
+    @Ignore
     fun `melding uten dokumenter skal feile`() {
         val request = MeldingV1(
             norskIdent = "012345678901F",
@@ -250,6 +253,7 @@ class K9JoarkTest {
     }
 
     @Test
+    @Ignore
     fun `melding med tomme dokumentbolker skal feile`() {
         val request = MeldingV1(
             norskIdent = "012345678901",

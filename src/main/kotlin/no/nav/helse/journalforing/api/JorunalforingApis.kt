@@ -1,5 +1,6 @@
 package no.nav.helse.journalforing.api
 
+import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import io.ktor.application.ApplicationCall
 import io.ktor.application.call
 import io.ktor.http.HttpHeaders
@@ -12,19 +13,24 @@ import io.ktor.response.respond
 import io.ktor.routing.Route
 import io.ktor.routing.post
 import io.ktor.util.pipeline.PipelineContext
+import no.nav.helse.journalforing.gateway.JournalforingGateway
 import no.nav.helse.journalforing.v1.JournalforingV1Service
 import no.nav.helse.journalforing.v1.MeldingV1
 import no.nav.helse.journalforing.v1.MetadataV1
 import no.nav.helse.journalforing.v1.Søknadstype
-
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
+private val logger: Logger = LoggerFactory.getLogger(JournalforingGateway::class.java)
 fun Route.journalforingApis(
     journalforingV1Service: JournalforingV1Service
 ) {
 
     post("/v1/pleiepenge/journalforing") {
-        val melding = call.receive<MeldingV1>()
+        val melding = call.receive<String>()
+        logger.error(melding)
+        val melding1 = jacksonObjectMapper().readValue(melding, MeldingV1::class.java)
         val metadata = MetadataV1(version = 1, correlationId = call.request.getCorrelationId(), requestId = call.response.getRequestId(), søknadstype = Søknadstype.PLEIEPENGESØKNAD)
-        journalfør(journalforingV1Service, melding, metadata)
+        journalfør(journalforingV1Service, melding1, metadata)
     }
     post("/v1/omsorgspenge/journalforing") {
         val melding = call.receive<MeldingV1>()
