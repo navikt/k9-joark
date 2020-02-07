@@ -35,10 +35,10 @@ internal class AccessTokenClientResolver(
 
         val azureV2Client = azureV2Client()
         accessTokenClient = if (azureV2Client == null) {
-            logger.info("Bruker Client[$NAIS_STS_ALIAS] ved kommunikasjon med pleiepenger-dokument")
+            logger.info("Bruker Client[$NAIS_STS_ALIAS] ved kommunikasjon med k9-joark")
             naisSts
         } else {
-            logger.info("Bruker Client[$AZURE_V2_ALIAS] ved kommunikasjon med pleiepenger-dokument")
+            logger.info("Bruker Client[$AZURE_V2_ALIAS] ved kommunikasjon med k9-joark")
             SignedJwtAccessTokenClient(
                 clientId = azureV2Client.clientId(),
                 tokenEndpoint = azureV2Client.tokenEndpoint(),
