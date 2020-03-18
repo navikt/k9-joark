@@ -44,7 +44,7 @@ object JournalPostRequestV1Factory {
         return JournalPostRequest(
             journalposttype = journalposttype.value,
             avsenderMottaker = AvsenderMottaker(mottaker, avsenderMottakerIdType.value, avsenderMottakerNavn), // I Versjon 1 er det kun innlogget bruker som laster opp vedlegg og fyller ut søknad, så bruker == avsender
-            bruker = AvsenderMottaker(mottaker, avsenderMottakerIdType.value, avsenderMottakerNavn),
+            bruker = AvsenderMottaker(mottaker, avsenderMottakerIdType.value),
             tema = tema.value,
             tittel = tittel,
             kanal = kanal.value,

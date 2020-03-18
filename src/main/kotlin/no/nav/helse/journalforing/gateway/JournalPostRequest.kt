@@ -19,7 +19,7 @@ internal data class JoarkDokument(
     val dokumentVarianter: List<DokumentVariant>
 )
 
-internal data class AvsenderMottaker(val id: String, val idType: String, val navn: String?)
+internal data class AvsenderMottaker(val id: String, val idType: String, val navn: String? = null)
 
 internal data class DokumentVariant(
     val filtype: ArkivFilType,
