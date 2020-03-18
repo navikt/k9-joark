@@ -16,7 +16,7 @@ internal fun stubMottaInngaaendeForsendelseOk() {
                 WireMock.aResponse()
                     .withStatus(200)
                     .withHeader("Content-Type", "application/json")
-                    .withBody("""
+                    .withBody("""       
                             {
                               "journalpostId": "466985833",
                               "journalstatus": "M",

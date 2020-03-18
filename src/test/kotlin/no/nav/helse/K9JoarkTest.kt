@@ -23,6 +23,7 @@ import org.skyscreamer.jsonassert.JSONAssert
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import java.net.URI
+import java.time.OffsetDateTime
 import java.time.ZonedDateTime
 import kotlin.test.Test
 import kotlin.test.assertEquals
@@ -245,8 +246,10 @@ class K9JoarkTest {
             norskIdent = "012345678901F",
             mottatt = ZonedDateTime.now(),
             dokumenter = listOf(),
-            aktoerId = "12345"
+            aktoerId = "12345F"
         )
+
+        OffsetDateTime.now()
 
         requestAndAssert(
             request = request,
@@ -263,12 +266,19 @@ class K9JoarkTest {
                     "name": "dokument",
                     "reason": "Det må sendes minst ett dokument",
                     "invalid_value": []
-                }, {
+                },
+                {
                     "type": "entity",
                     "name": "aktoer_id",
                     "reason": "Ugyldig AktørID. Kan kun være siffer.",
+                    "invalid_value": "12345F"
+                },
+                {
+                    "type": "entity",
+                    "name": "norsk_ident",
+                    "reason": "Ugyldig Norsk Ident. Kan kun være siffer.",
                     "invalid_value": "012345678901F"
-                }]
+                }]          
             }
             """.trimIndent()
         )

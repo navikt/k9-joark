@@ -11,7 +11,6 @@ import no.nav.helse.journalforing.*
 import no.nav.helse.journalforing.gateway.JournalforingGateway
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
-import java.util.*
 
 private val logger: Logger = LoggerFactory.getLogger(JournalforingV1Service::class.java)
 
@@ -43,10 +42,9 @@ class JournalforingV1Service(
         val correlationId = CorrelationId(metaData.correlationId)
 
         logger.info(metaData.toString())
-        if( melding.aktoerId == null || melding.dokumenter == null|| melding.norskIdent == null|| melding.mottatt == null){
-            return JournalPostId(UUID.randomUUID().toString())
-        }
+
         validerMelding(melding)
+
         val aktoerId = AktoerId(melding.aktoerId)
 
         logger.trace("Journalfører for AktørID $aktoerId")
@@ -116,7 +114,7 @@ class JournalforingV1Service(
 
     private fun validerMelding(melding: MeldingV1) {
         val violations = mutableSetOf<Violation>()
-        if (melding.dokumenter!!.isEmpty()) {
+        if (melding.dokumenter.isEmpty()) {
             violations.add(
                 Violation(
                     parameterName = "dokument",
@@ -140,16 +138,28 @@ class JournalforingV1Service(
             }
         }
 
-        if (!melding.norskIdent!!.matches(ONLY_DIGITS)) {
+        if (!melding.aktoerId.matches(ONLY_DIGITS)) {
             violations.add(
                 Violation(
                     parameterName = "aktoer_id",
                     reason = "Ugyldig AktørID. Kan kun være siffer.",
                     parameterType = ParameterType.ENTITY,
+                    invalidValue = melding.aktoerId
+                )
+            )
+        }
+
+        if (!melding.norskIdent.matches(ONLY_DIGITS)) {
+            violations.add(
+                Violation(
+                    parameterName = "norsk_ident",
+                    reason = "Ugyldig Norsk Ident. Kan kun være siffer.",
+                    parameterType = ParameterType.ENTITY,
                     invalidValue = melding.norskIdent
                 )
             )
         }
+
         if (violations.isNotEmpty()) {
             throw Throwblem(ValidationProblemDetails(violations))
         }
