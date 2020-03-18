@@ -104,7 +104,7 @@ class K9JoarkTest {
         val jsonDokumentId = "78910"
         stubGetDokumentJson(jsonDokumentId)
 
-        stubMottaInngaaendeForsendelseOk(tilstand = "MIDLERTIDIG_JOURNALFOERT")
+        stubMottaInngaaendeForsendelseOk()
 
         val request = MeldingV1(
             norskIdent = "012345678901",
