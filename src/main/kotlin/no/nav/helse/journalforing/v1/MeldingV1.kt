@@ -15,11 +15,4 @@ data class Navn(
     val fornavn: String,
     val mellomnavn: String? = null,
     val etternavn: String
-) {
-    fun tilString(): String {
-        return when (mellomnavn) {
-            null -> "$fornavn $etternavn"
-            else -> "$fornavn $mellomnavn $etternavn"
-        }
-    }
-}
+)

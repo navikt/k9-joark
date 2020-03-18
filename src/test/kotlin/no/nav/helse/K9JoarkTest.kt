@@ -100,7 +100,13 @@ class K9JoarkTest {
     @Test
     fun `Journalpost for pleiepengesøknad`() {
         requestAndAssert(
-            request = meldingForJournalføring(),
+            request = meldingForJournalføring(
+                søkerNavn = Navn(
+                    fornavn = "Peie",
+                    mellomnavn = "penge",
+                    etternavn = "Sen"
+                )
+            ),
             expectedResponse = """{"journal_post_id":"466985833"}""".trimIndent(),
             expectedCode = HttpStatusCode.Created
         )
@@ -261,7 +267,7 @@ class K9JoarkTest {
             aktoerId = "12345F",
             sokerNavn = Navn(
                 fornavn = "ole",
-                etternavn = "Nordmann"  
+                etternavn = "Nordmann"
             )
         )
 
@@ -368,7 +374,9 @@ class K9JoarkTest {
         }
     }
 
-    private fun meldingForJournalføring() : MeldingV1 {
+    private fun meldingForJournalføring(
+        søkerNavn: Navn? = null
+    ) : MeldingV1 {
         val jpegDokumentId = "1234" // Default mocket som JPEG
         val pdfDokumentId = "4567"
         stubGetDokumentPdf(pdfDokumentId)
@@ -389,10 +397,7 @@ class K9JoarkTest {
                 )
             ),
             aktoerId = "12345",
-            sokerNavn = Navn(
-                fornavn = "Ola",
-                etternavn = "Nordmann"
-            )
+            sokerNavn = søkerNavn
         )
     }
 }

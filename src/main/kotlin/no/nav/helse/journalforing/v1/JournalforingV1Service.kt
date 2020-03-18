@@ -26,7 +26,7 @@ private val OPPLÆRINGSPENGER_SOKNAD_BREV_KODE = BrevKode(brevKode = "NAV 09-11.
 private val PEIEPENGER_JOURNALFORING_TITTEL = "Søknad om pleiepenger – sykt barn - NAV 09-11.05"
 private val OMSORGSPENGER_JOURNALFORING_TITTEL = "Søknad om flere omsorgsdager - NAV 09-06.05"
 private val OPPLÆRINGSPENGER_JOURNALFORING_TITTEL = "Søknad om opplæringspenger - NAV 09-11.08"
-private val OMSORGSPENGESØKNAD_UTBETALING_FRILANSER_SELVSTENDIG_TITTEL = "Søknad om utbetaling av omsorgsdager - NAV 09-35.01"
+private val OMSORGSPENGESØKNAD_UTBETALING_FRILANSER_SELVSTENDIG_TITTEL = "Søknad om utbetaling av omsorgsdager frilanser/selvstendig - NAV 09-35.01"
 
 private val ONLY_DIGITS = Regex("\\d+")
 
@@ -102,7 +102,7 @@ class JournalforingV1Service(
             datoMottatt = melding.mottatt,
             typeReferanse = typeReferanse,
             avsenderMottakerIdType = AVSENDER_MOTTAKER_ID_TYPE,
-            avsenderMottakerNavn = melding.sokerNavn?.tilString()
+            avsenderMottakerNavn = melding.sokerNavn?.sammensattNavn()
         )
 
         logger.info("Sender melding til Joark")
@@ -165,4 +165,10 @@ class JournalforingV1Service(
             throw Throwblem(ValidationProblemDetails(violations))
         }
     }
+}
+
+
+private fun Navn.sammensattNavn() = when (mellomnavn) {
+    null -> "$fornavn $etternavn"
+    else -> "$fornavn $mellomnavn $etternavn"
 }
