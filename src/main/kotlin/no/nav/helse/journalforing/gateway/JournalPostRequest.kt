@@ -4,7 +4,7 @@ internal data class JournalPostRequest(
     val dokumenter : List<JoarkDokument>,
     val journalposttype: String, // INNGAAENDE
     val tittel: String,
-    val bruker: AvsenderMottaker,
+    val bruker: Bruker,
     val avsenderMottaker: AvsenderMottaker,
     val tema: String, /// OMS
     val datoMottatt: String, // yyyy-MM-dd'T'HH:mm:ssZ
@@ -20,6 +20,7 @@ internal data class JoarkDokument(
 )
 
 internal data class AvsenderMottaker(val id: String, val idType: String, val navn: String? = null)
+internal data class Bruker(val id: String, val idType: String)
 
 internal data class DokumentVariant(
     val filtype: ArkivFilType,
