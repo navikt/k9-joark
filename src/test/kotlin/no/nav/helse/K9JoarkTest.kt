@@ -17,6 +17,7 @@ import no.nav.helse.dusseldorf.ktor.jackson.dusseldorfConfigured
 import no.nav.helse.dusseldorf.testsupport.jws.Azure
 import no.nav.helse.dusseldorf.testsupport.wiremock.WireMockBuilder
 import no.nav.helse.journalforing.v1.MeldingV1
+import no.nav.helse.journalforing.v1.Navn
 import org.junit.AfterClass
 import org.junit.BeforeClass
 import org.skyscreamer.jsonassert.JSONAssert
@@ -118,7 +119,11 @@ class K9JoarkTest {
                     getDokumentUrl(jpegDokumentId)
                 )
             ),
-            aktoerId = "12345"
+            aktoerId = "12345",
+            sokerNavn = Navn(
+                fornavn = "ole",
+                etternavn = "Nordmann"
+            )
         )
 
         requestAndAssert(
@@ -139,7 +144,11 @@ class K9JoarkTest {
                     getDokumentUrl("5678")
                 )
             ),
-            aktoerId = "12345"
+            aktoerId = "12345",
+            sokerNavn = Navn(
+                fornavn = "ole",
+                etternavn = "Nordmann"
+            )
         )
 
 
@@ -178,7 +187,11 @@ class K9JoarkTest {
                     getDokumentUrl("5678")
                 )
             ),
-            aktoerId = "12345"
+            aktoerId = "12345",
+            sokerNavn = Navn(
+                fornavn = "ole",
+                etternavn = "Nordmann"
+            )
         )
 
         requestAndAssert(
@@ -200,7 +213,11 @@ class K9JoarkTest {
                     getDokumentUrl("5678")
                 )
             ),
-            aktoerId = "12345"
+            aktoerId = "12345",
+            sokerNavn = Navn(
+                fornavn = "ole",
+                etternavn = "Nordmann"
+            )
         )
 
         requestAndAssert(
@@ -228,7 +245,11 @@ class K9JoarkTest {
             norskIdent = "012345678901F",
             mottatt = ZonedDateTime.now(),
             dokumenter = listOf(),
-            aktoerId = "12345"
+            aktoerId = "12345",
+            sokerNavn = Navn(
+                fornavn = "ole",
+                etternavn = "Nordmann"
+            )
         )
 
         requestAndAssert(
@@ -266,7 +287,11 @@ class K9JoarkTest {
                 listOf(getDokumentUrl("1234")),
                 listOf()
             ),
-            aktoerId = "12345"
+            aktoerId = "12345",
+            sokerNavn = Navn(
+                fornavn = "ole",
+                etternavn = "Nordmann"
+            )
         )
 
         requestAndAssert(

@@ -94,7 +94,8 @@ class JournalforingV1Service(
             dokumenter = alleDokumenter.toList(),
             datoMottatt = melding.mottatt,
             typeReferanse = typeReferanse,
-            avsenderMottakerIdType = AVSENDER_MOTTAKER_ID_TYPE
+            avsenderMottakerIdType = AVSENDER_MOTTAKER_ID_TYPE,
+            avsenderMottakerNavn = melding.sokerNavn?.tilString()
         )
 
         logger.info("Sender melding til Joark")

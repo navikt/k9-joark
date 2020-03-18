@@ -27,7 +27,8 @@ object JournalPostRequestV1Factory {
         datoMottatt: ZonedDateTime,
         typeReferanse: TypeReferanse,
         journalposttype: JournalPostType,
-        avsenderMottakerIdType: AvsenderMottakerIdType
+        avsenderMottakerIdType: AvsenderMottakerIdType,
+        avsenderMottakerNavn: String?
     ) : JournalPostRequest {
 
         if (dokumenter.isEmpty()) {
@@ -42,8 +43,8 @@ object JournalPostRequestV1Factory {
 
         return JournalPostRequest(
             journalposttype = journalposttype.value,
-            avsenderMottaker = AvsenderMottaker(mottaker, avsenderMottakerIdType.value), // I Versjon 1 er det kun innlogget bruker som laster opp vedlegg og fyller ut søknad, så bruker == avsender
-            bruker = AvsenderMottaker(mottaker, avsenderMottakerIdType.value),
+            avsenderMottaker = AvsenderMottaker(mottaker, avsenderMottakerIdType.value, avsenderMottakerNavn), // I Versjon 1 er det kun innlogget bruker som laster opp vedlegg og fyller ut søknad, så bruker == avsender
+            bruker = AvsenderMottaker(mottaker, avsenderMottakerIdType.value, avsenderMottakerNavn),
             tema = tema.value,
             tittel = tittel,
             kanal = kanal.value,
