@@ -1,11 +1,12 @@
 # k9-joark
 
-
-Inneholder integrasjon mot joark for å opprette jornalpost i forbindelse med søknad om K9.
+Inneholder integrasjon mot joark for å opprette jornalpost i forbindelse med søknader for ytelsen i Kapittel 9 i folketrygdeloven.
 
 ## Versjon 1
 ### Meldingsformat
 - aktoer_id : AtkørID for personen dokumentene skal journalføres på
+- norsk_ident: Norsk ident for personen dokumentene skal journalføres på
+- soker_navn: Navn på personen dokumente skal journalføres på. Denner optional, og om satt er også mellomnavn optional.
 - mottatt : tidspunkt for når dokumentene er mottatt på ISO8601 format
 - dokumenter : En liste med lister av URL'er til dokumenter som skal journalføres som må peke på "k9-dokument"
 - dokumenter : Må inneholde minst en liste, og hvert liste må inneholde minst en entry.
@@ -17,6 +18,11 @@ Inneholder integrasjon mot joark for å opprette jornalpost i forbindelse med s�
 	"aktoer_id": "123561458",
 	"norsk_ident": "01234567890",
 	"mottatt": "2018-12-18T20:43:32Z",
+	"soker_navn": {
+	  "fornavn": "Navn",
+	  "mellomnavn": "Navn",
+	  "etternavn": "Navnesen"
+	},
 	"dokumenter": [
 		[
 			"https://k9-dokument.nav.no/dokument/c049520b-eed9-42d0-8d48-b7c8e6e1467e",
@@ -37,7 +43,7 @@ Request ID blir ikke propagert videre, og skal ha sitt opphav hos konsumenten
 #### REST API
 - Correlation ID må sendes som header 'X-Correlation-ID'
 - Request ID kan sendes som heder 'X-Request-ID'
-- Versjon på meldingen avledes fra pathen '/v1/journalforing' -> 1
+- Versjon på meldingen avledes fra pathen '/v1/{søknadsType}/journalforing' -> 1
 
 ## Henvendelser
 Spørsmål knyttet til koden eller prosjektet kan stilles som issues her på GitHub.
