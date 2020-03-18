@@ -97,34 +97,51 @@ class K9JoarkTest {
     }
 
     @Test
-    fun `gyldig melding til joark gir ok response med journalfoert jorunalpostID`() {
-        val jpegDokumentId = "1234" // Default mocket som JPEG
-        val pdfDokumentId = "4567"
-        stubGetDokumentPdf(pdfDokumentId)
-        val jsonDokumentId = "78910"
-        stubGetDokumentJson(jsonDokumentId)
-
-        stubMottaInngaaendeForsendelseOk()
-
-        val request = MeldingV1(
-            norskIdent = "012345678901",
-            mottatt = ZonedDateTime.now(),
-            dokumenter = listOf(
-                listOf(
-                    getDokumentUrl(pdfDokumentId),
-                    getDokumentUrl(jsonDokumentId)
-                ),
-                listOf(
-                    getDokumentUrl(jpegDokumentId)
-                )
-            ),
-            aktoerId = "12345"
-        )
-
+    fun `Journalpost for pleiepengesøknad`() {
         requestAndAssert(
-            request = request,
+            request = meldingForJournalføring(),
             expectedResponse = """{"journal_post_id":"466985833"}""".trimIndent(),
             expectedCode = HttpStatusCode.Created
+        )
+    }
+
+    @Test
+    fun `Journalpost for omsorgpengesøknad`() {
+        requestAndAssert(
+            request = meldingForJournalføring(),
+            expectedResponse = """{"journal_post_id":"466985833"}""".trimIndent(),
+            expectedCode = HttpStatusCode.Created,
+            uri = "/v1/omsorgspenge/journalforing"
+        )
+    }
+
+    @Test
+    fun `Journalpost for omsorgspengeutbetaling for frilansere og selvstendig næringsdrivende`() {
+        requestAndAssert(
+            request = meldingForJournalføring(),
+            expectedResponse = """{"journal_post_id":"466985833"}""".trimIndent(),
+            expectedCode = HttpStatusCode.Created,
+            uri = "/v1/omsorgspengeutbetaling/journalforing?arbeidstype=frilanser&arbeidstype=selvstendig næringsdrivende"
+        )
+    }
+
+    @Test
+    fun `Journalpost for omsorgspengeutbetaling for arbeidstakere`() {
+        requestAndAssert(
+            request = meldingForJournalføring(),
+            expectedResponse = null,
+            expectedCode = HttpStatusCode.NotFound,
+            uri = "/v1/omsorgspengeutbetaling/journalforing?arbeidstype=arbeidstaker"
+        )
+    }
+
+    @Test
+    fun `Journalpost for opplæringspengesøknad`() {
+        requestAndAssert(
+            request = meldingForJournalføring(),
+            expectedResponse = """{"journal_post_id":"466985833"}""".trimIndent(),
+            expectedCode = HttpStatusCode.Created,
+            uri = "/v1/opplæringspenge/journalforing"
         )
     }
 
@@ -292,7 +309,6 @@ class K9JoarkTest {
         )
     }
 
-
     private fun getDokumentUrl(dokumentId: String) = URI("${wireMockServer.getPleiepengerDokumentUrl()}/$dokumentId")
 
     private fun requestAndAssert(
@@ -301,10 +317,11 @@ class K9JoarkTest {
         expectedCode: HttpStatusCode,
         leggTilCorrelationId: Boolean = true,
         leggTilAuthorization: Boolean = true,
-        accessToken: String = authorizedAccessToken
+        accessToken: String = authorizedAccessToken,
+        uri: String = "/v1/pleiepenge/journalforing"
     ) {
         with(engine) {
-            handleRequest(HttpMethod.Post, "/v1/pleiepenge/journalforing") {
+            handleRequest(HttpMethod.Post, uri) {
                 if (leggTilAuthorization) {
                     addHeader(HttpHeaders.Authorization, "Bearer $accessToken")
                 }
@@ -321,5 +338,29 @@ class K9JoarkTest {
                 else JSONAssert.assertEquals(expectedResponse, response.content!!, true)
             }
         }
+    }
+
+    private fun meldingForJournalføring() : MeldingV1 {
+        val jpegDokumentId = "1234" // Default mocket som JPEG
+        val pdfDokumentId = "4567"
+        stubGetDokumentPdf(pdfDokumentId)
+        val jsonDokumentId = "78910"
+        stubGetDokumentJson(jsonDokumentId)
+        stubMottaInngaaendeForsendelseOk()
+
+        return MeldingV1(
+            norskIdent = "012345678901",
+            mottatt = ZonedDateTime.now(),
+            dokumenter = listOf(
+                listOf(
+                    getDokumentUrl(pdfDokumentId),
+                    getDokumentUrl(jsonDokumentId)
+                ),
+                listOf(
+                    getDokumentUrl(jpegDokumentId)
+                )
+            ),
+            aktoerId = "12345"
+        )
     }
 }

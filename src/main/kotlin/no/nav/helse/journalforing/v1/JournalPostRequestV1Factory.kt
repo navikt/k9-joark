@@ -7,10 +7,6 @@ import java.time.ZoneOffset
 import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
 
-private const val AKTOR_ID_KEY = "aktoer"
-private const val IDENT_KEY = "ident"
-private const val PERSON_KEY = "person"
-
 private const val PDF_CONTENT_TYPE = "application/pdf"
 private const val JSON_CONTENT_TYPE = "application/json"
 private const val XML_CONTENT_TYPE = "application/xml"
@@ -100,6 +96,6 @@ object JournalPostRequestV1Factory {
     }
 
     private fun getVariantFormat(arkivFilType: ArkivFilType) : VariantFormat {
-        return if (arkivFilType.equals(ArkivFilType.PDFA)) VariantFormat.ARKIV else VariantFormat.ORIGINAL
+        return if (arkivFilType == ArkivFilType.PDFA) VariantFormat.ARKIV else VariantFormat.ORIGINAL
     }
 }
