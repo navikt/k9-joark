@@ -7,10 +7,6 @@ import java.time.ZoneOffset
 import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
 
-private const val AKTOR_ID_KEY = "aktoer"
-private const val IDENT_KEY = "ident"
-private const val PERSON_KEY = "person"
-
 private const val PDF_CONTENT_TYPE = "application/pdf"
 private const val JSON_CONTENT_TYPE = "application/json"
 private const val XML_CONTENT_TYPE = "application/xml"
@@ -27,7 +23,8 @@ object JournalPostRequestV1Factory {
         datoMottatt: ZonedDateTime,
         typeReferanse: TypeReferanse,
         journalposttype: JournalPostType,
-        avsenderMottakerIdType: AvsenderMottakerIdType
+        avsenderMottakerIdType: AvsenderMottakerIdType,
+        avsenderMottakerNavn: String?
     ) : JournalPostRequest {
 
         if (dokumenter.isEmpty()) {
@@ -42,8 +39,8 @@ object JournalPostRequestV1Factory {
 
         return JournalPostRequest(
             journalposttype = journalposttype.value,
-            avsenderMottaker = AvsenderMottaker(mottaker, avsenderMottakerIdType.value), // I Versjon 1 er det kun innlogget bruker som laster opp vedlegg og fyller ut søknad, så bruker == avsender
-            bruker = AvsenderMottaker(mottaker, avsenderMottakerIdType.value),
+            avsenderMottaker = AvsenderMottaker(mottaker, avsenderMottakerIdType.value, avsenderMottakerNavn), // I Versjon 1 er det kun innlogget bruker som laster opp vedlegg og fyller ut søknad, så bruker == avsender
+            bruker = Bruker(mottaker, avsenderMottakerIdType.value),
             tema = tema.value,
             tittel = tittel,
             kanal = kanal.value,
@@ -100,6 +97,6 @@ object JournalPostRequestV1Factory {
     }
 
     private fun getVariantFormat(arkivFilType: ArkivFilType) : VariantFormat {
-        return if (arkivFilType.equals(ArkivFilType.PDFA)) VariantFormat.ARKIV else VariantFormat.ORIGINAL
+        return if (arkivFilType == ArkivFilType.PDFA) VariantFormat.ARKIV else VariantFormat.ORIGINAL
     }
 }

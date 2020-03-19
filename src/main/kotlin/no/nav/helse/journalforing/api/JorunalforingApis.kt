@@ -35,11 +35,25 @@ fun Route.journalforingApis(
         val metadata = MetadataV1(version = 1, correlationId = call.request.getCorrelationId(), requestId = call.response.getRequestId(), søknadstype = Søknadstype.OMSORGSPENGESØKNAD)
         journalfør(journalforingV1Service, melding, metadata)
     }
+    post("/v1/omsorgspengeutbetaling/journalforing") {
+        if (call.request.gjelderFrilanserOgSelvstendigNæringsdrivende()) {
+            val melding = call.receive<MeldingV1>()
+            val metadata = MetadataV1(version = 1, correlationId = call.request.getCorrelationId(), requestId = call.response.getRequestId(), søknadstype = Søknadstype.OMSORGSPENGESØKNAD_UTBETALING_FRILANSER_SELVSTENDIG)
+            journalfør(journalforingV1Service, melding, metadata)
+        } else {
+            call.response.status(HttpStatusCode.NotFound)
+        }
+    }
     post("/v1/opplæringspenge/journalforing") {
         val melding = call.receive<MeldingV1>()
         val metadata = MetadataV1(version = 1, correlationId = call.request.getCorrelationId(), requestId = call.response.getRequestId(), søknadstype = Søknadstype.OPPLÆRINGSPENGESØKNAD)
         journalfør(journalforingV1Service, melding, metadata)
     }
+}
+
+private fun ApplicationRequest.gjelderFrilanserOgSelvstendigNæringsdrivende() : Boolean {
+    val arbeidstyper = queryParameters.getAll("arbeidstype")?: emptyList()
+    return arbeidstyper.size == 2 && arbeidstyper.contains("frilanser") && arbeidstyper.contains("selvstendig næringsdrivende")
 }
 
 private suspend fun PipelineContext<Unit, ApplicationCall>.journalfør(

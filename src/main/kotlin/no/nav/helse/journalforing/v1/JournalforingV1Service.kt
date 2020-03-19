@@ -11,7 +11,6 @@ import no.nav.helse.journalforing.*
 import no.nav.helse.journalforing.gateway.JournalforingGateway
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
-import java.util.*
 
 private val logger: Logger = LoggerFactory.getLogger(JournalforingV1Service::class.java)
 
@@ -21,10 +20,13 @@ private val AVSENDER_MOTTAKER_ID_TYPE = AvsenderMottakerIdType("FNR")
 private val JOURNALPOSTTYPE = JournalPostType("INNGAAENDE")
 private val PLEIEPENGER_SOKNAD_BREV_KODE = BrevKode(brevKode = "NAV 09-11.05", dokumentKategori = "SOK")
 private val OMSORGSPENGER_SOKNAD_BREV_KODE = BrevKode(brevKode = "NAV 09-06.05", dokumentKategori = "SOK")
+private val OMSORGSPENGESØKNAD_UTBETALING_FRILANSER_SELVSTENDIG_BREV_KODE = BrevKode(brevKode = "NAV 09-35.01", dokumentKategori = "SOK")
+
 private val OPPLÆRINGSPENGER_SOKNAD_BREV_KODE = BrevKode(brevKode = "NAV 09-11.08", dokumentKategori = "SOK")
 private val PEIEPENGER_JOURNALFORING_TITTEL = "Søknad om pleiepenger – sykt barn - NAV 09-11.05"
 private val OMSORGSPENGER_JOURNALFORING_TITTEL = "Søknad om flere omsorgsdager - NAV 09-06.05"
 private val OPPLÆRINGSPENGER_JOURNALFORING_TITTEL = "Søknad om opplæringspenger - NAV 09-11.08"
+private val OMSORGSPENGESØKNAD_UTBETALING_FRILANSER_SELVSTENDIG_TITTEL = "Søknad om utbetaling av omsorgsdager frilanser/selvstendig - NAV 09-35.01"
 
 private val ONLY_DIGITS = Regex("\\d+")
 
@@ -40,10 +42,9 @@ class JournalforingV1Service(
         val correlationId = CorrelationId(metaData.correlationId)
 
         logger.info(metaData.toString())
-        if( melding.aktoerId == null || melding.dokumenter == null|| melding.norskIdent == null|| melding.mottatt == null){
-            return JournalPostId(UUID.randomUUID().toString())
-        }
+
         validerMelding(melding)
+
         val aktoerId = AktoerId(melding.aktoerId)
 
         logger.trace("Journalfører for AktørID $aktoerId")
@@ -71,6 +72,9 @@ class JournalforingV1Service(
             Søknadstype.PLEIEPENGESØKNAD -> {
                 PLEIEPENGER_SOKNAD_BREV_KODE
             }
+            Søknadstype.OMSORGSPENGESØKNAD_UTBETALING_FRILANSER_SELVSTENDIG ->{
+                OMSORGSPENGESØKNAD_UTBETALING_FRILANSER_SELVSTENDIG_BREV_KODE
+            }
         }
 
         val tittel = when (metaData.søknadstype) {
@@ -83,6 +87,9 @@ class JournalforingV1Service(
             Søknadstype.PLEIEPENGESØKNAD -> {
                 PEIEPENGER_JOURNALFORING_TITTEL
             }
+            Søknadstype.OMSORGSPENGESØKNAD_UTBETALING_FRILANSER_SELVSTENDIG ->{
+                OMSORGSPENGESØKNAD_UTBETALING_FRILANSER_SELVSTENDIG_TITTEL
+            }
         }
 
         val request = JournalPostRequestV1Factory.instance(
@@ -94,7 +101,8 @@ class JournalforingV1Service(
             dokumenter = alleDokumenter.toList(),
             datoMottatt = melding.mottatt,
             typeReferanse = typeReferanse,
-            avsenderMottakerIdType = AVSENDER_MOTTAKER_ID_TYPE
+            avsenderMottakerIdType = AVSENDER_MOTTAKER_ID_TYPE,
+            avsenderMottakerNavn = melding.sokerNavn?.sammensattNavn()
         )
 
         logger.info("Sender melding til Joark")
@@ -107,7 +115,7 @@ class JournalforingV1Service(
 
     private fun validerMelding(melding: MeldingV1) {
         val violations = mutableSetOf<Violation>()
-        if (melding.dokumenter!!.isEmpty()) {
+        if (melding.dokumenter.isEmpty()) {
             violations.add(
                 Violation(
                     parameterName = "dokument",
@@ -131,18 +139,36 @@ class JournalforingV1Service(
             }
         }
 
-        if (!melding.norskIdent!!.matches(ONLY_DIGITS)) {
+        if (!melding.aktoerId.matches(ONLY_DIGITS)) {
             violations.add(
                 Violation(
                     parameterName = "aktoer_id",
                     reason = "Ugyldig AktørID. Kan kun være siffer.",
                     parameterType = ParameterType.ENTITY,
+                    invalidValue = melding.aktoerId
+                )
+            )
+        }
+
+        if (!melding.norskIdent.matches(ONLY_DIGITS)) {
+            violations.add(
+                Violation(
+                    parameterName = "norsk_ident",
+                    reason = "Ugyldig Norsk Ident. Kan kun være siffer.",
+                    parameterType = ParameterType.ENTITY,
                     invalidValue = melding.norskIdent
                 )
             )
         }
+
         if (violations.isNotEmpty()) {
             throw Throwblem(ValidationProblemDetails(violations))
         }
     }
+}
+
+
+private fun Navn.sammensattNavn() = when (mellomnavn) {
+    null -> "$fornavn $etternavn"
+    else -> "$fornavn $mellomnavn $etternavn"
 }
