@@ -12,7 +12,7 @@ plugins {
 }
 
 buildscript {
-    apply("https://raw.githubusercontent.com/navikt/dusseldorf-ktor/e71617ba8509178ddf18e79b9f9ddac0ac9dcb4e/gradle/dusseldorf-ktor.gradle.kts")
+    apply("https://raw.githubusercontent.com/navikt/dusseldorf-ktor/4e29fb7f5f69ab1b8d998fc1f674085e2e01e7ad/gradle/dusseldorf-ktor.gradle.kts")
 }
 
 dependencies {

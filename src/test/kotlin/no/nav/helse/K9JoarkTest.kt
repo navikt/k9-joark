@@ -133,6 +133,16 @@ class K9JoarkTest {
     }
 
     @Test
+    fun `Journalpost for omsorgpengesøknad for overføring av dager`() {
+        requestAndAssert(
+            request = meldingForJournalføring(),
+            expectedResponse = """{"journal_post_id":"466985833"}""".trimIndent(),
+            expectedCode = HttpStatusCode.Created,
+            uri = "/v1/omsorgsdageroverforing/journalforing"
+        )
+    }
+
+    @Test
     fun `Journalpost for omsorgspengeutbetaling for arbeidstakere`() {
         requestAndAssert(
             request = meldingForJournalføring(),
