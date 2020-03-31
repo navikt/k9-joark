@@ -136,8 +136,8 @@ class K9JoarkTest {
     fun `Journalpost for omsorgspengeutbetaling for arbeidstakere`() {
         requestAndAssert(
             request = meldingForJournalføring(),
-            expectedResponse = null,
-            expectedCode = HttpStatusCode.NotFound,
+            expectedResponse = """{"journal_post_id":"466985833"}""".trimIndent(),
+            expectedCode = HttpStatusCode.Created,
             uri = "/v1/omsorgspengeutbetaling/journalforing?arbeidstype=arbeidstaker"
         )
     }

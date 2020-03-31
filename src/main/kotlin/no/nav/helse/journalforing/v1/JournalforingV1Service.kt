@@ -21,12 +21,14 @@ private val JOURNALPOSTTYPE = JournalPostType("INNGAAENDE")
 private val PLEIEPENGER_SOKNAD_BREV_KODE = BrevKode(brevKode = "NAV 09-11.05", dokumentKategori = "SOK")
 private val OMSORGSPENGER_SOKNAD_BREV_KODE = BrevKode(brevKode = "NAV 09-06.05", dokumentKategori = "SOK")
 private val OMSORGSPENGESØKNAD_UTBETALING_FRILANSER_SELVSTENDIG_BREV_KODE = BrevKode(brevKode = "NAV 09-35.01", dokumentKategori = "SOK")
+private val OMSORGSPENGESØKNAD_UTBETALING_ARBEIDSTAKER_BREV_KODE = BrevKode(brevKode = "NAV 09-35.01", dokumentKategori = "SOK") // TODO: Sett riktig brevkode
 
 private val OPPLÆRINGSPENGER_SOKNAD_BREV_KODE = BrevKode(brevKode = "NAV 09-11.08", dokumentKategori = "SOK")
 private val PEIEPENGER_JOURNALFORING_TITTEL = "Søknad om pleiepenger – sykt barn - NAV 09-11.05"
 private val OMSORGSPENGER_JOURNALFORING_TITTEL = "Søknad om flere omsorgsdager - NAV 09-06.05"
 private val OPPLÆRINGSPENGER_JOURNALFORING_TITTEL = "Søknad om opplæringspenger - NAV 09-11.08"
 private val OMSORGSPENGESØKNAD_UTBETALING_FRILANSER_SELVSTENDIG_TITTEL = "Søknad om utbetaling av omsorgsdager frilanser/selvstendig - NAV 09-35.01"
+private val OMSORGSPENGESØKNAD_UTBETALING_ARBEIDSTAKER_TITTEL = "Søknad om utbetaling av omsorgsdager arbeidstaker - NAV 09-35.01" // TODO: Sett riktig brevkode
 
 private val ONLY_DIGITS = Regex("\\d+")
 
@@ -75,6 +77,9 @@ class JournalforingV1Service(
             Søknadstype.OMSORGSPENGESØKNAD_UTBETALING_FRILANSER_SELVSTENDIG ->{
                 OMSORGSPENGESØKNAD_UTBETALING_FRILANSER_SELVSTENDIG_BREV_KODE
             }
+            Søknadstype.OMSORGSPENGESØKNAD_UTBETALING_ARBEIDSTAKER -> {
+                OMSORGSPENGESØKNAD_UTBETALING_ARBEIDSTAKER_BREV_KODE
+            }
         }
 
         val tittel = when (metaData.søknadstype) {
@@ -89,6 +94,9 @@ class JournalforingV1Service(
             }
             Søknadstype.OMSORGSPENGESØKNAD_UTBETALING_FRILANSER_SELVSTENDIG ->{
                 OMSORGSPENGESØKNAD_UTBETALING_FRILANSER_SELVSTENDIG_TITTEL
+            }
+            Søknadstype.OMSORGSPENGESØKNAD_UTBETALING_ARBEIDSTAKER -> {
+                OMSORGSPENGESØKNAD_UTBETALING_ARBEIDSTAKER_TITTEL
             }
         }
 
