@@ -153,7 +153,7 @@ class K9JoarkTest {
     }
 
     @Test
-    fun `Journalpost for frisinnsøknad`() {
+    fun `Journalpost for opplæringspengesøknad`() {
         requestAndAssert(
             request = meldingForJournalføring(),
             expectedResponse = null,
@@ -163,7 +163,7 @@ class K9JoarkTest {
     }
 
     @Test
-    fun `Journalpost for opplæringspengesøknad`() {
+    fun `Journalpost for frisinnsøknad`() {
         requestAndAssert(
             request = meldingForJournalføring(),
             expectedResponse = """{"journal_post_id":"466985833"}""".trimIndent(),
