@@ -42,7 +42,7 @@ class K9JoarkTest {
             .stubGetDokument()
             .stubDomotInngaaendeIsReady()
 
-        private val objectMapper = jacksonObjectMapper().dusseldorfConfigured()
+        private val objectMapper = jacksonObjectMapper().k9JoarkConfigured()
         private val authorizedAccessToken =
             Azure.V1_0.generateJwt(clientId = "pleiepengesoknad-prosessering", audience = "k9-joark")
 
