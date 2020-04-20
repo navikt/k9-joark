@@ -34,6 +34,9 @@ private val OMSORGSPENGESØKNAD_OVERFØRING_AV_DAGER_TITTEL = "Søknad om overf�
 private val OPPLÆRINGSPENGER_SOKNAD_BREV_KODE = BrevKode(brevKode = "NAV 09-11.08", dokumentKategori = "SOK")
 private val OPPLÆRINGSPENGER_JOURNALFORING_TITTEL = "Søknad om opplæringspenger - NAV 09-11.08"
 
+private val FRISINN_SOKNAD_BREV_KODE = BrevKode(brevKode = "NAV 00-03.02", dokumentKategori = "SOK")
+private val FRISINN_JOURNALFORING_TITTEL = "Frilansere og Selvstendig næringdrivendes Inntektskompensasjon - NAV 00-03.02"
+
 private val ONLY_DIGITS = Regex("\\d+")
 
 class JournalforingV1Service(
@@ -69,39 +72,21 @@ class JournalforingV1Service(
 
         logger.trace("Genererer request til Joark")
         val typeReferanse = when (metaData.søknadstype) {
-            Søknadstype.OPPLÆRINGSPENGESØKNAD -> {
-                OPPLÆRINGSPENGER_SOKNAD_BREV_KODE
-            }
-            Søknadstype.OMSORGSPENGESØKNAD -> {
-                OMSORGSPENGER_SOKNAD_BREV_KODE
-            }
-            Søknadstype.PLEIEPENGESØKNAD -> {
-                PLEIEPENGER_SOKNAD_BREV_KODE
-            }
-            Søknadstype.OMSORGSPENGESØKNAD_UTBETALING_FRILANSER_SELVSTENDIG -> {
-                OMSORGSPENGESØKNAD_UTBETALING_FRILANSER_SELVSTENDIG_BREV_KODE
-            }
-            Søknadstype.OMSORGSPENGESØKNAD_OVERFØRING_AV_DAGER -> {
-                OMSORGSPENGESØKNAD_OVERFØRING_AV_DAGER_BREV_KODE
-            }
+            Søknadstype.OPPLÆRINGSPENGESØKNAD -> OPPLÆRINGSPENGER_SOKNAD_BREV_KODE
+            Søknadstype.OMSORGSPENGESØKNAD -> OMSORGSPENGER_SOKNAD_BREV_KODE
+            Søknadstype.PLEIEPENGESØKNAD -> PLEIEPENGER_SOKNAD_BREV_KODE
+            Søknadstype.OMSORGSPENGESØKNAD_UTBETALING_FRILANSER_SELVSTENDIG -> OMSORGSPENGESØKNAD_UTBETALING_FRILANSER_SELVSTENDIG_BREV_KODE
+            Søknadstype.OMSORGSPENGESØKNAD_OVERFØRING_AV_DAGER -> OMSORGSPENGESØKNAD_OVERFØRING_AV_DAGER_BREV_KODE
+            Søknadstype.FRISINNSØKNAD -> FRISINN_SOKNAD_BREV_KODE
         }
 
         val tittel = when (metaData.søknadstype) {
-            Søknadstype.OPPLÆRINGSPENGESØKNAD -> {
-                OPPLÆRINGSPENGER_JOURNALFORING_TITTEL
-            }
-            Søknadstype.OMSORGSPENGESØKNAD -> {
-                OMSORGSPENGER_JOURNALFORING_TITTEL
-            }
-            Søknadstype.PLEIEPENGESØKNAD -> {
-                PEIEPENGER_JOURNALFORING_TITTEL
-            }
-            Søknadstype.OMSORGSPENGESØKNAD_UTBETALING_FRILANSER_SELVSTENDIG -> {
-                OMSORGSPENGESØKNAD_UTBETALING_FRILANSER_SELVSTENDIG_TITTEL
-            }
-            Søknadstype.OMSORGSPENGESØKNAD_OVERFØRING_AV_DAGER -> {
-                OMSORGSPENGESØKNAD_OVERFØRING_AV_DAGER_TITTEL
-            }
+            Søknadstype.OPPLÆRINGSPENGESØKNAD -> OPPLÆRINGSPENGER_JOURNALFORING_TITTEL
+            Søknadstype.OMSORGSPENGESØKNAD -> OMSORGSPENGER_JOURNALFORING_TITTEL
+            Søknadstype.PLEIEPENGESØKNAD -> PEIEPENGER_JOURNALFORING_TITTEL
+            Søknadstype.OMSORGSPENGESØKNAD_UTBETALING_FRILANSER_SELVSTENDIG -> OMSORGSPENGESØKNAD_UTBETALING_FRILANSER_SELVSTENDIG_TITTEL
+            Søknadstype.OMSORGSPENGESØKNAD_OVERFØRING_AV_DAGER -> OMSORGSPENGESØKNAD_OVERFØRING_AV_DAGER_TITTEL
+            Søknadstype.FRISINNSØKNAD -> FRISINN_JOURNALFORING_TITTEL
         }
 
         val request = JournalPostRequestV1Factory.instance(

@@ -153,12 +153,22 @@ class K9JoarkTest {
     }
 
     @Test
+    fun `Journalpost for frisinnsøknad`() {
+        requestAndAssert(
+            request = meldingForJournalføring(),
+            expectedResponse = null,
+            expectedCode = HttpStatusCode.NotFound,
+            uri = "/v1/omsorgspengeutbetaling/journalforing?arbeidstype=arbeidstaker"
+        )
+    }
+
+    @Test
     fun `Journalpost for opplæringspengesøknad`() {
         requestAndAssert(
             request = meldingForJournalføring(),
             expectedResponse = """{"journal_post_id":"466985833"}""".trimIndent(),
             expectedCode = HttpStatusCode.Created,
-            uri = "/v1/opplæringspenge/journalforing"
+            uri = "/v1/frisinn/journalforing"
         )
     }
 
