@@ -18,6 +18,11 @@ internal object BrevKodeOgTittel {
         "Søknad om utbetaling av omsorgsdager frilanser/selvstendig - NAV 09-35.01"
     )
 
+    private val OMSORGSPENGER_UTBETALING_ARBEIDSTAKER = Pair(
+        BrevKode(brevKode = "NAV 09-35.02", dokumentKategori = "SOK"),
+        "Søknad om utbetaling av omsorgspenger for arbeidstakere - NAV 09-35.02"
+    )
+
     private val OMSORGSPENGER_OVERFØRING_AV_DAGER = Pair(
         BrevKode(brevKode = "NAV 09-06.08", dokumentKategori = "SOK"),
         "Søknad om overføring av omsorgsdager - NAV 09-06.08"
@@ -37,6 +42,7 @@ internal object BrevKodeOgTittel {
         Søknadstype.PLEIEPENGESØKNAD -> PLEIEPENGER_BARN
         Søknadstype.OMSORGSPENGESØKNAD -> OMSORGSPENGER_UTVIDET_RETT
         Søknadstype.OMSORGSPENGESØKNAD_UTBETALING_FRILANSER_SELVSTENDIG -> OMSORGSPENGER_UTBETALING_FRILANSER_OG_SELVSTENDIG
+        Søknadstype.OMSORGSPENGESØKNAD_UTBETALING_ARBEIDSTAKER -> OMSORGSPENGER_UTBETALING_ARBEIDSTAKER
         Søknadstype.OMSORGSPENGESØKNAD_OVERFØRING_AV_DAGER -> OMSORGSPENGER_OVERFØRING_AV_DAGER
         Søknadstype.OPPLÆRINGSPENGESØKNAD -> OPPLÆRINGSPENGER
         Søknadstype.FRISINNSØKNAD -> FRISINN

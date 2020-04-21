@@ -13,7 +13,6 @@ import io.ktor.server.testing.createTestEnvironment
 import io.ktor.server.testing.handleRequest
 import io.ktor.server.testing.setBody
 import io.ktor.util.KtorExperimentalAPI
-import no.nav.helse.dusseldorf.ktor.jackson.dusseldorfConfigured
 import no.nav.helse.dusseldorf.testsupport.jws.Azure
 import no.nav.helse.dusseldorf.testsupport.wiremock.WireMockBuilder
 import no.nav.helse.journalforing.v1.MeldingV1
@@ -146,8 +145,8 @@ class K9JoarkTest {
     fun `Journalpost for omsorgspengeutbetaling for arbeidstakere`() {
         requestAndAssert(
             request = meldingForJournalføring(),
-            expectedResponse = null,
-            expectedCode = HttpStatusCode.NotFound,
+            expectedResponse = """{"journal_post_id":"466985833"}""".trimIndent(),
+            expectedCode = HttpStatusCode.Created,
             uri = "/v1/omsorgspengeutbetaling/journalforing?arbeidstype=arbeidstaker"
         )
     }
@@ -156,9 +155,9 @@ class K9JoarkTest {
     fun `Journalpost for opplæringspengesøknad`() {
         requestAndAssert(
             request = meldingForJournalføring(),
-            expectedResponse = null,
-            expectedCode = HttpStatusCode.NotFound,
-            uri = "/v1/omsorgspengeutbetaling/journalforing?arbeidstype=arbeidstaker"
+            expectedResponse = """{"journal_post_id":"466985833"}""".trimIndent(),
+            expectedCode = HttpStatusCode.Created,
+            uri = "/v1/opplæringspenge/journalforing"
         )
     }
 

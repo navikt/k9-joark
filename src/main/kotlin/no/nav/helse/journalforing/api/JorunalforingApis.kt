@@ -36,12 +36,18 @@ fun Route.journalforingApis(
         journalfør(journalforingV1Service, melding, metadata)
     }
     post("/v1/omsorgspengeutbetaling/journalforing") {
-        if (call.request.gjelderFrilanserOgSelvstendigNæringsdrivende()) {
-            val melding = call.receive<MeldingV1>()
-            val metadata = MetadataV1(version = 1, correlationId = call.request.getCorrelationId(), requestId = call.response.getRequestId(), søknadstype = Søknadstype.OMSORGSPENGESØKNAD_UTBETALING_FRILANSER_SELVSTENDIG)
-            journalfør(journalforingV1Service, melding, metadata)
-        } else {
-            call.response.status(HttpStatusCode.NotFound)
+        when {
+            call.request.gjelderFrilanserOgSelvstendigNæringsdrivende() -> {
+                val melding = call.receive<MeldingV1>()
+                val metadata = MetadataV1(version = 1, correlationId = call.request.getCorrelationId(), requestId = call.response.getRequestId(), søknadstype = Søknadstype.OMSORGSPENGESØKNAD_UTBETALING_FRILANSER_SELVSTENDIG)
+                journalfør(journalforingV1Service, melding, metadata)
+            }
+            call.request.gjelderArbeidstaker() -> {
+                val melding = call.receive<MeldingV1>()
+                val metadata = MetadataV1(version = 1, correlationId = call.request.getCorrelationId(), requestId = call.response.getRequestId(), søknadstype = Søknadstype.OMSORGSPENGESØKNAD_UTBETALING_ARBEIDSTAKER)
+                journalfør(journalforingV1Service, melding, metadata)
+            }
+            else -> call.response.status(HttpStatusCode.NotFound)
         }
     }
     post("/v1/omsorgsdageroverforing/journalforing") {
@@ -64,6 +70,11 @@ fun Route.journalforingApis(
 private fun ApplicationRequest.gjelderFrilanserOgSelvstendigNæringsdrivende() : Boolean {
     val arbeidstyper = queryParameters.getAll("arbeidstype")?: emptyList()
     return arbeidstyper.size == 2 && arbeidstyper.contains("frilanser") && arbeidstyper.contains("selvstendig næringsdrivende")
+}
+
+private fun ApplicationRequest.gjelderArbeidstaker() : Boolean {
+    val arbeidstyper = queryParameters.getAll("arbeidstype")?: emptyList()
+    return arbeidstyper.size == 1 && arbeidstyper.contains("arbeidstaker")
 }
 
 private suspend fun PipelineContext<Unit, ApplicationCall>.journalfør(
