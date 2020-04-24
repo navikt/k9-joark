@@ -37,9 +37,13 @@ class K9JoarkTest {
         private val wireMockServer: WireMockServer = WireMockBuilder()
             .withNaisStsSupport()
             .withAzureSupport()
+            .wireMockConfiguration {
+                it.extensions(DokarkivResponseTransformer())
+            }
             .build()
             .stubGetDokument()
             .stubDomotInngaaendeIsReady()
+            .stubMottaInngaaendeForsendelseOk()
 
         private val objectMapper = jacksonObjectMapper().k9JoarkConfigured()
         private val authorizedAccessToken =
@@ -106,7 +110,7 @@ class K9JoarkTest {
                     etternavn = "Sen"
                 )
             ),
-            expectedResponse = """{"journal_post_id":"466985833"}""".trimIndent(),
+            expectedResponse = """{"journal_post_id":"1"}""".trimIndent(),
             expectedCode = HttpStatusCode.Created
         )
     }
@@ -115,7 +119,7 @@ class K9JoarkTest {
     fun `Journalpost for omsorgpengesøknad`() {
         requestAndAssert(
             request = meldingForJournalføring(),
-            expectedResponse = """{"journal_post_id":"466985833"}""".trimIndent(),
+            expectedResponse = """{"journal_post_id":"2"}""".trimIndent(),
             expectedCode = HttpStatusCode.Created,
             uri = "/v1/omsorgspenge/journalforing"
         )
@@ -125,7 +129,7 @@ class K9JoarkTest {
     fun `Journalpost for omsorgspengeutbetaling for frilansere og selvstendig næringsdrivende`() {
         requestAndAssert(
             request = meldingForJournalføring(),
-            expectedResponse = """{"journal_post_id":"466985833"}""".trimIndent(),
+            expectedResponse = """{"journal_post_id":"3"}""".trimIndent(),
             expectedCode = HttpStatusCode.Created,
             uri = "/v1/omsorgspengeutbetaling/journalforing?arbeidstype=frilanser&arbeidstype=selvstendig næringsdrivende"
         )
@@ -135,7 +139,7 @@ class K9JoarkTest {
     fun `Journalpost for omsorgpengesøknad for overføring av dager`() {
         requestAndAssert(
             request = meldingForJournalføring(),
-            expectedResponse = """{"journal_post_id":"466985833"}""".trimIndent(),
+            expectedResponse = """{"journal_post_id":"5"}""".trimIndent(),
             expectedCode = HttpStatusCode.Created,
             uri = "/v1/omsorgsdageroverforing/journalforing"
         )
@@ -145,7 +149,7 @@ class K9JoarkTest {
     fun `Journalpost for omsorgspengeutbetaling for arbeidstakere`() {
         requestAndAssert(
             request = meldingForJournalføring(),
-            expectedResponse = """{"journal_post_id":"466985833"}""".trimIndent(),
+            expectedResponse = """{"journal_post_id":"4"}""".trimIndent(),
             expectedCode = HttpStatusCode.Created,
             uri = "/v1/omsorgspengeutbetaling/journalforing?arbeidstype=arbeidstaker"
         )
@@ -155,7 +159,7 @@ class K9JoarkTest {
     fun `Journalpost for opplæringspengesøknad`() {
         requestAndAssert(
             request = meldingForJournalføring(),
-            expectedResponse = """{"journal_post_id":"466985833"}""".trimIndent(),
+            expectedResponse = """{"journal_post_id":"6"}""".trimIndent(),
             expectedCode = HttpStatusCode.Created,
             uri = "/v1/opplæringspenge/journalforing"
         )
@@ -165,7 +169,7 @@ class K9JoarkTest {
     fun `Journalpost for frisinnsøknad`() {
         requestAndAssert(
             request = meldingForJournalføring(),
-            expectedResponse = """{"journal_post_id":"466985833"}""".trimIndent(),
+            expectedResponse = """{"journal_post_id":"7"}""".trimIndent(),
             expectedCode = HttpStatusCode.Created,
             uri = "/v1/frisinn/journalforing"
         )
@@ -401,7 +405,6 @@ class K9JoarkTest {
         stubGetDokumentPdf(pdfDokumentId)
         val jsonDokumentId = "78910"
         stubGetDokumentJson(jsonDokumentId)
-        stubMottaInngaaendeForsendelseOk()
 
         return MeldingV1(
             norskIdent = "012345678901",

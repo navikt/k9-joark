@@ -17,9 +17,13 @@ class PleiepengerJoarkWithMocks {
                 .withPort(8111)
                 .withNaisStsSupport()
                 .withAzureSupport()
+                .wireMockConfiguration {
+                    it.extensions(DokarkivResponseTransformer())
+                }
                 .build()
                 .stubGetDokument()
                 .stubDomotInngaaendeIsReady()
+                .stubMottaInngaaendeForsendelseOk()
 
             val testArgs = TestConfiguration.asMap(
                 wireMockServer = wireMockServer,
