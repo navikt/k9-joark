@@ -14,7 +14,6 @@ import org.slf4j.LoggerFactory
 
 private val logger: Logger = LoggerFactory.getLogger(JournalforingV1Service::class.java)
 
-private val OMSORG_TEMA = Tema("OMS")
 private val NAV_NO_KANAL = Kanal("NAV_NO")
 private val AVSENDER_MOTTAKER_ID_TYPE = AvsenderMottakerIdType("FNR")
 private val JOURNALPOSTTYPE = JournalPostType("INNGAAENDE")
@@ -53,13 +52,13 @@ class JournalforingV1Service(
         }
 
         logger.trace("Genererer request til Joark")
-        val (typeReferanse, tittel) = BrevKodeOgTittel.hentFor(metaData.søknadstype)
+        val (typeReferanse, tittel, tema) = BrevkodeTittelOgTema.hentFor(metaData.søknadstype)
 
         val request = JournalPostRequestV1Factory.instance(
             journalposttype = JOURNALPOSTTYPE,
             tittel = tittel,
             mottaker = melding.norskIdent,
-            tema = OMSORG_TEMA,
+            tema = tema,
             kanal = NAV_NO_KANAL,
             dokumenter = alleDokumenter.toList(),
             datoMottatt = melding.mottatt,
