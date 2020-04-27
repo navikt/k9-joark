@@ -46,7 +46,7 @@ internal object BrevkodeTittelOgTema {
     private val FRISINN = Triple(
         BrevKode(brevKode = "NAV 00-03.02", dokumentKategori = "SOK"),
         "Søknad om inntektskompensasjon for frilansere og selvstendig næringdrivende - NAV 00-03.02",
-        Kapittel9Ytelse // TODO: https://github.com/navikt/k9-joark/issues/8 -> Skal være FrilansereOgSelvstendigNæringdrivendesInntektskompensasjon
+        FrilansereOgSelvstendigNæringdrivendesInntektskompensasjon
     )
 
     internal fun hentFor(søknadstype: Søknadstype) = when (søknadstype) {
