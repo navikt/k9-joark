@@ -12,15 +12,11 @@ import io.ktor.response.respond
 import io.ktor.routing.Route
 import io.ktor.routing.post
 import io.ktor.util.pipeline.PipelineContext
-import no.nav.helse.journalforing.gateway.JournalforingGateway
 import no.nav.helse.journalforing.v1.JournalforingV1Service
 import no.nav.helse.journalforing.v1.MeldingV1
 import no.nav.helse.journalforing.v1.MetadataV1
 import no.nav.helse.journalforing.v1.Søknadstype
-import org.slf4j.Logger
-import org.slf4j.LoggerFactory
 
-private val logger: Logger = LoggerFactory.getLogger(JournalforingGateway::class.java)
 fun Route.journalforingApis(
     journalforingV1Service: JournalforingV1Service
 ) {
@@ -36,12 +32,18 @@ fun Route.journalforingApis(
         journalfør(journalforingV1Service, melding, metadata)
     }
     post("/v1/omsorgspengeutbetaling/journalforing") {
-        if (call.request.gjelderFrilanserOgSelvstendigNæringsdrivende()) {
-            val melding = call.receive<MeldingV1>()
-            val metadata = MetadataV1(version = 1, correlationId = call.request.getCorrelationId(), requestId = call.response.getRequestId(), søknadstype = Søknadstype.OMSORGSPENGESØKNAD_UTBETALING_FRILANSER_SELVSTENDIG)
-            journalfør(journalforingV1Service, melding, metadata)
-        } else {
-            call.response.status(HttpStatusCode.NotFound)
+        when {
+            call.request.gjelderFrilanserOgSelvstendigNæringsdrivende() -> {
+                val melding = call.receive<MeldingV1>()
+                val metadata = MetadataV1(version = 1, correlationId = call.request.getCorrelationId(), requestId = call.response.getRequestId(), søknadstype = Søknadstype.OMSORGSPENGESØKNAD_UTBETALING_FRILANSER_SELVSTENDIG)
+                journalfør(journalforingV1Service, melding, metadata)
+            }
+            call.request.gjelderArbeidstaker() -> {
+                val melding = call.receive<MeldingV1>()
+                val metadata = MetadataV1(version = 1, correlationId = call.request.getCorrelationId(), requestId = call.response.getRequestId(), søknadstype = Søknadstype.OMSORGSPENGESØKNAD_UTBETALING_ARBEIDSTAKER)
+                journalfør(journalforingV1Service, melding, metadata)
+            }
+            else -> call.response.status(HttpStatusCode.NotFound)
         }
     }
     post("/v1/omsorgsdageroverforing/journalforing") {
@@ -54,11 +56,21 @@ fun Route.journalforingApis(
         val metadata = MetadataV1(version = 1, correlationId = call.request.getCorrelationId(), requestId = call.response.getRequestId(), søknadstype = Søknadstype.OPPLÆRINGSPENGESØKNAD)
         journalfør(journalforingV1Service, melding, metadata)
     }
+    post("/v1/frisinn/journalforing") {
+        val melding = call.receive<MeldingV1>()
+        val metadata = MetadataV1(version = 1, correlationId = call.request.getCorrelationId(), requestId = call.response.getRequestId(), søknadstype = Søknadstype.FRISINNSØKNAD)
+        journalfør(journalforingV1Service, melding, metadata)
+    }
 }
 
 private fun ApplicationRequest.gjelderFrilanserOgSelvstendigNæringsdrivende() : Boolean {
     val arbeidstyper = queryParameters.getAll("arbeidstype")?: emptyList()
     return arbeidstyper.size == 2 && arbeidstyper.contains("frilanser") && arbeidstyper.contains("selvstendig næringsdrivende")
+}
+
+private fun ApplicationRequest.gjelderArbeidstaker() : Boolean {
+    val arbeidstyper = queryParameters.getAll("arbeidstype")?: emptyList()
+    return arbeidstyper.size == 1 && arbeidstyper.contains("arbeidstaker")
 }
 
 private suspend fun PipelineContext<Unit, ApplicationCall>.journalfør(

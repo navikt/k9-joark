@@ -1,5 +1,7 @@
 package no.nav.helse
 
+import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.databind.PropertyNamingStrategy
 import io.ktor.application.Application
 import io.ktor.application.ApplicationCallPipeline
 import io.ktor.application.call
@@ -54,7 +56,7 @@ fun Application.k9Joark() {
 
     install(ContentNegotiation) {
         jackson {
-            dusseldorfConfigured()
+            k9JoarkConfigured()
         }
     }
 
@@ -140,3 +142,6 @@ private fun Map<Issuer, Set<ClaimRule>>.healthCheckMap(
     }
     return initial.toMap()
 }
+
+internal fun ObjectMapper.k9JoarkConfigured() = dusseldorfConfigured()
+    .setPropertyNamingStrategy(PropertyNamingStrategy.SNAKE_CASE)

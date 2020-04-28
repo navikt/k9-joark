@@ -9,31 +9,17 @@ private const val dokarkivBasePath = "/dokarkiv-mock"
 private const val dokarkivMottaInngaaendeForsendelsePath = "$dokarkivBasePath/rest/journalpostapi/v1/journalpost"
 private const val pleiepengerDokumentPath = "/pleiepenger-dokument-mock"
 
-internal fun stubMottaInngaaendeForsendelseOk() {
+internal fun WireMockServer.stubMottaInngaaendeForsendelseOk() : WireMockServer{
     WireMock.stubFor(
         WireMock.post(WireMock.urlMatching(".*$dokarkivMottaInngaaendeForsendelsePath"))
             .willReturn(
                 WireMock.aResponse()
                     .withStatus(200)
                     .withHeader("Content-Type", "application/json")
-                    .withBody("""       
-                            {
-                              "journalpostId": "466985833",
-                              "journalstatus": "M",
-                              "melding": null,
-                              "journalpostferdigstilt": false,
-                              "dokumenter": [
-                                {
-                                  "dokumentInfoId": "485201432"
-                                },
-                                {
-                                  "dokumentInfoId": "485201433"
-                                }
-                              ]
-                            }
-                        """.trimIndent())
+                    .withTransformers("dokarkiv")
             )
     )
+    return this
 }
 
 internal fun WireMockServer.stubDomotInngaaendeIsReady() : WireMockServer {

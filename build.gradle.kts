@@ -2,40 +2,40 @@ import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 val ktorVersion = ext.get("ktorVersion").toString()
-val dusseldorfKtorVersion = "1.3.2.4e29fb7"
+val dusseldorfKtorVersion = "1.3.2.fd9c1eb"
 val pdfBoxVersion = "2.0.19"
 val mainClass = "no.nav.helse.K9JoarkKt"
 
 plugins {
-    kotlin("jvm") version "1.3.70"
+    kotlin("jvm") version "1.3.72"
     id("com.github.johnrengelman.shadow") version "5.2.0"
 }
 
 buildscript {
-    apply("https://raw.githubusercontent.com/navikt/dusseldorf-ktor/4e29fb7f5f69ab1b8d998fc1f674085e2e01e7ad/gradle/dusseldorf-ktor.gradle.kts")
+    apply("https://raw.githubusercontent.com/navikt/dusseldorf-ktor/fd9c1eb344b39e5755493b8f478e804c2bae46de/gradle/dusseldorf-ktor.gradle.kts")
 }
 
 dependencies {
     // Server
-    compile ( "no.nav.helse:dusseldorf-ktor-core:$dusseldorfKtorVersion")
-    compile ( "no.nav.helse:dusseldorf-ktor-jackson:$dusseldorfKtorVersion")
-    compile ( "no.nav.helse:dusseldorf-ktor-metrics:$dusseldorfKtorVersion")
-    compile ( "no.nav.helse:dusseldorf-ktor-health:$dusseldorfKtorVersion")
-    compile ( "no.nav.helse:dusseldorf-ktor-auth:$dusseldorfKtorVersion")
+    implementation ( "no.nav.helse:dusseldorf-ktor-core:$dusseldorfKtorVersion")
+    implementation ( "no.nav.helse:dusseldorf-ktor-jackson:$dusseldorfKtorVersion")
+    implementation ( "no.nav.helse:dusseldorf-ktor-metrics:$dusseldorfKtorVersion")
+    implementation ( "no.nav.helse:dusseldorf-ktor-health:$dusseldorfKtorVersion")
+    implementation ( "no.nav.helse:dusseldorf-ktor-auth:$dusseldorfKtorVersion")
     
     // Client
-    compile ( "no.nav.helse:dusseldorf-ktor-client:$dusseldorfKtorVersion")
-    compile ( "no.nav.helse:dusseldorf-oauth2-client:$dusseldorfKtorVersion")
+    implementation ( "no.nav.helse:dusseldorf-ktor-client:$dusseldorfKtorVersion")
+    implementation ( "no.nav.helse:dusseldorf-oauth2-client:$dusseldorfKtorVersion")
 
     // Bilde til PNG
-    compile("org.apache.pdfbox:pdfbox:$pdfBoxVersion")
+    implementation("org.apache.pdfbox:pdfbox:$pdfBoxVersion")
 
     // Test
-    testCompile ( "no.nav.helse:dusseldorf-test-support:$dusseldorfKtorVersion")
-    testCompile ("io.ktor:ktor-server-test-host:$ktorVersion") {
+    testImplementation ( "no.nav.helse:dusseldorf-test-support:$dusseldorfKtorVersion")
+    testImplementation ("io.ktor:ktor-server-test-host:$ktorVersion") {
         exclude(group = "org.eclipse.jetty")
     }
-    testCompile ("org.skyscreamer:jsonassert:1.5.0")
+    testImplementation ("org.skyscreamer:jsonassert:1.5.0")
 }
 
 repositories {
@@ -81,5 +81,5 @@ tasks.withType<ShadowJar> {
 }
 
 tasks.withType<Wrapper> {
-    gradleVersion = "6.2.2"
+    gradleVersion = "6.3"
 }
