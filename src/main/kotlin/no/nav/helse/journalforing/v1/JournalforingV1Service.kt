@@ -1,5 +1,6 @@
 package no.nav.helse.journalforing.v1
 
+import net.logstash.logback.argument.StructuredArguments.keyValue
 import no.nav.helse.CorrelationId
 import no.nav.helse.dokument.Dokument
 import no.nav.helse.dokument.DokumentService
@@ -36,6 +37,10 @@ class JournalforingV1Service(
         validerMelding(melding)
 
         val aktoerId = AktoerId(melding.aktoerId)
+
+        if (melding.sokerNavn == null) {
+            logger.warn("Journalpost blir opprettet uten navn på søker.", keyValue("soknadtype", metaData.søknadstype.name))
+        }
 
         logger.trace("Journalfører for AktørID $aktoerId")
 
