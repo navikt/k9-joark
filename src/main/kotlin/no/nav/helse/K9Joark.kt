@@ -37,7 +37,6 @@ import no.nav.helse.journalforing.api.journalforingApis
 import no.nav.helse.journalforing.converter.Image2PDFConverter
 import no.nav.helse.journalforing.gateway.JournalforingGateway
 import no.nav.helse.journalforing.v1.JournalforingV1Service
-import java.net.URI
 
 fun main(args: Array<String>): Unit = io.ktor.server.netty.EngineMain.main(args)
 
@@ -85,9 +84,9 @@ fun Application.k9Joark() {
         journalforingGateway,
         dokumentGateway,
         HttpRequestHealthCheck(
-            urlConfigMap = issuers.healthCheckMap(mutableMapOf(
+            mapOf(
                 Url.buildURL(baseUrl = configuration.getDokarkivBaseUrl(), pathParts = listOf("isReady")) to HttpRequestHealthConfig(expectedStatus = HttpStatusCode.OK)
-            ))
+            )
         ))
     )
 
@@ -132,15 +131,6 @@ fun Application.k9Joark() {
         correlationIdAndRequestIdInMdc()
         logRequests()
     }
-}
-
-private fun Map<Issuer, Set<ClaimRule>>.healthCheckMap(
-    initial : MutableMap<URI, HttpRequestHealthConfig>
-) : Map<URI, HttpRequestHealthConfig> {
-    forEach { issuer, _ ->
-        initial[issuer.jwksUri()] = HttpRequestHealthConfig(expectedStatus = HttpStatusCode.OK, includeExpectedStatusEntity = false)
-    }
-    return initial.toMap()
 }
 
 internal fun ObjectMapper.k9JoarkConfigured() = dusseldorfConfigured()
