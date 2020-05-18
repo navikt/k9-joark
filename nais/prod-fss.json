@@ -1,0 +1,23 @@
+{
+  "app": "k9-joark",
+  "cluster": "prod-fss",
+  "namespace": "default",
+  "team": "dusseldorf",
+  "minReplicas": "2",
+  "maxReplicas": "2",
+  "ingresses": [
+    "https://k9-joark.nais.adeo.no"
+  ],
+  "env": {
+    "DOKARKIV_BASE_URL": "https://dokarkiv.nais.adeo.no",
+    "NAIS_STS_DISCOVERY_ENDPOINT": "https://security-token-service.nais.adeo.no/rest/v1/sts/.well-known/openid-configuration",
+    "AZURE_CLIENT_ID": "cb751642-883c-48d3-9f82-06cc72c3e4b9",
+    "AZURE_AUTHORIZED_CLIENTS": "84ef0905-64b3-440b-8f6a-0d88ef81a0f0,d2946143-0276-40ab-993e-4f29f3720d63,05c01005-6ee2-4d9d-9cd6-735c014071b6,c3ec240c-fee9-4491-b526-092ef288adcd,6a6fa1ee-57f4-4e3b-ac13-d7afc3148794,80aa7d3b-14e5-4aa4-983c-ec8fcd68f80e,b796ff55-b084-486f-bc5a-d3c3f3227266,07e3a062-451e-41ac-98b7-b0461f378f47",
+    "AZURE_V1_DISCOVERY_ENDPOINT": "https://login.microsoftonline.com/62366534-1ec3-4962-8869-9b5535279d0b/.well-known/openid-configuration",
+    "AZURE_V2_DISCOVERY_ENDPOINT": "https://login.microsoftonline.com/62366534-1ec3-4962-8869-9b5535279d0b/v2.0/.well-known/openid-configuration",
+    "HENTE_DOKUMENT_SCOPES": "0c5a6709-ba2a-42b7-bbfc-9b9f844e2ee2/.default"
+  },
+  "slack-channel": "sif-alerts",
+  "slack-notify-type": "<!channel> | k9-joark | ",
+  "app-alert-ingress": "https://k9-joark.nais.adeo.no"
+}

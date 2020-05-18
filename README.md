@@ -1,4 +1,6 @@
 # k9-joark
+![CI / CD](https://github.com/navikt/k9-joark/workflows/CI%20/%20CD/badge.svg)
+![NAIS Alerts](https://github.com/navikt/k9-joark/workflows/Alerts/badge.svg)
 
 Inneholder integrasjon mot joark for å opprette jornalpost i forbindelse med søknader for ytelsen i Kapittel 9 i folketrygdeloven.
 
@@ -44,6 +46,9 @@ Request ID blir ikke propagert videre, og skal ha sitt opphav hos konsumenten
 - Correlation ID må sendes som header 'X-Correlation-ID'
 - Request ID kan sendes som heder 'X-Request-ID'
 - Versjon på meldingen avledes fra pathen '/v1/{søknadsType}/journalforing' -> 1
+
+## Alarmer
+Vi bruker [nais-alerts](https://doc.nais.io/observability/alerts) for å sette opp alarmer. Disse finner man konfigurert i [nais/alerterator.yml](nais/alerterator.yml).
 
 ## Henvendelser
 Spørsmål knyttet til koden eller prosjektet kan stilles som issues her på GitHub.

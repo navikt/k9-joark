@@ -2,7 +2,7 @@ import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 val ktorVersion = ext.get("ktorVersion").toString()
-val dusseldorfKtorVersion = "1.3.2.5cf5feb"
+val dusseldorfKtorVersion = "1.3.2.9c88b78"
 val pdfBoxVersion = "2.0.19"
 val mainClass = "no.nav.helse.K9JoarkKt"
 
@@ -12,7 +12,7 @@ plugins {
 }
 
 buildscript {
-    apply("https://raw.githubusercontent.com/navikt/dusseldorf-ktor/5cf5febda3b632722fe523c5c586d8b6ece953d3/gradle/dusseldorf-ktor.gradle.kts")
+    apply("https://raw.githubusercontent.com/navikt/dusseldorf-ktor/9c88b788e57939fb6e3d18650393a7e9fb65960f/gradle/dusseldorf-ktor.gradle.kts")
 }
 
 dependencies {
