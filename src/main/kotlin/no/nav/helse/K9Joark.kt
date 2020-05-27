@@ -76,7 +76,7 @@ fun Application.k9Joark() {
     )
 
     val dokumentGateway = DokumentGateway(
-        accessTokenClient = accessTokenClientResolver.accessTokenClient(),
+        accessTokenClient = accessTokenClientResolver.k9Dokument(),
         henteDokumentScopes = configuration.getHenteDokumentScopes()
     )
 
