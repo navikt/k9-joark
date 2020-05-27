@@ -384,7 +384,7 @@ class K9JoarkTest {
         )
     }
 
-    private fun getDokumentUrl(dokumentId: String) = URI("${wireMockServer.getPleiepengerDokumentUrl()}/$dokumentId")
+    private fun getDokumentUrl(dokumentId: String) = URI("${wireMockServer.getK9DokumentUrl()}/$dokumentId")
 
     private fun requestAndAssert(
         request: MeldingV1,

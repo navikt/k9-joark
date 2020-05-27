@@ -7,7 +7,7 @@ import java.util.*
 
 private const val dokarkivBasePath = "/dokarkiv-mock"
 private const val dokarkivMottaInngaaendeForsendelsePath = "$dokarkivBasePath/rest/journalpostapi/v1/journalpost"
-private const val pleiepengerDokumentPath = "/pleiepenger-dokument-mock"
+private const val k9DokumentPath = "/k9-dokument-mock"
 
 internal fun WireMockServer.stubMottaInngaaendeForsendelseOk() : WireMockServer{
     WireMock.stubFor(
@@ -35,7 +35,7 @@ internal fun WireMockServer.stubDomotInngaaendeIsReady() : WireMockServer {
 internal fun WireMockServer.stubGetDokument() : WireMockServer {
     val content = Base64.getEncoder().encodeToString("iPhone_6.jpg".fromResources().readBytes())
     WireMock.stubFor(
-        WireMock.get(WireMock.urlPathMatching(".*$pleiepengerDokumentPath.*"))
+        WireMock.get(WireMock.urlPathMatching(".*$k9DokumentPath.*"))
             .willReturn(
                 WireMock.aResponse()
                     .withStatus(200)
@@ -58,7 +58,7 @@ internal fun stubGetDokumentJson(
 ) {
     val content = Base64.getEncoder().encodeToString("jwkset.json".fromResources().readBytes())
     WireMock.stubFor(
-        WireMock.get(WireMock.urlPathMatching(".*$pleiepengerDokumentPath.*/$dokumentId"))
+        WireMock.get(WireMock.urlPathMatching(".*$k9DokumentPath.*/$dokumentId"))
             .willReturn(
                 WireMock.aResponse()
                     .withStatus(200)
@@ -80,7 +80,7 @@ internal fun stubGetDokumentPdf(
 ) {
     val content = Base64.getEncoder().encodeToString("test.pdf".fromResources().readBytes())
     WireMock.stubFor(
-        WireMock.get(WireMock.urlPathMatching(".*$pleiepengerDokumentPath.*/$dokumentId"))
+        WireMock.get(WireMock.urlPathMatching(".*$k9DokumentPath.*/$dokumentId"))
             .willReturn(
                 WireMock.aResponse()
                     .withStatus(200)
@@ -99,4 +99,4 @@ internal fun stubGetDokumentPdf(
 
 
 internal fun WireMockServer.getDokarkivUrl() = baseUrl() + dokarkivBasePath
-internal fun WireMockServer.getPleiepengerDokumentUrl() = baseUrl() + pleiepengerDokumentPath
+internal fun WireMockServer.getK9DokumentUrl() = baseUrl() + k9DokumentPath

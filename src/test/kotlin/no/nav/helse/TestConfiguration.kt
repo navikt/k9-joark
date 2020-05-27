@@ -29,11 +29,11 @@ object TestConfiguration {
 
         wireMockServer?.apply {
             map["nav.auth.clients.1.alias"] = "azure-v2"
-            map["nav.auth.clients.1.client_id"] = "srvk9-joark"
+            map["nav.auth.clients.1.client_id"] = k9JoarkAzureClientId
             map["nav.auth.clients.1.private_key_jwk"] = ClientCredentials.ClientA.privateKeyJwk
             map["nav.auth.clients.1.certificate_hex_thumbprint"] = ClientCredentials.ClientA.certificateHexThumbprint
             map["nav.auth.clients.1.discovery_endpoint"] = wireMockServer.getAzureV2WellKnownUrl()
-            map["nav.auth.scopes.hente-dokument"] = "srvpleiepenger-dokument/.default"
+            map["nav.auth.scopes.hente-dokument"] = "k9-dokument/.default"
         }
 
         // Issuers
