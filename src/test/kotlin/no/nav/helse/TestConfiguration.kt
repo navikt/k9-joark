@@ -22,7 +22,7 @@ object TestConfiguration {
         // Clients
         wireMockServer?.apply {
             map["nav.auth.clients.0.alias"] = "nais-sts"
-            map["nav.auth.clients.0.client_id"] = "srvk9-joark"
+            map["nav.auth.clients.0.client_id"] = "srvpleiepenger-joark"
             map["nav.auth.clients.0.client_secret"] = "very-secret"
             map["nav.auth.clients.0.discovery_endpoint"] = wireMockServer.getNaisStsWellKnownUrl()
         }
