@@ -23,7 +23,7 @@ internal class AccessTokenClientResolver(
     }
 
     private val naisSts : AccessTokenClient
-    private val accessTokenClient : AccessTokenClient
+    private val azureV2 : AccessTokenClient
 
     init {
         val naisStsClient = naisStsClient()
@@ -34,18 +34,12 @@ internal class AccessTokenClientResolver(
         )
 
         val azureV2Client = azureV2Client()
-        accessTokenClient = if (azureV2Client == null) {
-            logger.info("Bruker Client[$NAIS_STS_ALIAS] ved kommunikasjon med k9-joark")
-            naisSts
-        } else {
-            logger.info("Bruker Client[$AZURE_V2_ALIAS] ved kommunikasjon med k9-joark")
-            SignedJwtAccessTokenClient(
-                clientId = azureV2Client.clientId(),
-                tokenEndpoint = azureV2Client.tokenEndpoint(),
-                privateKeyProvider = FromJwk(azureV2Client.privateKeyJwk),
-                keyIdProvider = FromCertificateHexThumbprint(azureV2Client.certificateHexThumbprint)
-            )
-        }
+        azureV2 = SignedJwtAccessTokenClient(
+            clientId = azureV2Client.clientId(),
+            tokenEndpoint = azureV2Client.tokenEndpoint(),
+            privateKeyProvider = FromJwk(azureV2Client.privateKeyJwk),
+            keyIdProvider = FromCertificateHexThumbprint(azureV2Client.certificateHexThumbprint)
+        )
     }
 
     private fun naisStsClient() : ClientSecretClient {
@@ -55,13 +49,13 @@ internal class AccessTokenClientResolver(
         return client as ClientSecretClient
     }
 
-    private fun azureV2Client() : PrivateKeyClient? {
+    private fun azureV2Client() : PrivateKeyClient {
         val client = clients.getOrElse(AZURE_V2_ALIAS) {
-            return null
+            throw IllegalStateException("Client[$AZURE_V2_ALIAS] må være satt opp.")
         }
         return client as PrivateKeyClient
     }
 
     internal fun joark() = naisSts
-    internal fun accessTokenClient() = accessTokenClient
+    internal fun k9Dokument() = azureV2
 }

@@ -47,15 +47,16 @@ class K9JoarkTest {
 
         private val objectMapper = jacksonObjectMapper().k9JoarkConfigured()
         private val authorizedAccessToken =
-            Azure.V1_0.generateJwt(clientId = "pleiepengesoknad-prosessering", audience = "k9-joark")
+            Azure.V1_0.generateJwt(
+                clientId = "hvilkem-som-helst-authorized-client-ia-aad-iac",
+                audience = "pleiepenger-joark"
+            )
 
         fun getConfig(): ApplicationConfig {
             val fileConfig = ConfigFactory.load()
             val testConfig = ConfigFactory.parseMap(
                 TestConfiguration.asMap(
-                    wireMockServer = wireMockServer,
-                    azureAuthorizedClients = setOf("pleiepengesoknad-prosessering"),
-                    pleiepengerJoarkAzureClientId = "k9-joark"
+                    wireMockServer = wireMockServer
                 )
             )
             val mergedConfig = testConfig.withFallback(fileConfig)
@@ -262,14 +263,18 @@ class K9JoarkTest {
             )
         )
 
-        requestAndAssert(
-            request = request,
-            expectedCode = HttpStatusCode.Forbidden,
-            accessToken = Azure.V1_0.generateJwt(
-                clientId = "pleiepengesoknad-prosessering",
-                audience = "feil-audience"
-            ),
-            expectedResponse = """
+        val feilAuidence = Azure.V2_0.generateJwt(
+            clientId = "hvilen-som-helst-app",
+            audience = "feil-audience"
+        )
+
+        val ikkeAuthorizedApplication = Azure.V2_0.generateJwt(
+            clientId = "hvilen-som-helst-app",
+            audience = "pleiepenger-joark",
+            accessAsApplication = false
+        )
+
+        val forventetResponse = """
             {
                 "type": "/problem-details/unauthorized",
                 "title": "unauthorized",
@@ -278,6 +283,19 @@ class K9JoarkTest {
                 "instance": "about:blank"
             }
             """.trimIndent()
+
+        requestAndAssert(
+            request = request,
+            expectedCode = HttpStatusCode.Forbidden,
+            accessToken = ikkeAuthorizedApplication,
+            expectedResponse = forventetResponse
+        )
+
+        requestAndAssert(
+            request = request,
+            expectedCode = HttpStatusCode.Forbidden,
+            accessToken = feilAuidence,
+            expectedResponse = forventetResponse
         )
     }
 
@@ -366,7 +384,7 @@ class K9JoarkTest {
         )
     }
 
-    private fun getDokumentUrl(dokumentId: String) = URI("${wireMockServer.getPleiepengerDokumentUrl()}/$dokumentId")
+    private fun getDokumentUrl(dokumentId: String) = URI("${wireMockServer.getK9DokumentUrl()}/$dokumentId")
 
     private fun requestAndAssert(
         request: MeldingV1,

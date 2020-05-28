@@ -6,9 +6,9 @@ import no.nav.helse.dusseldorf.testsupport.wiremock.WireMockBuilder
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
-class PleiepengerJoarkWithMocks {
+class K9JoarkWithMocks {
     companion object {
-        private val logger: Logger = LoggerFactory.getLogger(PleiepengerJoarkWithMocks::class.java)
+        private val logger: Logger = LoggerFactory.getLogger(K9JoarkWithMocks::class.java)
 
         @JvmStatic
         fun main(args: Array<String>) {
