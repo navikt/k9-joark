@@ -28,7 +28,7 @@ class JournalforingV1Service(
     suspend fun journalfor(
         melding: MeldingV1,
         metaData: MetadataV1
-    ): JournalPostId {
+    ): JournalføringsResponse {
 
         val correlationId = CorrelationId(metaData.correlationId)
 
@@ -77,7 +77,7 @@ class JournalforingV1Service(
         val response = journalforingGateway.jorunalfor(request)
 
         logger.info("JournalPost med ID ${response.journalpostId} opprettet")
-        return JournalPostId(response.journalpostId)
+        return JournalføringsResponse(response.journalpostId, response.dokumenter)
     }
 
     private fun validerMelding(melding: MeldingV1) {

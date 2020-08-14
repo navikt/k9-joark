@@ -12,6 +12,7 @@ import io.ktor.response.respond
 import io.ktor.routing.Route
 import io.ktor.routing.post
 import io.ktor.util.pipeline.PipelineContext
+import no.nav.helse.journalforing.gateway.DokumentInfo
 import no.nav.helse.journalforing.v1.JournalforingV1Service
 import no.nav.helse.journalforing.v1.MeldingV1
 import no.nav.helse.journalforing.v1.MetadataV1
@@ -78,8 +79,8 @@ private suspend fun PipelineContext<Unit, ApplicationCall>.journalfør(
     melding: MeldingV1,
     metadata: MetadataV1
 ) {
-    val journalPostId = journalforingV1Service.journalfor(melding = melding, metaData = metadata)
-    call.respond(HttpStatusCode.Created, JournalforingResponse(journalPostId = journalPostId.value))
+    val journalføringsResponse = journalforingV1Service.journalfor(melding = melding, metaData = metadata)
+    call.respond(HttpStatusCode.Created, JournalforingResponse(journalPostId = journalføringsResponse.journalpostId, dokumenter = journalføringsResponse.dokumenter))
 }
 
 private fun ApplicationRequest.getCorrelationId(): String {
@@ -90,4 +91,4 @@ private fun ApplicationResponse.getRequestId(): String? {
     return headers[HttpHeaders.XRequestId]
 }
 
-data class JournalforingResponse(val journalPostId: String)
+data class JournalforingResponse(val journalPostId: String, val dokumenter: List<DokumentInfo>)

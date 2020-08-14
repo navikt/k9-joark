@@ -127,6 +127,32 @@ class K9JoarkTest {
     }
 
     @Test
+    fun `journalført respons inneholder liste med dokumentinfo`() {
+        requestAndAssert(
+            request = meldingForJournalføring(),
+            expectedResponse =
+            //language=json
+            """
+                {
+                  "journal_post_id": "2",
+                  "dokumenter": [
+                    {
+                      "dokument_info_id": "485201432",
+                      "tittel": "Søknad om omsorgspenger - utvidet rett"
+                    },
+                    {
+                      "dokument_info_id": "485201433",
+                      "tittel": "legeerklæring"
+                    }
+          ]
+                }
+                """.trimIndent(),
+            expectedCode = HttpStatusCode.Created,
+            uri = "/v1/omsorgspenge/journalforing"
+        )
+    }
+
+    @Test
     fun `Journalpost for omsorgspengeutbetaling for frilansere og selvstendig næringsdrivende`() {
         requestAndAssert(
             request = meldingForJournalføring(),
@@ -417,7 +443,7 @@ class K9JoarkTest {
 
     private fun meldingForJournalføring(
         søkerNavn: Navn? = null
-    ) : MeldingV1 {
+    ): MeldingV1 {
         val jpegDokumentId = "1234" // Default mocket som JPEG
         val pdfDokumentId = "4567"
         stubGetDokumentPdf(pdfDokumentId)

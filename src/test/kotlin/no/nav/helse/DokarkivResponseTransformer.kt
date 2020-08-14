@@ -43,6 +43,7 @@ internal class DokarkivResponseTransformer : ResponseTransformer() {
 }
 
 private fun getResponse(journalpostId: String) =
+    //language=json
     """       
         {
           "journalpostId": "$journalpostId",
@@ -51,10 +52,12 @@ private fun getResponse(journalpostId: String) =
           "journalpostferdigstilt": false,
           "dokumenter": [
             {
-              "dokumentInfoId": "485201432"
+              "dokumentInfoId": "485201432",
+              "tittel": "Søknad om omsorgspenger - utvidet rett"
             },
             {
-              "dokumentInfoId": "485201433"
+              "dokumentInfoId": "485201433",
+              "tittel": "legeerklæring"
             }
           ]
         }
