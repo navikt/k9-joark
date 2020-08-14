@@ -111,7 +111,23 @@ class K9JoarkTest {
                     etternavn = "Sen"
                 )
             ),
-            expectedResponse = """{"journal_post_id":"1"}""".trimIndent(),
+            expectedResponse =
+            //language=json
+            """
+                {
+                  "journal_post_id": "1",
+                  "dokumenter": [
+                    {
+                      "dokument_info_id": "485201432",
+                      "tittel": "Søknad om omsorgspenger - utvidet rett"
+                    },
+                    {
+                      "dokument_info_id": "485201433",
+                      "tittel": "legeerklæring"
+                    }
+            ]
+                }
+                """.trimIndent(),
             expectedCode = HttpStatusCode.Created
         )
     }
@@ -120,7 +136,23 @@ class K9JoarkTest {
     fun `Journalpost for omsorgpengesøknad`() {
         requestAndAssert(
             request = meldingForJournalføring(),
-            expectedResponse = """{"journal_post_id":"2"}""".trimIndent(),
+            expectedResponse =
+            //language=json
+            """
+                {
+                  "journal_post_id": "2",
+                  "dokumenter": [
+                    {
+                      "dokument_info_id": "485201432",
+                      "tittel": "Søknad om omsorgspenger - utvidet rett"
+                    },
+                    {
+                      "dokument_info_id": "485201433",
+                      "tittel": "legeerklæring"
+                    }
+            ]
+                }
+                """.trimIndent(),
             expectedCode = HttpStatusCode.Created,
             uri = "/v1/omsorgspenge/journalforing"
         )
@@ -156,7 +188,23 @@ class K9JoarkTest {
     fun `Journalpost for omsorgspengeutbetaling for frilansere og selvstendig næringsdrivende`() {
         requestAndAssert(
             request = meldingForJournalføring(),
-            expectedResponse = """{"journal_post_id":"3"}""".trimIndent(),
+            expectedResponse =
+            //language=json
+            """
+                {
+                  "journal_post_id": "3",
+                  "dokumenter": [
+                    {
+                      "dokument_info_id": "485201432",
+                      "tittel": "Søknad om omsorgspenger - utvidet rett"
+                    },
+                    {
+                      "dokument_info_id": "485201433",
+                      "tittel": "legeerklæring"
+                    }
+            ]
+                }
+                """.trimIndent(),
             expectedCode = HttpStatusCode.Created,
             uri = "/v1/omsorgspengeutbetaling/journalforing?arbeidstype=frilanser&arbeidstype=selvstendig næringsdrivende"
         )
@@ -166,7 +214,23 @@ class K9JoarkTest {
     fun `Journalpost for omsorgpengesøknad for overføring av dager`() {
         requestAndAssert(
             request = meldingForJournalføring(),
-            expectedResponse = """{"journal_post_id":"5"}""".trimIndent(),
+            expectedResponse =
+            //language=json
+            """
+                {
+                  "journal_post_id": "5",
+                  "dokumenter": [
+                    {
+                      "dokument_info_id": "485201432",
+                      "tittel": "Søknad om omsorgspenger - utvidet rett"
+                    },
+                    {
+                      "dokument_info_id": "485201433",
+                      "tittel": "legeerklæring"
+                    }
+            ]
+                }
+                """.trimIndent(),
             expectedCode = HttpStatusCode.Created,
             uri = "/v1/omsorgsdageroverforing/journalforing"
         )
@@ -176,7 +240,23 @@ class K9JoarkTest {
     fun `Journalpost for omsorgspengeutbetaling for arbeidstakere`() {
         requestAndAssert(
             request = meldingForJournalføring(),
-            expectedResponse = """{"journal_post_id":"4"}""".trimIndent(),
+            expectedResponse =
+            //language=json
+            """
+                {
+                  "journal_post_id": "4",
+                  "dokumenter": [
+                    {
+                      "dokument_info_id": "485201432",
+                      "tittel": "Søknad om omsorgspenger - utvidet rett"
+                    },
+                    {
+                      "dokument_info_id": "485201433",
+                      "tittel": "legeerklæring"
+                    }
+            ]
+                }
+                """.trimIndent(),
             expectedCode = HttpStatusCode.Created,
             uri = "/v1/omsorgspengeutbetaling/journalforing?arbeidstype=arbeidstaker"
         )
@@ -186,7 +266,23 @@ class K9JoarkTest {
     fun `Journalpost for opplæringspengesøknad`() {
         requestAndAssert(
             request = meldingForJournalføring(),
-            expectedResponse = """{"journal_post_id":"6"}""".trimIndent(),
+            expectedResponse =
+            //language=json
+            """
+                {
+                  "journal_post_id": "6",
+                  "dokumenter": [
+                    {
+                      "dokument_info_id": "485201432",
+                      "tittel": "Søknad om omsorgspenger - utvidet rett"
+                    },
+                    {
+                      "dokument_info_id": "485201433",
+                      "tittel": "legeerklæring"
+                    }
+            ]
+                }
+                """.trimIndent(),
             expectedCode = HttpStatusCode.Created,
             uri = "/v1/opplæringspenge/journalforing"
         )
@@ -196,7 +292,23 @@ class K9JoarkTest {
     fun `Journalpost for frisinnsøknad`() {
         requestAndAssert(
             request = meldingForJournalføring(),
-            expectedResponse = """{"journal_post_id":"7"}""".trimIndent(),
+            expectedResponse =
+            //language=json
+            """
+                {
+                  "journal_post_id": "7",
+                  "dokumenter": [
+                    {
+                      "dokument_info_id": "485201432",
+                      "tittel": "Søknad om omsorgspenger - utvidet rett"
+                    },
+                    {
+                      "dokument_info_id": "485201433",
+                      "tittel": "legeerklæring"
+                    }
+            ]
+                }
+                """.trimIndent(),
             expectedCode = HttpStatusCode.Created,
             uri = "/v1/frisinn/journalforing"
         )
