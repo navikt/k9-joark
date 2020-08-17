@@ -12,5 +12,5 @@ data class JournalPostResponse(
 )
 data class DokumentInfo(
     val dokumentInfoId: String,
-    val tittel: String
+    val tittel: String? = null
 )

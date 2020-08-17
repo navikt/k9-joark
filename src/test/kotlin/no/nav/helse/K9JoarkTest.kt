@@ -123,7 +123,7 @@ class K9JoarkTest {
                     },
                     {
                       "dokument_info_id": "485201433",
-                      "tittel": "legeerklæring"
+                      "tittel": null
                     }
             ]
                 }
@@ -148,7 +148,7 @@ class K9JoarkTest {
                     },
                     {
                       "dokument_info_id": "485201433",
-                      "tittel": "legeerklæring"
+                      "tittel": null
                     }
             ]
                 }
@@ -174,7 +174,7 @@ class K9JoarkTest {
                     },
                     {
                       "dokument_info_id": "485201433",
-                      "tittel": "legeerklæring"
+                      "tittel": null
                     }
           ]
                 }
@@ -200,7 +200,7 @@ class K9JoarkTest {
                     },
                     {
                       "dokument_info_id": "485201433",
-                      "tittel": "legeerklæring"
+                      "tittel": null
                     }
             ]
                 }
@@ -226,7 +226,7 @@ class K9JoarkTest {
                     },
                     {
                       "dokument_info_id": "485201433",
-                      "tittel": "legeerklæring"
+                      "tittel": null
                     }
             ]
                 }
@@ -252,7 +252,7 @@ class K9JoarkTest {
                     },
                     {
                       "dokument_info_id": "485201433",
-                      "tittel": "legeerklæring"
+                      "tittel": null
                     }
             ]
                 }
@@ -278,7 +278,7 @@ class K9JoarkTest {
                     },
                     {
                       "dokument_info_id": "485201433",
-                      "tittel": "legeerklæring"
+                      "tittel": null
                     }
             ]
                 }
@@ -304,7 +304,7 @@ class K9JoarkTest {
                     },
                     {
                       "dokument_info_id": "485201433",
-                      "tittel": "legeerklæring"
+                      "tittel": null
                     }
             ]
                 }

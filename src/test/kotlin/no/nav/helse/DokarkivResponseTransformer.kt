@@ -57,7 +57,7 @@ private fun getResponse(journalpostId: String) =
             },
             {
               "dokumentInfoId": "485201433",
-              "tittel": "legeerklæring"
+              "tittel": null
             }
           ]
         }
