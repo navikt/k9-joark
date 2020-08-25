@@ -2,17 +2,18 @@ import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 val ktorVersion = ext.get("ktorVersion").toString()
-val dusseldorfKtorVersion = "1.3.2.315ec09"
-val pdfBoxVersion = "2.0.19"
+val dusseldorfKtorVersion = "1.4.0.df96151"
+val pdfBoxVersion = "2.0.21"
+val jsonassertVersion = "1.5.0"
 val mainClass = "no.nav.helse.K9JoarkKt"
 
 plugins {
-    kotlin("jvm") version "1.3.72"
-    id("com.github.johnrengelman.shadow") version "5.2.0"
+    kotlin("jvm") version "1.4.0"
+    id("com.github.johnrengelman.shadow") version "6.0.0"
 }
 
 buildscript {
-    apply("https://raw.githubusercontent.com/navikt/dusseldorf-ktor/315ec09dad3639f43b6d4b6c267e01037254873e/gradle/dusseldorf-ktor.gradle.kts")
+    apply("https://raw.githubusercontent.com/navikt/dusseldorf-ktor/df961510c11ea958fbe25c04e90fe2e15e296006/gradle/dusseldorf-ktor.gradle.kts")
 }
 
 dependencies {
@@ -35,7 +36,7 @@ dependencies {
     testImplementation ("io.ktor:ktor-server-test-host:$ktorVersion") {
         exclude(group = "org.eclipse.jetty")
     }
-    testImplementation ("org.skyscreamer:jsonassert:1.5.0")
+    testImplementation ("org.skyscreamer:jsonassert:$jsonassertVersion")
 }
 
 repositories {
@@ -81,5 +82,5 @@ tasks.withType<ShadowJar> {
 }
 
 tasks.withType<Wrapper> {
-    gradleVersion = "6.4.1"
+    gradleVersion = "6.6"
 }
