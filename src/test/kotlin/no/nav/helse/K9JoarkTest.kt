@@ -416,7 +416,7 @@ class K9JoarkTest {
 
     private fun meldingForJournalføring(
         søkerNavn: Navn? = null
-    ) : MeldingV1 {
+    ): MeldingV1 {
         val jpegDokumentId = "1234" // Default mocket som JPEG
         val pdfDokumentId = "4567"
         stubGetDokumentPdf(pdfDokumentId)
