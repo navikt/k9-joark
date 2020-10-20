@@ -3,7 +3,7 @@ package no.nav.helse.journalforing.v1
 import net.logstash.logback.argument.StructuredArguments.keyValue
 import no.nav.helse.CorrelationId
 import no.nav.helse.dokument.Dokument
-import no.nav.helse.dokument.DokumentService
+import no.nav.helse.dokument.K9DokumentService
 import no.nav.helse.dusseldorf.ktor.core.ParameterType
 import no.nav.helse.dusseldorf.ktor.core.Throwblem
 import no.nav.helse.dusseldorf.ktor.core.ValidationProblemDetails
@@ -23,7 +23,7 @@ private val ONLY_DIGITS = Regex("\\d+")
 
 class JournalforingV1Service(
     private val journalforingGateway: JournalforingGateway,
-    private val dokumentService: DokumentService
+    private val k9DokumentService: K9DokumentService
 ) {
     suspend fun journalfor(
         melding: MeldingV1,
@@ -48,7 +48,7 @@ class JournalforingV1Service(
         val alleDokumenter = mutableListOf<List<Dokument>>()
         melding.dokumenter.forEach {
             alleDokumenter.add(
-                dokumentService.hentDokumenter(
+                k9DokumentService.hentDokumenter(
                     urls = it,
                     correlationId = correlationId,
                     aktoerId = aktoerId

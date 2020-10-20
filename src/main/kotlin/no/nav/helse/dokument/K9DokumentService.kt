@@ -8,7 +8,7 @@ import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import java.net.URI
 
-private val logger: Logger = LoggerFactory.getLogger(DokumentService::class.java)
+private val logger: Logger = LoggerFactory.getLogger(K9DokumentService::class.java)
 
 private val dokumentContentTypeCounter = Counter.build()
     .name("dokument_content_type_counter")
@@ -16,7 +16,7 @@ private val dokumentContentTypeCounter = Counter.build()
     .help("Teller for dokumenttyper som journalføres.")
     .register()
 
-class DokumentService(
+class K9DokumentService(
     private val dokumentGateway: DokumentGateway,
     private val image2PDFConverter: Image2PDFConverter,
     private val contentTypeService: ContentTypeService

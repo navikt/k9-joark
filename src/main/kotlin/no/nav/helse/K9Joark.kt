@@ -21,7 +21,7 @@ import io.ktor.util.KtorExperimentalAPI
 import io.prometheus.client.hotspot.DefaultExports
 import no.nav.helse.dokument.ContentTypeService
 import no.nav.helse.dokument.DokumentGateway
-import no.nav.helse.dokument.DokumentService
+import no.nav.helse.dokument.K9DokumentService
 import no.nav.helse.dusseldorf.ktor.auth.*
 import no.nav.helse.dusseldorf.ktor.client.HttpRequestHealthCheck
 import no.nav.helse.dusseldorf.ktor.client.HttpRequestHealthConfig
@@ -98,7 +98,7 @@ fun Application.k9Joark() {
                 journalforingApis(
                     journalforingV1Service = JournalforingV1Service(
                         journalforingGateway = journalforingGateway,
-                        dokumentService = DokumentService(
+                        k9DokumentService = K9DokumentService(
                             dokumentGateway = dokumentGateway,
                             image2PDFConverter = Image2PDFConverter(),
                             contentTypeService = ContentTypeService()
