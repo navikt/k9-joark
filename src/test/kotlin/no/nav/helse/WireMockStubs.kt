@@ -8,6 +8,7 @@ import java.util.*
 private const val dokarkivBasePath = "/dokarkiv-mock"
 private const val dokarkivMottaInngaaendeForsendelsePath = "$dokarkivBasePath/rest/journalpostapi/v1/journalpost"
 private const val k9DokumentPath = "/k9-dokument-mock"
+private const val k9MellomlagringPath = "/k9-mellomlagring"
 
 internal fun WireMockServer.stubMottaInngaaendeForsendelseOk() : WireMockServer{
     WireMock.stubFor(
@@ -32,7 +33,7 @@ internal fun WireMockServer.stubDomotInngaaendeIsReady() : WireMockServer {
     return this
 }
 
-internal fun WireMockServer.stubGetDokument() : WireMockServer {
+internal fun WireMockServer.stubGetDokument(): WireMockServer {
     val content = Base64.getEncoder().encodeToString("iPhone_6.jpg".fromResources().readBytes())
     WireMock.stubFor(
         WireMock.get(WireMock.urlPathMatching(".*$k9DokumentPath.*"))
@@ -97,6 +98,77 @@ internal fun stubGetDokumentPdf(
     )
 }
 
+internal fun WireMockServer.stubGetDokumentFraK9Mellomlagring(eiersFødselsnummer: String): WireMockServer {
+    val content = Base64.getEncoder().encodeToString("iPhone_6.jpg".fromResources().readBytes())
+    WireMock.stubFor(
+        WireMock.post(WireMock.urlPathMatching(".*$k9MellomlagringPath.*"))
+            .willReturn(
+                WireMock.aResponse()
+                    .withStatus(200)
+                    .withHeader("Content-Type", "application/json")
+                    .withBody("""
+                            {
+                                "content": "$content",
+                                "content_type": "image/jpeg",
+                                "title": "Dette er en tittel",
+                                "eier": {
+                                    "eiers_fødselsnummer": "$eiersFødselsnummer"
+                                }
+                            }
+                        """.trimIndent()
+                    )
+            )
+    )
+    return this
+}
+
+internal fun stubGetDokumentJsonFraK9Mellomlagring(eiersFødselsnummer: String, dokumentId: String) {
+    val content = Base64.getEncoder().encodeToString("jwkset.json".fromResources().readBytes())
+    WireMock.stubFor(
+        WireMock.post(WireMock.urlPathMatching(".*$k9MellomlagringPath.*/$dokumentId"))
+            .willReturn(
+                WireMock.aResponse()
+                    .withStatus(200)
+                    .withHeader("Content-Type", "application/json")
+                    .withBody("""
+                            {
+                                "content": "$content",
+                                "content_type": "application/json",
+                                "title": "Dette er en tittel",
+                                "eier": {
+                                    "eiers_fødselsnummer": "$eiersFødselsnummer"
+                                }
+                            }
+                        """.trimIndent()
+                    )
+            )
+    )
+}
+
+internal fun stubGetDokumentPdfFraK9Mellomlagring(eiersFødselsnummer: String, dokumentId: String) {
+    val content = Base64.getEncoder().encodeToString("test.pdf".fromResources().readBytes())
+    WireMock.stubFor(
+        WireMock.post(WireMock.urlPathMatching(".*$k9MellomlagringPath.*/$dokumentId"))
+            .willReturn(
+                WireMock.aResponse()
+                    .withStatus(200)
+                    .withHeader("Content-Type", "application/json")
+                    .withBody("""
+                            {
+                                "content": "$content",
+                                "content_type": "application/pdf",
+                                "title": "Dette er en tittel",
+                                "eier": {
+                                    "eiers_fødselsnummer": "$eiersFødselsnummer"
+                                }
+                            }
+                        """.trimIndent()
+                    )
+            )
+    )
+}
+
 
 internal fun WireMockServer.getDokarkivUrl() = baseUrl() + dokarkivBasePath
 internal fun WireMockServer.getK9DokumentUrl() = baseUrl() + k9DokumentPath
+internal fun WireMockServer.getK9MellomlagringUrl() = baseUrl() + k9MellomlagringPath

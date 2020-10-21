@@ -5,6 +5,7 @@ import io.ktor.util.KtorExperimentalAPI
 import no.nav.helse.dusseldorf.ktor.auth.clients
 import no.nav.helse.dusseldorf.ktor.auth.issuers
 import no.nav.helse.dusseldorf.ktor.auth.withoutAdditionalClaimRules
+import no.nav.helse.dusseldorf.ktor.core.getOptionalString
 import no.nav.helse.dusseldorf.ktor.core.getRequiredList
 import no.nav.helse.dusseldorf.ktor.core.getRequiredString
 import java.net.URI
@@ -30,6 +31,11 @@ internal data class Configuration(private val config : ApplicationConfig) {
 
     internal fun getHenteDokumentScopes() : Set<String> {
         return if (azureClientConfigured()) config.getRequiredList("nav.auth.scopes.hente-dokument", secret = false, builder = { it }).toSet()
+        else setOf("openid")
+    }
+
+    internal fun getK9MellomlagringScopes() : Set<String> {
+        return if (azureClientConfigured()) config.getRequiredList("nav.auth.scopes.k9-mellomlagring-scope", secret = false, builder = { it }).toSet()
         else setOf("openid")
     }
 }

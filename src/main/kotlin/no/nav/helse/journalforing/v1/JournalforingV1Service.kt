@@ -3,7 +3,7 @@ package no.nav.helse.journalforing.v1
 import net.logstash.logback.argument.StructuredArguments.keyValue
 import no.nav.helse.CorrelationId
 import no.nav.helse.dokument.Dokument
-import no.nav.helse.dokument.K9DokumentService
+import no.nav.helse.dokument.DokumentService
 import no.nav.helse.dusseldorf.ktor.core.ParameterType
 import no.nav.helse.dusseldorf.ktor.core.Throwblem
 import no.nav.helse.dusseldorf.ktor.core.ValidationProblemDetails
@@ -23,7 +23,7 @@ private val ONLY_DIGITS = Regex("\\d+")
 
 class JournalforingV1Service(
     private val journalforingGateway: JournalforingGateway,
-    private val k9DokumentService: K9DokumentService
+    private val dokumentService: DokumentService
 ) {
     suspend fun journalfor(
         melding: MeldingV1,
@@ -37,6 +37,7 @@ class JournalforingV1Service(
         validerMelding(melding)
 
         val aktoerId = AktoerId(melding.aktoerId)
+        val fodselsnummer = Fodselsnummer(melding.norskIdent)
 
         if (melding.sokerNavn == null) {
             logger.warn("Journalpost blir opprettet uten navn på søker.", keyValue("soknadtype", metaData.søknadstype.name))
@@ -48,10 +49,11 @@ class JournalforingV1Service(
         val alleDokumenter = mutableListOf<List<Dokument>>()
         melding.dokumenter.forEach {
             alleDokumenter.add(
-                k9DokumentService.hentDokumenter(
+                dokumentService.hentDokumenter(
                     urls = it,
                     correlationId = correlationId,
-                    aktoerId = aktoerId
+                    aktoerId = aktoerId,
+                    fodselsnummer = fodselsnummer
                 )
             )
         }

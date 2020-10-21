@@ -2,13 +2,15 @@ package no.nav.helse.dokument
 
 import io.prometheus.client.Counter
 import no.nav.helse.CorrelationId
+import no.nav.helse.dokument.mellomlagring.K9MellomlagringGateway
 import no.nav.helse.journalforing.AktoerId
+import no.nav.helse.journalforing.Fodselsnummer
 import no.nav.helse.journalforing.converter.Image2PDFConverter
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import java.net.URI
 
-private val logger: Logger = LoggerFactory.getLogger(K9DokumentService::class.java)
+private val logger: Logger = LoggerFactory.getLogger(DokumentService::class.java)
 
 private val dokumentContentTypeCounter = Counter.build()
     .name("dokument_content_type_counter")
@@ -16,21 +18,34 @@ private val dokumentContentTypeCounter = Counter.build()
     .help("Teller for dokumenttyper som journalføres.")
     .register()
 
-class K9DokumentService(
+class DokumentService(
     private val dokumentGateway: DokumentGateway,
+    private val k9MellomlagringGateway: K9MellomlagringGateway,
     private val image2PDFConverter: Image2PDFConverter,
     private val contentTypeService: ContentTypeService
 ) {
 
-    suspend fun hentDokumenter(urls: List<URI>,
-                               aktoerId: AktoerId,
-                               correlationId: CorrelationId): List<Dokument> {
+    suspend fun hentDokumenter(
+        urls: List<URI>,
+        aktoerId: AktoerId?,
+        fodselsnummer: Fodselsnummer,
+        correlationId: CorrelationId
+    ): List<Dokument> {
         logger.trace("Henter ${urls.size} dokumenter.")
-        val alleDokumenter = dokumentGateway.hentDokumenter(
-            urls = urls,
-            aktoerId = aktoerId,
-            correlationId = correlationId
-        )
+
+        val erK9MellomlagringUrl = urls.erK9MellomlagringUrl()
+        val alleDokumenter = when (erK9MellomlagringUrl) {
+            true -> k9MellomlagringGateway.hentDokumenter(
+                urls = urls,
+                eiersFodselsnummer = fodselsnummer!!,
+                correlationId = correlationId
+            )
+            false -> dokumentGateway.hentDokumenter(
+                urls = urls,
+                aktoerId = aktoerId!!,
+                correlationId = correlationId
+            )
+        }
 
         alleDokumenter.tellContentType()
 
@@ -61,6 +76,8 @@ class K9DokumentService(
         return supporterteDokumenter
     }
 }
+
+private fun List<URI>.erK9MellomlagringUrl() = first().host == "k9-mellomlagring" || first().path.contains("k9-mellomlagring")
 
 private fun List<Dokument>.tellContentType() {
     forEach {

@@ -42,6 +42,7 @@ class K9JoarkTest {
             }
             .build()
             .stubGetDokument()
+            .stubGetDokumentFraK9Mellomlagring("12345678910")
             .stubDomotInngaaendeIsReady()
             .stubMottaInngaaendeForsendelseOk()
 
@@ -173,6 +174,22 @@ class K9JoarkTest {
             expectedResponse = """{"journal_post_id":"7"}""".trimIndent(),
             expectedCode = HttpStatusCode.Created,
             uri = "/v1/frisinn/journalforing"
+        )
+    }
+
+    @Test
+    fun `Journalpost for omsorgspenger - midlertidig alene`() {
+        requestAndAssert(
+            request = meldingForJournalføringMedDokumenterFraK9MellomLagring(
+                søkerNavn = Navn(
+                    fornavn = "Peie",
+                    mellomnavn = "penge",
+                    etternavn = "Sen"
+                ),
+                norskIdent = "12345678910"
+            ),
+            expectedResponse = """{"journal_post_id":"1"}""".trimIndent(),
+            expectedCode = HttpStatusCode.Created
         )
     }
 
@@ -384,6 +401,7 @@ class K9JoarkTest {
     }
 
     private fun getDokumentUrl(dokumentId: String) = URI("${wireMockServer.getK9DokumentUrl()}/$dokumentId")
+    private fun getK9MellomlagringDokumentUrl(dokumentId: String) = URI("${wireMockServer.getK9MellomlagringUrl()}/$dokumentId")
 
     private fun requestAndAssert(
         request: MeldingV1,
@@ -433,6 +451,33 @@ class K9JoarkTest {
                 ),
                 listOf(
                     getDokumentUrl(jpegDokumentId)
+                )
+            ),
+            aktoerId = "12345",
+            sokerNavn = søkerNavn
+        )
+    }
+
+    private fun meldingForJournalføringMedDokumenterFraK9MellomLagring(
+        søkerNavn: Navn? = null,
+        norskIdent: String
+    ): MeldingV1 {
+        val jpegDokumentId = "1234" // Default mocket som JPEG
+        val pdfDokumentId = "4567"
+        stubGetDokumentPdfFraK9Mellomlagring(norskIdent, pdfDokumentId)
+        val jsonDokumentId = "78910"
+        stubGetDokumentJsonFraK9Mellomlagring(norskIdent, jsonDokumentId)
+
+        return MeldingV1(
+            norskIdent = norskIdent,
+            mottatt = ZonedDateTime.now(),
+            dokumenter = listOf(
+                listOf(
+                    getK9MellomlagringDokumentUrl(pdfDokumentId),
+                    getK9MellomlagringDokumentUrl(jsonDokumentId)
+                ),
+                listOf(
+                    getK9MellomlagringDokumentUrl(jpegDokumentId)
                 )
             ),
             aktoerId = "12345",

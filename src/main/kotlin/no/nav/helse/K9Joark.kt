@@ -21,7 +21,8 @@ import io.ktor.util.KtorExperimentalAPI
 import io.prometheus.client.hotspot.DefaultExports
 import no.nav.helse.dokument.ContentTypeService
 import no.nav.helse.dokument.DokumentGateway
-import no.nav.helse.dokument.K9DokumentService
+import no.nav.helse.dokument.DokumentService
+import no.nav.helse.dokument.mellomlagring.K9MellomlagringGateway
 import no.nav.helse.dusseldorf.ktor.auth.*
 import no.nav.helse.dusseldorf.ktor.client.HttpRequestHealthCheck
 import no.nav.helse.dusseldorf.ktor.client.HttpRequestHealthConfig
@@ -80,9 +81,24 @@ fun Application.k9Joark() {
         henteDokumentScopes = configuration.getHenteDokumentScopes()
     )
 
+    val k9MellomLagringGateway = K9MellomlagringGateway(
+        accessTokenClient = accessTokenClientResolver.k9Dokument(),
+        k9MellomlagringScope = configuration.getK9MellomlagringScopes()
+    )
+
+    val contentTypeService = ContentTypeService()
+
+    val dokumentService = DokumentService(
+        dokumentGateway = dokumentGateway,
+        k9MellomlagringGateway = k9MellomLagringGateway,
+        image2PDFConverter = Image2PDFConverter(),
+        contentTypeService = contentTypeService
+    )
+
     val healthService = HealthService(setOf(
         journalforingGateway,
         dokumentGateway,
+        k9MellomLagringGateway,
         HttpRequestHealthCheck(
             mapOf(
                 Url.buildURL(baseUrl = configuration.getDokarkivBaseUrl(), pathParts = listOf("isReady")) to HttpRequestHealthConfig(expectedStatus = HttpStatusCode.OK)
@@ -98,11 +114,7 @@ fun Application.k9Joark() {
                 journalforingApis(
                     journalforingV1Service = JournalforingV1Service(
                         journalforingGateway = journalforingGateway,
-                        k9DokumentService = K9DokumentService(
-                            dokumentGateway = dokumentGateway,
-                            image2PDFConverter = Image2PDFConverter(),
-                            contentTypeService = ContentTypeService()
-                        )
+                        dokumentService = dokumentService
                     )
                 )
             }
