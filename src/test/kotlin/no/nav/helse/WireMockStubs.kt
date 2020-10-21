@@ -102,6 +102,7 @@ internal fun WireMockServer.stubGetDokumentFraK9Mellomlagring(eiersFødselsnumme
     val content = Base64.getEncoder().encodeToString("iPhone_6.jpg".fromResources().readBytes())
     WireMock.stubFor(
         WireMock.post(WireMock.urlPathMatching(".*$k9MellomlagringPath.*"))
+            .withRequestBody(WireMock.equalToJson("""{"eiers_fødselsnummer": "$eiersFødselsnummer"}""".trimIndent()))
             .willReturn(
                 WireMock.aResponse()
                     .withStatus(200)
@@ -126,6 +127,7 @@ internal fun stubGetDokumentJsonFraK9Mellomlagring(eiersFødselsnummer: String, 
     val content = Base64.getEncoder().encodeToString("jwkset.json".fromResources().readBytes())
     WireMock.stubFor(
         WireMock.post(WireMock.urlPathMatching(".*$k9MellomlagringPath.*/$dokumentId"))
+            .withRequestBody(WireMock.equalToJson("""{"eiers_fødselsnummer": "$eiersFødselsnummer"}""".trimIndent()))
             .willReturn(
                 WireMock.aResponse()
                     .withStatus(200)
@@ -149,6 +151,7 @@ internal fun stubGetDokumentPdfFraK9Mellomlagring(eiersFødselsnummer: String, d
     val content = Base64.getEncoder().encodeToString("test.pdf".fromResources().readBytes())
     WireMock.stubFor(
         WireMock.post(WireMock.urlPathMatching(".*$k9MellomlagringPath.*/$dokumentId"))
+            .withRequestBody(WireMock.equalToJson("""{"eiers_fødselsnummer": "$eiersFødselsnummer"}""".trimIndent()))
             .willReturn(
                 WireMock.aResponse()
                     .withStatus(200)
