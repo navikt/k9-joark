@@ -86,8 +86,7 @@ class DokumentService(
 
 private fun List<URI>.erK9MellomlagringUrl(): Boolean {
     val url = first()
-    logger.info("url.host = {}", url.host)
-    return url.host == "k9-mellomlagring" || url.path.contains("k9-mellomlagring")
+    return url.host.contains("k9-mellomlagring") || url.path.contains("k9-mellomlagring")
 }
 
 private fun List<Dokument>.tellContentType() {
