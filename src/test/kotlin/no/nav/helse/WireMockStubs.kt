@@ -1,5 +1,6 @@
 package no.nav.helse
 
+import com.github.kittinunf.fuel.core.Headers
 import com.github.tomakehurst.wiremock.WireMockServer
 import com.github.tomakehurst.wiremock.client.WireMock
 import no.nav.helse.dusseldorf.ktor.core.fromResources
@@ -103,6 +104,7 @@ internal fun WireMockServer.stubGetDokumentFraK9Mellomlagring(eiersFødselsnumme
     WireMock.stubFor(
         WireMock.post(WireMock.urlPathMatching(".*$k9MellomlagringPath.*"))
             .withRequestBody(WireMock.equalToJson("""{"eiers_fødselsnummer": "$eiersFødselsnummer"}""".trimIndent()))
+            .withHeader(Headers.CONTENT_TYPE, WireMock.equalTo("application/json"))
             .willReturn(
                 WireMock.aResponse()
                     .withStatus(200)
@@ -128,6 +130,7 @@ internal fun stubGetDokumentJsonFraK9Mellomlagring(eiersFødselsnummer: String, 
     WireMock.stubFor(
         WireMock.post(WireMock.urlPathMatching(".*$k9MellomlagringPath.*/$dokumentId"))
             .withRequestBody(WireMock.equalToJson("""{"eiers_fødselsnummer": "$eiersFødselsnummer"}""".trimIndent()))
+            .withHeader(Headers.CONTENT_TYPE, WireMock.equalTo("application/json"))
             .willReturn(
                 WireMock.aResponse()
                     .withStatus(200)
@@ -152,6 +155,7 @@ internal fun stubGetDokumentPdfFraK9Mellomlagring(eiersFødselsnummer: String, d
     WireMock.stubFor(
         WireMock.post(WireMock.urlPathMatching(".*$k9MellomlagringPath.*/$dokumentId"))
             .withRequestBody(WireMock.equalToJson("""{"eiers_fødselsnummer": "$eiersFødselsnummer"}""".trimIndent()))
+            .withHeader(Headers.CONTENT_TYPE, WireMock.equalTo("application/json"))
             .willReturn(
                 WireMock.aResponse()
                     .withStatus(200)

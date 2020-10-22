@@ -93,6 +93,7 @@ class K9MellomlagringGateway(
             .timeoutRead(20_000)
             .body(contentStream)
             .header(
+                Headers.CONTENT_TYPE to "application/json",
                 Headers.ACCEPT to "application/json",
                 Headers.AUTHORIZATION to authorizationHeader,
                 HttpHeaders.XCorrelationId to correlationId.id
