@@ -36,14 +36,12 @@ class JournalforingV1Service(
 
         validerMelding(melding)
 
-        val aktoerId = AktoerId(melding.aktoerId)
+
         val fodselsnummer = Fodselsnummer(melding.norskIdent)
 
         if (melding.sokerNavn == null) {
             logger.warn("Journalpost blir opprettet uten navn på søker.", keyValue("soknadtype", metaData.søknadstype.name))
         }
-
-        logger.trace("Journalfører for AktørID $aktoerId")
 
         logger.trace("Henter dokumenter")
         val alleDokumenter = mutableListOf<List<Dokument>>()
@@ -52,7 +50,7 @@ class JournalforingV1Service(
                 dokumentService.hentDokumenter(
                     urls = it,
                     correlationId = correlationId,
-                    aktoerId = aktoerId,
+                    aktoerId = melding.aktoerId,
                     fodselsnummer = fodselsnummer
                 )
             )
@@ -108,7 +106,7 @@ class JournalforingV1Service(
             }
         }
 
-        if (!melding.aktoerId.matches(ONLY_DIGITS)) {
+        if (melding.aktoerId != null && !melding.aktoerId.matches(ONLY_DIGITS)) {
             violations.add(
                 Violation(
                     parameterName = "aktoer_id",

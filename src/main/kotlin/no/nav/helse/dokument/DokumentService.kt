@@ -27,28 +27,26 @@ class DokumentService(
 
     suspend fun hentDokumenter(
         urls: List<URI>,
-        aktoerId: AktoerId?,
+        aktoerId: String?,
         fodselsnummer: Fodselsnummer,
         correlationId: CorrelationId
     ): List<Dokument> {
         logger.trace("Henter ${urls.size} dokumenter.")
 
-        val erK9MellomlagringUrl = urls.erK9MellomlagringUrl()
-
-        val alleDokumenter = when (erK9MellomlagringUrl) {
-            true -> {
+        val alleDokumenter = when(aktoerId) {
+            null -> {
                 logger.info("Henter dokumenter fra k9-mellomlagring")
                 k9MellomlagringGateway.hentDokumenter(
                     urls = urls,
-                    eiersFodselsnummer = fodselsnummer!!,
+                    eiersFodselsnummer = fodselsnummer,
                     correlationId = correlationId
                 )
             }
-            false -> {
+            else -> {
                 logger.info("Henter dokumenter fra k9-dokument")
                 dokumentGateway.hentDokumenter(
                     urls = urls,
-                    aktoerId = aktoerId!!,
+                    aktoerId = AktoerId(aktoerId),
                     correlationId = correlationId
                 )
             }
@@ -82,11 +80,6 @@ class DokumentService(
         logger.trace("Endringer fra bilde til PDF gjennomført.")
         return supporterteDokumenter
     }
-}
-
-private fun List<URI>.erK9MellomlagringUrl(): Boolean {
-    val url = first()
-    return url.host.contains("k9-mellomlagring") || url.path.contains("k9-mellomlagring")
 }
 
 private fun List<Dokument>.tellContentType() {

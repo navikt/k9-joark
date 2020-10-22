@@ -460,7 +460,7 @@ class K9JoarkTest {
 
     private fun meldingForJournalføringMedDokumenterFraK9MellomLagring(
         søkerNavn: Navn? = null,
-        norskIdent: String
+        norskIdent: String,
     ): MeldingV1 {
         val jpegDokumentId = "1234" // Default mocket som JPEG
         val pdfDokumentId = "4567"
@@ -480,7 +480,6 @@ class K9JoarkTest {
                     getK9MellomlagringDokumentUrl(jpegDokumentId)
                 )
             ),
-            aktoerId = "12345",
             sokerNavn = søkerNavn
         )
     }
