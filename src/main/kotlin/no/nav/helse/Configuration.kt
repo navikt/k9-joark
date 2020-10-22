@@ -37,7 +37,7 @@ internal data class Configuration(private val config : ApplicationConfig) {
     internal fun getOppretteJournalpostScopes() = config.getRequiredList("nav.auth.scopes.opprette-journalpost", secret = false, builder = { it }).toSet()
 
     internal fun getHenteDokumentScopes() : Set<String> {
-        return config.getRequiredList("nav.auth.scopes.hente-dokument", secret = false, builder = { it }).toSet()
+        return config.getRequiredList("nav.auth.scopes.k9-dokument-scope", secret = false, builder = { it }).toSet()
     }
 
     internal fun getK9MellomlagringScopes() : Set<String> {
