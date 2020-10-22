@@ -34,17 +34,24 @@ class DokumentService(
         logger.trace("Henter ${urls.size} dokumenter.")
 
         val erK9MellomlagringUrl = urls.erK9MellomlagringUrl()
+
         val alleDokumenter = when (erK9MellomlagringUrl) {
-            true -> k9MellomlagringGateway.hentDokumenter(
-                urls = urls,
-                eiersFodselsnummer = fodselsnummer!!,
-                correlationId = correlationId
-            )
-            false -> dokumentGateway.hentDokumenter(
-                urls = urls,
-                aktoerId = aktoerId!!,
-                correlationId = correlationId
-            )
+            true -> {
+                logger.info("Henter dokumenter fra k9-mellomlagring")
+                k9MellomlagringGateway.hentDokumenter(
+                    urls = urls,
+                    eiersFodselsnummer = fodselsnummer!!,
+                    correlationId = correlationId
+                )
+            }
+            false -> {
+                logger.info("Henter dokumenter fra k9-dokument")
+                dokumentGateway.hentDokumenter(
+                    urls = urls,
+                    aktoerId = aktoerId!!,
+                    correlationId = correlationId
+                )
+            }
         }
 
         alleDokumenter.tellContentType()
@@ -77,7 +84,11 @@ class DokumentService(
     }
 }
 
-private fun List<URI>.erK9MellomlagringUrl() = first().host == "k9-mellomlagring" || first().path.contains("k9-mellomlagring")
+private fun List<URI>.erK9MellomlagringUrl(): Boolean {
+    val url = first()
+    logger.info("url.host = {}", url.host)
+    return url.host == "k9-mellomlagring" || url.path.contains("k9-mellomlagring")
+}
 
 private fun List<Dokument>.tellContentType() {
     forEach {
