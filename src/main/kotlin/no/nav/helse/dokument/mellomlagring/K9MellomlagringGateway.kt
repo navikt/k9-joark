@@ -41,8 +41,8 @@ class K9MellomlagringGateway(
 
     private companion object {
         private val logger: Logger = LoggerFactory.getLogger(K9MellomlagringGateway::class.java)
-        private const val HENTE_DOKUMENT_OPERATION = "hente-dokument"
-        private const val HENTE_ALLE_DOKUMENTER_OPERATION = "hente-alle-dokumenter"
+        private const val HENTE_DOKUMENT_OPERATION = "hente-dokument-fra-k9-mellomlagring"
+        private const val HENTE_ALLE_DOKUMENTER_OPERATION = "hente-alle-dokumenter-fra-k9-mellomlagring"
     }
 
     override suspend fun check(): Result {
