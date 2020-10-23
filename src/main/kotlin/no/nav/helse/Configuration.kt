@@ -1,7 +1,8 @@
 package no.nav.helse
 
-import io.ktor.config.ApplicationConfig
-import io.ktor.util.KtorExperimentalAPI
+import io.ktor.config.*
+import io.ktor.util.*
+import no.nav.helse.dusseldorf.ktor.auth.Client
 import no.nav.helse.dusseldorf.ktor.auth.clients
 import no.nav.helse.dusseldorf.ktor.auth.issuers
 import no.nav.helse.dusseldorf.ktor.auth.withoutAdditionalClaimRules
@@ -11,12 +12,17 @@ import java.net.URI
 
 @KtorExperimentalAPI
 internal data class Configuration(private val config : ApplicationConfig) {
+    private val clients: Map<String, Client>
+
     companion object {
         internal const val NAIS_STS_ALIAS = "nais-sts"
         internal const val AZURE_V2_ALIAS = "azure-v2"
     }
 
-    private val clients = config.clients()
+    init {
+        clients = config.clients()
+        ensureAzureClientConfigured()
+    }
 
     internal fun getDokarkivBaseUrl() = URI(config.getRequiredString("nav.dokarkiv_base_url", secret = false))
 
@@ -24,12 +30,17 @@ internal data class Configuration(private val config : ApplicationConfig) {
 
     internal fun clients() = clients
 
-    private fun azureClientConfigured() = clients().containsKey(AZURE_V2_ALIAS)
+    private fun ensureAzureClientConfigured() {
+        if(!clients().containsKey(AZURE_V2_ALIAS)) throw IllegalStateException("Azure client må være konfigurert.")
+    }
 
     internal fun getOppretteJournalpostScopes() = config.getRequiredList("nav.auth.scopes.opprette-journalpost", secret = false, builder = { it }).toSet()
 
     internal fun getHenteDokumentScopes() : Set<String> {
-        return if (azureClientConfigured()) config.getRequiredList("nav.auth.scopes.hente-dokument", secret = false, builder = { it }).toSet()
-        else setOf("openid")
+        return config.getRequiredList("nav.auth.scopes.k9-dokument-scope", secret = false, builder = { it }).toSet()
+    }
+
+    internal fun getK9MellomlagringScopes() : Set<String> {
+        return config.getRequiredList("nav.auth.scopes.k9-mellomlagring-scope", secret = false, builder = { it }).toSet()
     }
 }

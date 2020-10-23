@@ -2,7 +2,9 @@ package no.nav.helse.dokument
 
 import io.prometheus.client.Counter
 import no.nav.helse.CorrelationId
+import no.nav.helse.dokument.mellomlagring.K9MellomlagringGateway
 import no.nav.helse.journalforing.AktoerId
+import no.nav.helse.journalforing.Fodselsnummer
 import no.nav.helse.journalforing.converter.Image2PDFConverter
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
@@ -18,19 +20,37 @@ private val dokumentContentTypeCounter = Counter.build()
 
 class DokumentService(
     private val dokumentGateway: DokumentGateway,
+    private val k9MellomlagringGateway: K9MellomlagringGateway,
     private val image2PDFConverter: Image2PDFConverter,
     private val contentTypeService: ContentTypeService
 ) {
 
-    suspend fun hentDokumenter(urls: List<URI>,
-                               aktoerId: AktoerId,
-                               correlationId: CorrelationId): List<Dokument> {
+    suspend fun hentDokumenter(
+        urls: List<URI>,
+        aktoerId: String?,
+        fodselsnummer: Fodselsnummer,
+        correlationId: CorrelationId
+    ): List<Dokument> {
         logger.trace("Henter ${urls.size} dokumenter.")
-        val alleDokumenter = dokumentGateway.hentDokumenter(
-            urls = urls,
-            aktoerId = aktoerId,
-            correlationId = correlationId
-        )
+
+        val alleDokumenter = when(aktoerId) {
+            null -> {
+                logger.info("Henter dokumenter fra k9-mellomlagring")
+                k9MellomlagringGateway.hentDokumenter(
+                    urls = urls,
+                    eiersFodselsnummer = fodselsnummer,
+                    correlationId = correlationId
+                )
+            }
+            else -> {
+                logger.info("Henter dokumenter fra k9-dokument")
+                dokumentGateway.hentDokumenter(
+                    urls = urls,
+                    aktoerId = AktoerId(aktoerId),
+                    correlationId = correlationId
+                )
+            }
+        }
 
         alleDokumenter.tellContentType()
 
