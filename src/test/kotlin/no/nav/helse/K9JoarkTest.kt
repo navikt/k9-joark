@@ -190,7 +190,7 @@ class K9JoarkTest {
             ),
             expectedResponse = """{"journal_post_id":"8"}""".trimIndent(),
             expectedCode = HttpStatusCode.Created,
-            uri = "/v1/omsorgspengemidlertidigalene/journalforing"
+            uri = "/v1/omsorgspenger/midlertidig-alene/journalforing"
         )
     }
 
