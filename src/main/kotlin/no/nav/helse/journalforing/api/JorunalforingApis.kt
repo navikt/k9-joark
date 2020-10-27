@@ -61,6 +61,11 @@ fun Route.journalforingApis(
         val metadata = MetadataV1(version = 1, correlationId = call.request.getCorrelationId(), requestId = call.response.getRequestId(), søknadstype = Søknadstype.FRISINNSØKNAD)
         journalfør(journalforingV1Service, melding, metadata)
     }
+    post("/v1/omsorgspenger/midlertidig-alene/journalforing") {
+        val melding = call.receive<MeldingV1>()
+        val metadata = MetadataV1(version = 1, correlationId = call.request.getCorrelationId(), requestId = call.response.getRequestId(), søknadstype = Søknadstype.OMSORGSPENGESØKNAD_MIDLERTIDIG_ALENE)
+        journalfør(journalforingV1Service, melding, metadata)
+    }
 }
 
 private fun ApplicationRequest.gjelderFrilanserOgSelvstendigNæringsdrivende() : Boolean {

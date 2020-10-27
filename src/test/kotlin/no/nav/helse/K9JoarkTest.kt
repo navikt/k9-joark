@@ -188,8 +188,9 @@ class K9JoarkTest {
                 ),
                 norskIdent = "12345678910"
             ),
-            expectedResponse = """{"journal_post_id":"1"}""".trimIndent(),
-            expectedCode = HttpStatusCode.Created
+            expectedResponse = """{"journal_post_id":"8"}""".trimIndent(),
+            expectedCode = HttpStatusCode.Created,
+            uri = "/v1/omsorgspenger/midlertidig-alene/journalforing"
         )
     }
 
