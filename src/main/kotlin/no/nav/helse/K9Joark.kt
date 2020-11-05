@@ -114,8 +114,9 @@ fun Application.k9Joark() {
                 journalforingApis(
                     journalforingV1Service = JournalforingV1Service(
                         journalforingGateway = journalforingGateway,
-                        dokumentService = dokumentService
-                    )
+                        dokumentService = dokumentService,
+                    ),
+                    serviceUnavailable = configuration.serviceUnavailable()
                 )
             }
         }

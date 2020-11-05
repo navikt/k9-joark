@@ -24,6 +24,8 @@ internal data class Configuration(private val config : ApplicationConfig) {
         ensureAzureClientConfigured()
     }
 
+    internal fun serviceUnavailable() = config.getRequiredString("nav.service_unavailable", secret = false) == "true"
+
     internal fun getDokarkivBaseUrl() = URI(config.getRequiredString("nav.dokarkiv_base_url", secret = false))
 
     internal fun issuers() = config.issuers().withoutAdditionalClaimRules()
