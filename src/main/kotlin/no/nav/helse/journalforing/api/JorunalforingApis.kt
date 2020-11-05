@@ -22,19 +22,19 @@ import org.slf4j.LoggerFactory
 private val logger: Logger = LoggerFactory.getLogger("no.nav.journalforingApis")
 
 fun Route.journalforingApis(
-    journalforingV1Service: JournalforingV1Service,
-    serviceUnavailable: Boolean) {
+    journalforingV1Service: JournalforingV1Service) {
+    val enabled = Søknadstype.enabled()
 
     suspend fun PipelineContext<Unit, ApplicationCall>.journalfør(
         melding: MeldingV1,
-        metadata: MetadataV1) = when (serviceUnavailable) {
+        metadata: MetadataV1) = when (enabled.getValue(metadata.søknadstype)) {
         true -> {
-            logger.warn("Opprettelse av journalposter er midlertidig skrudd av.")
-            call.respond(HttpStatusCode.ServiceUnavailable)
-        }
-        false -> {
             val journalPostId = journalforingV1Service.journalfor(melding = melding, metaData = metadata)
             call.respond(HttpStatusCode.Created, JournalforingResponse(journalPostId = journalPostId.value))
+        }
+        false -> {
+            logger.warn("Opprettelse av journalpost for ${metadata.søknadstype.name} er skrudd av.")
+            call.respond(HttpStatusCode.ServiceUnavailable)
         }
     }
 
