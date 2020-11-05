@@ -23,11 +23,13 @@ private val logger: Logger = LoggerFactory.getLogger("no.nav.journalforingApis")
 
 fun Route.journalforingApis(
     journalforingV1Service: JournalforingV1Service) {
-    val enabled = Søknadstype.enabled()
+    val isEnabled = Søknadstype.enabled().also { it.forEach { (søknadstype, enabled) ->
+        logger.info("Enabled[${søknadstype.name}]=$enabled")
+    }}
 
     suspend fun PipelineContext<Unit, ApplicationCall>.journalfør(
         melding: MeldingV1,
-        metadata: MetadataV1) = when (enabled.getValue(metadata.søknadstype)) {
+        metadata: MetadataV1) = when (isEnabled.getValue(metadata.søknadstype)) {
         true -> {
             val journalPostId = journalforingV1Service.journalfor(melding = melding, metaData = metadata)
             call.respond(HttpStatusCode.Created, JournalforingResponse(journalPostId = journalPostId.value))
