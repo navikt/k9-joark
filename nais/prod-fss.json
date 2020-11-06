@@ -20,8 +20,7 @@
     "ENABLE_OMSORGSPENGESKNAD_UTBETALING_ARBEIDSTAKER": "false",
     "ENABLE_OMSORGSPENGESKNAD_OVERFRING_AV_DAGER": "false",
     "ENABLE_OMSORGSPENGESKNAD_MIDLERTIDIG_ALENE": "false",
-    "ENABLE_OPPLRINGSPENGESKNAD": "false",
-    "ENABLE_FRISINNSKNAD": "false"
+    "ENABLE_OPPLRINGSPENGESKNAD": "false"
   },
   "slack-channel": "sif-alerts",
   "slack-notify-type": "<!channel> | k9-joark | ",
