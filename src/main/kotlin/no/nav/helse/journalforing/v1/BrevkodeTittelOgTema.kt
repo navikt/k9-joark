@@ -38,7 +38,7 @@ internal object BrevkodeTittelOgTema {
     )
 
     private val OMSORGSPENGER_DELING_AV_DAGER = Triple(
-        BrevKode(brevKode = "NAV 09-06.08", dokumentKategori = "SOK"),
+        BrevKode(brevKode = "NAV 09-06.08 - DIGITAL", dokumentKategori = "SOK"),
         "Melding om deling av omsorgsdager - NAV 09-06.08",
         Kapittel9Ytelse
     )
