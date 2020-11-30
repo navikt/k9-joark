@@ -44,7 +44,7 @@ internal object BrevkodeTittelOgTema {
     )
 
     private val OMSORGSPENGER_MIDLERTIDIG_ALENE = Triple(
-        BrevKode(brevKode = "NAV 09-06.07", dokumentKategori = "SOK"),
+        BrevKode(brevKode = "NAV 09-06.07 - DIGITAL", dokumentKategori = "SOK"),
         "Søknad om å bli regnet som alene  - NAV 09-06.07",
         Kapittel9Ytelse
     )
