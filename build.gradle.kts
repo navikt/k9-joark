@@ -2,18 +2,18 @@ import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 val ktorVersion = ext.get("ktorVersion").toString()
-val dusseldorfKtorVersion = "1.4.1.7d8c082"
-val pdfBoxVersion = "2.0.21"
+val dusseldorfKtorVersion = "1.5.0.ae98b7c"
+val pdfBoxVersion = "2.0.22"
 val jsonassertVersion = "1.5.0"
 val mainClass = "no.nav.helse.K9JoarkKt"
 
 plugins {
-    kotlin("jvm") version "1.4.10"
+    kotlin("jvm") version "1.4.21"
     id("com.github.johnrengelman.shadow") version "6.1.0"
 }
 
 buildscript {
-    apply("https://raw.githubusercontent.com/navikt/dusseldorf-ktor/7d8c082e3fe5f0517f11498a6ab99cc80c9404a4/gradle/dusseldorf-ktor.gradle.kts")
+    apply("https://raw.githubusercontent.com/navikt/dusseldorf-ktor/ae98b7cfa4b75bf15d8d5bb5a7e19a7432b69c47/gradle/dusseldorf-ktor.gradle.kts")
 }
 
 dependencies {
@@ -66,7 +66,7 @@ java {
 
 
 tasks.withType<KotlinCompile> {
-    kotlinOptions.jvmTarget = "1.8"
+    kotlinOptions.jvmTarget = "11"
 }
 
 tasks.withType<ShadowJar> {
