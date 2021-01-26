@@ -3,7 +3,7 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 val ktorVersion = ext.get("ktorVersion").toString()
 val dusseldorfKtorVersion = "1.4.1.7d8c082"
-val pdfBoxVersion = "2.0.21"
+val pdfBoxVersion = "2.0.22"
 val jsonassertVersion = "1.5.0"
 val mainClass = "no.nav.helse.K9JoarkKt"
 
