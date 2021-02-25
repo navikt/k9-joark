@@ -118,12 +118,38 @@ class K9JoarkTest {
     }
 
     @Test
+    fun `Journalpost for pleiepengesøknad ettersending`() {
+        requestAndAssert(
+            request = meldingForJournalføring(
+                søkerNavn = Navn(
+                    fornavn = "Peie",
+                    mellomnavn = "penge",
+                    etternavn = "Sen"
+                )
+            ),
+            expectedResponse = """{"journal_post_id":"9"}""".trimIndent(),
+            expectedCode = HttpStatusCode.Created,
+            uri = "/v1/pleiepenge/ettersending/journalforing"
+        )
+    }
+
+    @Test
     fun `Journalpost for omsorgpengesøknad`() {
         requestAndAssert(
             request = meldingForJournalføring(),
             expectedResponse = """{"journal_post_id":"2"}""".trimIndent(),
             expectedCode = HttpStatusCode.Created,
             uri = "/v1/omsorgspenge/journalforing"
+        )
+    }
+
+    @Test
+    fun `Journalpost for omsorgpengesøknad ettersending`() {
+        requestAndAssert(
+            request = meldingForJournalføring(),
+            expectedResponse = """{"journal_post_id":"10"}""".trimIndent(),
+            expectedCode = HttpStatusCode.Created,
+            uri = "/v1/omsorgspenge/ettersending/journalforing"
         )
     }
 

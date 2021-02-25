@@ -13,9 +13,21 @@ internal object BrevkodeTittelOgTema {
         Kapittel9Ytelse
     )
 
+    private val PLEIEPENGER_BARN_ETTERSENDING = Triple(
+        BrevKode(brevKode = "NAVe 09-11.05", dokumentKategori = "SOK"),
+        "Søknad om pleiepenger – sykt barn - NAVe 09-11.05", //TODO 24.02.2021 - Burde det også være med "ettersending" i tittel?
+        Kapittel9Ytelse
+    )
+
     private val OMSORGSPENGER_UTVIDET_RETT = Triple(
         BrevKode(brevKode = "NAV 09-06.05", dokumentKategori = "SOK"),
         "Søknad om flere omsorgsdager - NAV 09-06.05",
+        Kapittel9Ytelse
+    )
+
+    private val OMSORGSPENGER_UTVIDET_RETT_ETTERSENDING = Triple(
+        BrevKode(brevKode = "NAVe 09-06.05", dokumentKategori = "SOK"),
+        "Søknad om flere omsorgsdager - NAVe 09-06.05",
         Kapittel9Ytelse
     )
 
@@ -63,7 +75,9 @@ internal object BrevkodeTittelOgTema {
 
     internal fun hentFor(søknadstype: Søknadstype) = when (søknadstype) {
         Søknadstype.PLEIEPENGESØKNAD -> PLEIEPENGER_BARN
+        Søknadstype.PLEIEPENGESØKNAD_ETTERSENDING -> PLEIEPENGER_BARN_ETTERSENDING
         Søknadstype.OMSORGSPENGESØKNAD -> OMSORGSPENGER_UTVIDET_RETT
+        Søknadstype.OMSORGSPENGESØKNAD_ETTERSENDING -> OMSORGSPENGER_UTVIDET_RETT_ETTERSENDING
         Søknadstype.OMSORGSPENGESØKNAD_UTBETALING_FRILANSER_SELVSTENDIG -> OMSORGSPENGER_UTBETALING_FRILANSER_OG_SELVSTENDIG
         Søknadstype.OMSORGSPENGESØKNAD_UTBETALING_ARBEIDSTAKER -> OMSORGSPENGER_UTBETALING_ARBEIDSTAKER
         Søknadstype.OMSORGSPENGESØKNAD_OVERFØRING_AV_DAGER -> OMSORGSPENGER_OVERFØRING_AV_DAGER

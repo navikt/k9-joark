@@ -26,6 +26,8 @@ internal class DokarkivResponseTransformer : ResponseTransformer() {
             requestEntity.contains("NAV 09-11.08") && "OMS" == tema -> "6"
             requestEntity.contains("NAV 00-03.02") && "FRI" == tema -> "7"
             requestEntity.contains("NAV 09-06.07") && "OMS" == tema -> "8"
+            requestEntity.contains("NAVe 09-11.05") && "OMS" == tema -> "9"
+            requestEntity.contains("NAVe 09-06.05") && "OMS" == tema -> "10"
             else -> throw IllegalArgumentException("Ikke støttet brevkode.")
         }
 
