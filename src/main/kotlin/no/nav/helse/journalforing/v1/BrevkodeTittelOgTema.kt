@@ -15,7 +15,7 @@ internal object BrevkodeTittelOgTema {
 
     private val PLEIEPENGER_BARN_ETTERSENDING = Triple(
         BrevKode(brevKode = "NAVe 09-11.05", dokumentKategori = "SOK"),
-        "Søknad om pleiepenger – sykt barn - NAVe 09-11.05", //TODO 24.02.2021 - Burde det også være med "ettersending" i tittel?
+        "Søknad om pleiepenger – sykt barn - NAVe 09-11.05",
         Kapittel9Ytelse
     )
 
