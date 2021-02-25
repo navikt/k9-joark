@@ -21,8 +21,8 @@ import org.slf4j.LoggerFactory
 
 private val logger: Logger = LoggerFactory.getLogger("no.nav.journalforingApis")
 
-fun Route.journalforingApis(
-    journalforingV1Service: JournalforingV1Service) {
+fun Route.journalforingApis(journalforingV1Service: JournalforingV1Service) {
+
     val isEnabled = Søknadstype.enabled().also { it.forEach { (søknadstype, enabled) ->
         logger.info("Enabled[${søknadstype.name}]=$enabled")
     }}
@@ -42,14 +42,48 @@ fun Route.journalforingApis(
 
     post("/v1/pleiepenge/journalforing") {
         val melding = call.receive<MeldingV1>()
-        val metadata = MetadataV1(version = 1, correlationId = call.request.getCorrelationId(), requestId = call.response.getRequestId(), søknadstype = Søknadstype.PLEIEPENGESØKNAD)
+        val metadata = MetadataV1(
+            version = 1,
+            correlationId = call.request.getCorrelationId(),
+            requestId = call.response.getRequestId(),
+            søknadstype = Søknadstype.PLEIEPENGESØKNAD
+        )
         journalfør(melding, metadata)
     }
+
+    post("/v1/pleiepenge/ettersending/journalforing") {
+        val melding = call.receive<MeldingV1>()
+        val metadata = MetadataV1(
+            version = 1,
+            correlationId = call.request.getCorrelationId(),
+            requestId = call.response.getRequestId(),
+            søknadstype = Søknadstype.PLEIEPENGESØKNAD_ETTERSENDING
+        )
+        journalfør(melding, metadata)
+    }
+
     post("/v1/omsorgspenge/journalforing") {
         val melding = call.receive<MeldingV1>()
-        val metadata = MetadataV1(version = 1, correlationId = call.request.getCorrelationId(), requestId = call.response.getRequestId(), søknadstype = Søknadstype.OMSORGSPENGESØKNAD)
+        val metadata = MetadataV1(
+            version = 1,
+            correlationId = call.request.getCorrelationId(),
+            requestId = call.response.getRequestId(),
+            søknadstype = Søknadstype.OMSORGSPENGESØKNAD
+        )
         journalfør(melding, metadata)
     }
+
+    post("/v1/omsorgspenge/ettersending/journalforing") {
+        val melding = call.receive<MeldingV1>()
+        val metadata = MetadataV1(
+            version = 1,
+            correlationId = call.request.getCorrelationId(),
+            requestId = call.response.getRequestId(),
+            søknadstype = Søknadstype.OMSORGSPENGESØKNAD_ETTERSENDING
+        )
+        journalfør(melding, metadata)
+    }
+
     post("/v1/omsorgspengeutbetaling/journalforing") {
         when {
             call.request.gjelderFrilanserOgSelvstendigNæringsdrivende() -> {
