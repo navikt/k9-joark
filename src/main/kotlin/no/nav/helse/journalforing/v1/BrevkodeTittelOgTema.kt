@@ -44,19 +44,19 @@ internal object BrevkodeTittelOgTema {
     )
 
     private val OMSORGSPENGER_OVERFØRING_AV_DAGER = Triple(
-        BrevKode(brevKode = "NAV 09-06.08 - DIGITAL", dokumentKategori = "SOK"),
+        BrevKode(brevKode = "NAV 09-06.08", dokumentKategori = "SOK"),
         "Søknad om overføring av omsorgsdager - NAV 09-06.08",
         Kapittel9Ytelse
     )
 
     private val OMSORGSPENGER_DELING_AV_DAGER = Triple(
-        BrevKode(brevKode = "NAV 09-06.08 - DIGITAL", dokumentKategori = "SOK"),
+        BrevKode(brevKode = "NAV 09-06.08", dokumentKategori = "SOK"),
         "Melding om deling av omsorgsdager - NAV 09-06.08",
         Kapittel9Ytelse
     )
 
     private val OMSORGSPENGER_MIDLERTIDIG_ALENE = Triple(
-        BrevKode(brevKode = "NAV 09-06.07 - DIGITAL", dokumentKategori = "SOK"),
+        BrevKode(brevKode = "NAV 09-06.07", dokumentKategori = "SOK"),
         "Søknad om å bli regnet som alene  - NAV 09-06.07",
         Kapittel9Ytelse
     )
