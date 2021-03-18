@@ -38,8 +38,8 @@ internal object BrevkodeTittelOgTema {
     )
 
     private val OMSORGSPENGER_UTBETALING_ARBEIDSTAKER = Triple(
-        BrevKode(brevKode = "NAV 09-35.02", dokumentKategori = "SOK"),
-        "Søknad om utbetaling av omsorgspenger for arbeidstakere - NAV 09-35.02",
+        BrevKode(brevKode = "NAV 09-09.01", dokumentKategori = "SOK"),
+        "Søknad om utbetaling av omsorgspenger for arbeidstakere - NAV 09-09.01",
         Kapittel9Ytelse
     )
 

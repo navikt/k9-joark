@@ -21,7 +21,7 @@ internal class DokarkivResponseTransformer : ResponseTransformer() {
             requestEntity.contains("NAV 09-11.05") && "OMS" == tema -> "1"
             requestEntity.contains("NAV 09-06.05") && "OMS" == tema -> "2"
             requestEntity.contains("NAV 09-35.01") && "OMS" == tema -> "3"
-            requestEntity.contains("NAV 09-35.02") && "OMS" == tema -> "4"
+            requestEntity.contains("NAV 09-09.01") && "OMS" == tema -> "4"
             requestEntity.contains("NAV 09-06.08") && "OMS" == tema -> "5"
             requestEntity.contains("NAV 09-11.08") && "OMS" == tema -> "6"
             requestEntity.contains("NAV 00-03.02") && "FRI" == tema -> "7"
