@@ -164,6 +164,16 @@ class K9JoarkTest {
     }
 
     @Test
+    fun `Journalpost for omsorgspengeutbetaling ettersending for frilansere og selvstendig næringsdrivende`() {
+        requestAndAssert(
+            request = meldingForJournalføring(),
+            expectedResponse = """{"journal_post_id":"11"}""".trimIndent(),
+            expectedCode = HttpStatusCode.Created,
+            uri = "/v1/omsorgspengeutbetaling/ettersending/journalforing?arbeidstype=frilanser&arbeidstype=selvstendig næringsdrivende"
+        )
+    }
+
+    @Test
     fun `Journalpost for omsorgpengesøknad for overføring av dager`() {
         requestAndAssert(
             request = meldingForJournalføring(),
@@ -190,6 +200,16 @@ class K9JoarkTest {
             expectedResponse = """{"journal_post_id":"4"}""".trimIndent(),
             expectedCode = HttpStatusCode.Created,
             uri = "/v1/omsorgspengeutbetaling/journalforing?arbeidstype=arbeidstaker"
+        )
+    }
+
+    @Test
+    fun `Journalpost for omsorgspengeutbetaling ettersending for arbeidstakere`() {
+        requestAndAssert(
+            request = meldingForJournalføring(),
+            expectedResponse = """{"journal_post_id":"12"}""".trimIndent(),
+            expectedCode = HttpStatusCode.Created,
+            uri = "/v1/omsorgspengeutbetaling/ettersending/journalforing?arbeidstype=arbeidstaker"
         )
     }
 
@@ -227,6 +247,23 @@ class K9JoarkTest {
             expectedResponse = """{"journal_post_id":"8"}""".trimIndent(),
             expectedCode = HttpStatusCode.Created,
             uri = "/v1/omsorgspenger/midlertidig-alene/journalforing"
+        )
+    }
+
+    @Test
+    fun `Journalpost for omsorgspenger ettersending - midlertidig alene`() {
+        requestAndAssert(
+            request = meldingForJournalføringMedDokumenterFraK9MellomLagring(
+                søkerNavn = Navn(
+                    fornavn = "Peie",
+                    mellomnavn = "penge",
+                    etternavn = "Sen"
+                ),
+                norskIdent = "12345678910"
+            ),
+            expectedResponse = """{"journal_post_id":"13"}""".trimIndent(),
+            expectedCode = HttpStatusCode.Created,
+            uri = "/v1/omsorgspenger/midlertidig-alene/ettersending/journalforing"
         )
     }
 

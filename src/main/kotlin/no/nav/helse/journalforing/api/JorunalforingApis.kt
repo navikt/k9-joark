@@ -99,29 +99,71 @@ fun Route.journalforingApis(journalforingV1Service: JournalforingV1Service) {
             else -> call.response.status(HttpStatusCode.NotFound)
         }
     }
+
+    post("/v1/omsorgspengeutbetaling/ettersending/journalforing") {
+        when {
+            call.request.gjelderFrilanserOgSelvstendigNæringsdrivende() -> {
+                val melding = call.receive<MeldingV1>()
+                val metadata = MetadataV1(
+                    version = 1,
+                    correlationId = call.request.getCorrelationId(),
+                    requestId = call.response.getRequestId(),
+                    søknadstype = Søknadstype.OMSORGSPENGESØKNAD_UTBETALING_FRILANSER_SELVSTENDIG_ETTERSENDING
+                )
+                journalfør(melding, metadata)
+            }
+            call.request.gjelderArbeidstaker() -> {
+                val melding = call.receive<MeldingV1>()
+                val metadata = MetadataV1(
+                    version = 1,
+                    correlationId = call.request.getCorrelationId(),
+                    requestId = call.response.getRequestId(),
+                    søknadstype = Søknadstype.OMSORGSPENGESØKNAD_UTBETALING_ARBEIDSTAKER_ETTERSENDING
+                )
+                journalfør(melding, metadata)
+            }
+            else -> call.response.status(HttpStatusCode.NotFound)
+        }
+    }
+
     post("/v1/omsorgsdageroverforing/journalforing") {
         val melding = call.receive<MeldingV1>()
         val metadata = MetadataV1(version = 1, correlationId = call.request.getCorrelationId(), requestId = call.response.getRequestId(), søknadstype = Søknadstype.OMSORGSPENGESØKNAD_OVERFØRING_AV_DAGER)
         journalfør(melding, metadata)
     }
+
     post("/v1/omsorgsdagerdeling/journalforing") {
         val melding = call.receive<MeldingV1>()
         val metadata = MetadataV1(version = 1, correlationId = call.request.getCorrelationId(), requestId = call.response.getRequestId(), søknadstype = Søknadstype.OMSORGSPENGEMELDING_DELING_AV_DAGER)
         journalfør(melding, metadata)
     }
+
     post("/v1/opplæringspenge/journalforing") {
         val melding = call.receive<MeldingV1>()
         val metadata = MetadataV1(version = 1, correlationId = call.request.getCorrelationId(), requestId = call.response.getRequestId(), søknadstype = Søknadstype.OPPLÆRINGSPENGESØKNAD)
         journalfør(melding, metadata)
     }
+
     post("/v1/frisinn/journalforing") {
         val melding = call.receive<MeldingV1>()
         val metadata = MetadataV1(version = 1, correlationId = call.request.getCorrelationId(), requestId = call.response.getRequestId(), søknadstype = Søknadstype.FRISINNSØKNAD)
         journalfør(melding, metadata)
     }
+
     post("/v1/omsorgspenger/midlertidig-alene/journalforing") {
         val melding = call.receive<MeldingV1>()
         val metadata = MetadataV1(version = 1, correlationId = call.request.getCorrelationId(), requestId = call.response.getRequestId(), søknadstype = Søknadstype.OMSORGSPENGESØKNAD_MIDLERTIDIG_ALENE)
+        journalfør(melding, metadata)
+    }
+
+    post("/v1/omsorgspenger/midlertidig-alene/ettersending/journalforing") {
+        val melding = call.receive<MeldingV1>()
+        val metadata = MetadataV1(
+            version = 1,
+            correlationId = call.request.getCorrelationId(),
+            requestId = call.response.getRequestId(),
+            søknadstype = Søknadstype.OMSORGSPENGESØKNAD_MIDLERTIDIG_ALENE_ETTERSENDING
+        )
         journalfør(melding, metadata)
     }
 }
