@@ -37,9 +37,21 @@ internal object BrevkodeTittelOgTema {
         Kapittel9Ytelse
     )
 
+    private val OMSORGSPENGER_UTBETALING_FRILANSER_OG_SELVSTENDIG_ETTERSENDING = Triple(
+        BrevKode(brevKode = "NAVe 09-35.01", dokumentKategori = "SOK"),
+        "Søknad om utbetaling av omsorgsdager frilanser/selvstendig - NAVe 09-35.01",
+        Kapittel9Ytelse
+    )
+
     private val OMSORGSPENGER_UTBETALING_ARBEIDSTAKER = Triple(
         BrevKode(brevKode = "NAV 09-35.02", dokumentKategori = "SOK"),
         "Søknad om utbetaling av omsorgspenger for arbeidstakere - NAV 09-35.02",
+        Kapittel9Ytelse
+    )
+
+    private val OMSORGSPENGER_UTBETALING_ARBEIDSTAKER_ETTERSENDING = Triple(
+        BrevKode(brevKode = "NAVe 09-35.02", dokumentKategori = "SOK"),
+        "Søknad om utbetaling av omsorgspenger for arbeidstakere - NAVe 09-35.02",
         Kapittel9Ytelse
     )
 
@@ -61,6 +73,12 @@ internal object BrevkodeTittelOgTema {
         Kapittel9Ytelse
     )
 
+    private val OMSORGSPENGER_MIDLERTIDIG_ALENE_ETTERSENDING = Triple(
+        BrevKode(brevKode = "NAVe 09-06.07", dokumentKategori = "SOK"),
+        "Søknad om å bli regnet som alene  - NAVe 09-06.07",
+        Kapittel9Ytelse
+    )
+
     private val OPPLÆRINGSPENGER = Triple(
         BrevKode(brevKode = "NAV 09-11.08", dokumentKategori = "SOK"),
         "Søknad om opplæringspenger - NAV 09-11.08",
@@ -79,10 +97,13 @@ internal object BrevkodeTittelOgTema {
         Søknadstype.OMSORGSPENGESØKNAD -> OMSORGSPENGER_UTVIDET_RETT
         Søknadstype.OMSORGSPENGESØKNAD_ETTERSENDING -> OMSORGSPENGER_UTVIDET_RETT_ETTERSENDING
         Søknadstype.OMSORGSPENGESØKNAD_UTBETALING_FRILANSER_SELVSTENDIG -> OMSORGSPENGER_UTBETALING_FRILANSER_OG_SELVSTENDIG
+        Søknadstype.OMSORGSPENGESØKNAD_UTBETALING_FRILANSER_SELVSTENDIG_ETTERSENDING -> OMSORGSPENGER_UTBETALING_FRILANSER_OG_SELVSTENDIG_ETTERSENDING
         Søknadstype.OMSORGSPENGESØKNAD_UTBETALING_ARBEIDSTAKER -> OMSORGSPENGER_UTBETALING_ARBEIDSTAKER
+        Søknadstype.OMSORGSPENGESØKNAD_UTBETALING_ARBEIDSTAKER_ETTERSENDING -> OMSORGSPENGER_UTBETALING_ARBEIDSTAKER_ETTERSENDING
         Søknadstype.OMSORGSPENGESØKNAD_OVERFØRING_AV_DAGER -> OMSORGSPENGER_OVERFØRING_AV_DAGER
         Søknadstype.OMSORGSPENGEMELDING_DELING_AV_DAGER -> OMSORGSPENGER_DELING_AV_DAGER
         Søknadstype.OMSORGSPENGESØKNAD_MIDLERTIDIG_ALENE -> OMSORGSPENGER_MIDLERTIDIG_ALENE
+        Søknadstype.OMSORGSPENGESØKNAD_MIDLERTIDIG_ALENE_ETTERSENDING -> OMSORGSPENGER_MIDLERTIDIG_ALENE_ETTERSENDING
         Søknadstype.OPPLÆRINGSPENGESØKNAD -> OPPLÆRINGSPENGER
         Søknadstype.FRISINNSØKNAD -> FRISINN
     }
