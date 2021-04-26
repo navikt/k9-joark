@@ -193,6 +193,17 @@ class K9JoarkTest {
         )
     }
 
+
+    @Test
+    fun `Journalpost for omsorgspengemelding ettersending for deling av dager`() {
+        requestAndAssert(
+            request = meldingForJournalføring(),
+            expectedResponse = """{"journal_post_id":"14"}""".trimIndent(),
+            expectedCode = HttpStatusCode.Created,
+            uri = "/v1/omsorgsdagerdeling/ettersending/journalforing"
+        )
+    }
+
     @Test
     fun `Journalpost for omsorgspengeutbetaling for arbeidstakere`() {
         requestAndAssert(

@@ -138,6 +138,17 @@ fun Route.journalforingApis(journalforingV1Service: JournalforingV1Service) {
         journalfør(melding, metadata)
     }
 
+    post("/v1/omsorgsdagerdeling/ettersending/journalforing") {
+        val melding = call.receive<MeldingV1>()
+        val metadata = MetadataV1(
+            version = 1,
+            correlationId = call.request.getCorrelationId(),
+            requestId = call.response.getRequestId(),
+            søknadstype = Søknadstype.OMSORGSPENGEMELDING_DELING_AV_DAGER_ETTERSENDING
+        )
+        journalfør(melding, metadata)
+    }
+
     post("/v1/opplæringspenge/journalforing") {
         val melding = call.receive<MeldingV1>()
         val metadata = MetadataV1(version = 1, correlationId = call.request.getCorrelationId(), requestId = call.response.getRequestId(), søknadstype = Søknadstype.OPPLÆRINGSPENGESØKNAD)
