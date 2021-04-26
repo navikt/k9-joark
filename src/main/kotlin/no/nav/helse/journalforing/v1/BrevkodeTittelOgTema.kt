@@ -67,6 +67,12 @@ internal object BrevkodeTittelOgTema {
         Kapittel9Ytelse
     )
 
+    private val OMSORGSPENGER_DELING_AV_DAGER_ETTERSENDING = Triple(
+        BrevKode(brevKode = "NAVe 09-06.08", dokumentKategori = "SOK"),
+        "Melding om deling av omsorgsdager - NAVe 09-06.08",
+        Kapittel9Ytelse
+    )
+
     private val OMSORGSPENGER_MIDLERTIDIG_ALENE = Triple(
         BrevKode(brevKode = "NAV 09-06.07", dokumentKategori = "SOK"),
         "Søknad om å bli regnet som alene  - NAV 09-06.07",
@@ -102,6 +108,7 @@ internal object BrevkodeTittelOgTema {
         Søknadstype.OMSORGSPENGESØKNAD_UTBETALING_ARBEIDSTAKER_ETTERSENDING -> OMSORGSPENGER_UTBETALING_ARBEIDSTAKER_ETTERSENDING
         Søknadstype.OMSORGSPENGESØKNAD_OVERFØRING_AV_DAGER -> OMSORGSPENGER_OVERFØRING_AV_DAGER
         Søknadstype.OMSORGSPENGEMELDING_DELING_AV_DAGER -> OMSORGSPENGER_DELING_AV_DAGER
+        Søknadstype.OMSORGSPENGEMELDING_DELING_AV_DAGER_ETTERSENDING -> OMSORGSPENGER_DELING_AV_DAGER_ETTERSENDING
         Søknadstype.OMSORGSPENGESØKNAD_MIDLERTIDIG_ALENE -> OMSORGSPENGER_MIDLERTIDIG_ALENE
         Søknadstype.OMSORGSPENGESØKNAD_MIDLERTIDIG_ALENE_ETTERSENDING -> OMSORGSPENGER_MIDLERTIDIG_ALENE_ETTERSENDING
         Søknadstype.OPPLÆRINGSPENGESØKNAD -> OPPLÆRINGSPENGER
