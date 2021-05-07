@@ -193,7 +193,6 @@ class K9JoarkTest {
         )
     }
 
-
     @Test
     fun `Journalpost for omsorgspengemelding ettersending for deling av dager`() {
         requestAndAssert(
@@ -275,6 +274,23 @@ class K9JoarkTest {
             expectedResponse = """{"journal_post_id":"13"}""".trimIndent(),
             expectedCode = HttpStatusCode.Created,
             uri = "/v1/omsorgspenger/midlertidig-alene/ettersending/journalforing"
+        )
+    }
+
+    @Test
+    fun `Journalpost for omsorgsdager aleneomsorg`() {
+        requestAndAssert(
+            request = meldingForJournalføringMedDokumenterFraK9MellomLagring(
+                søkerNavn = Navn(
+                    fornavn = "Peie",
+                    mellomnavn = "penge",
+                    etternavn = "Sen"
+                ),
+                norskIdent = "12345678910"
+            ),
+            expectedResponse = """{"journal_post_id":"15"}""".trimIndent(),
+            expectedCode = HttpStatusCode.Created,
+            uri = "/v1/omsorgsdager/aleneomsorg/journalforing"
         )
     }
 
