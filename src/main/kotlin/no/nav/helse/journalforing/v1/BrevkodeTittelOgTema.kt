@@ -86,8 +86,8 @@ internal object BrevkodeTittelOgTema {
     )
 
     private val OMSORGSDAGER_ALENEOMSORG = Triple(
-        BrevKode(brevKode = "X", dokumentKategori = "SOK"),
-        "Registrering av aleneomsorg i forbindelse med omsorgsdager - X",
+        BrevKode(brevKode = "NAV 09-06.10", dokumentKategori = "SOK"),
+        "Registrering av aleneomsorg for omsorgsdager - NAV 09-06.10",
         Kapittel9Ytelse
     )
 
