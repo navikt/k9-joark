@@ -177,6 +177,17 @@ fun Route.journalforingApis(journalforingV1Service: JournalforingV1Service) {
         )
         journalfør(melding, metadata)
     }
+
+    post("/v1/omsorgsdager/aleneomsorg/journalforing") {
+        val melding = call.receive<MeldingV1>()
+        val metadata = MetadataV1(
+            version = 1,
+            correlationId = call.request.getCorrelationId(),
+            requestId = call.response.getRequestId(),
+            søknadstype = Søknadstype.OMSORGSDAGER_ALENEOMSORG
+        )
+        journalfør(melding, metadata)
+    }
 }
 
 private fun ApplicationRequest.gjelderFrilanserOgSelvstendigNæringsdrivende() : Boolean {
