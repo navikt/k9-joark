@@ -1,29 +1,22 @@
 package no.nav.helse
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import com.fasterxml.jackson.databind.PropertyNamingStrategy
-import io.ktor.application.Application
-import io.ktor.application.ApplicationCallPipeline
-import io.ktor.application.call
-import io.ktor.application.install
-import io.ktor.auth.Authentication
-import io.ktor.auth.authenticate
-import io.ktor.features.CallId
-import io.ktor.features.CallLogging
-import io.ktor.features.ContentNegotiation
-import io.ktor.features.StatusPages
-import io.ktor.http.HttpStatusCode
-import io.ktor.http.Url
-import io.ktor.jackson.jackson
-import io.ktor.metrics.micrometer.MicrometerMetrics
-import io.ktor.routing.Routing
-import io.ktor.util.KtorExperimentalAPI
+import com.fasterxml.jackson.databind.PropertyNamingStrategies
+import io.ktor.application.*
+import io.ktor.auth.*
+import io.ktor.features.*
+import io.ktor.http.*
+import io.ktor.jackson.*
+import io.ktor.metrics.micrometer.*
+import io.ktor.routing.*
 import io.prometheus.client.hotspot.DefaultExports
 import no.nav.helse.dokument.ContentTypeService
 import no.nav.helse.dokument.DokumentGateway
 import no.nav.helse.dokument.DokumentService
 import no.nav.helse.dokument.mellomlagring.K9MellomlagringGateway
-import no.nav.helse.dusseldorf.ktor.auth.*
+import no.nav.helse.dusseldorf.ktor.auth.AuthStatusPages
+import no.nav.helse.dusseldorf.ktor.auth.allIssuers
+import no.nav.helse.dusseldorf.ktor.auth.multipleJwtIssuers
 import no.nav.helse.dusseldorf.ktor.client.HttpRequestHealthCheck
 import no.nav.helse.dusseldorf.ktor.client.HttpRequestHealthConfig
 import no.nav.helse.dusseldorf.ktor.client.buildURL
@@ -41,7 +34,6 @@ import no.nav.helse.journalforing.v1.JournalforingV1Service
 
 fun main(args: Array<String>): Unit = io.ktor.server.netty.EngineMain.main(args)
 
-@KtorExperimentalAPI
 fun Application.k9Joark() {
     val appId = environment.config.id()
     logProxyProperties()
@@ -146,4 +138,4 @@ fun Application.k9Joark() {
 }
 
 internal fun ObjectMapper.k9JoarkConfigured() = dusseldorfConfigured()
-    .setPropertyNamingStrategy(PropertyNamingStrategy.SNAKE_CASE)
+    .setPropertyNamingStrategy(PropertyNamingStrategies.SNAKE_CASE)
