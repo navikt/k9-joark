@@ -1,6 +1,5 @@
 package no.nav.helse
 
-import io.ktor.util.KtorExperimentalAPI
 import no.nav.helse.Configuration.Companion.AZURE_V2_ALIAS
 import no.nav.helse.Configuration.Companion.NAIS_STS_ALIAS
 import no.nav.helse.dusseldorf.ktor.auth.Client
@@ -13,7 +12,6 @@ import no.nav.helse.dusseldorf.oauth2.client.SignedJwtAccessTokenClient
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
-@KtorExperimentalAPI
 internal class AccessTokenClientResolver(
     private val clients: Map<String, Client>
 ) {

@@ -10,7 +10,6 @@ import no.nav.helse.dusseldorf.ktor.core.getRequiredList
 import no.nav.helse.dusseldorf.ktor.core.getRequiredString
 import java.net.URI
 
-@KtorExperimentalAPI
 internal data class Configuration(private val config : ApplicationConfig) {
     private val clients: Map<String, Client>
 
