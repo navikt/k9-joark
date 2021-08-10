@@ -36,11 +36,11 @@ spec:
   prometheus:
     enabled: true
     path: /metrics
-  vault:
-    enabled: true
   webproxy: true
   env:
   {{#each env}}
     - name: {{@key}}
       value: "{{this}}"
   {{/each}}
+  envFrom:
+    - secret: {{app}}
