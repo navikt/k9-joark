@@ -37,48 +37,48 @@ spec:
     enabled: true
     path: /metrics
   webproxy: true
-  azure:
-    application:
-      enabled: true
-      tenant: {{tenant}}
-  accessPolicy:
-    inbound:
-      rules:
-        - application: frisinn-prosessering
-          namespace: default
-          cluster: {{environment}}-fss
-
-        - application: omsorgspengerutbetalingsoknad-arbeidstaker-prosessering
-          namespace: default
-          cluster: {{environment}}-fss
-
-        - application: omsorgspengesoknad-prosessering
-          namespace: dusseldorf
-          cluster: {{environment}}-fss
-
-        - application: k9-ettersending-prosessering
-          namespace: dusseldorf
-          cluster: {{environment}}-fss
-
-        - application: pleiepengesoknad-prosessering
-          namespace: dusseldorf
-          cluster: {{environment}}-fss
-
-        - application: omsorgspengerutbetalingsoknad-prosessering
-          namespace: dusseldorf
-          cluster: {{environment}}-fss
-
-        - application: omsorgspenger-midlertidig-alene-prosessering
-          namespace: dusseldorf
-          cluster: {{environment}}-gcp
-
-        - application: omsorgsdager-melding-prosessering
-          namespace: dusseldorf
-          cluster: {{environment}}-gcp
-
-        - application: omsorgsdager-aleneomsorg-prosessering
-          namespace: dusseldorf
-          cluster: {{environment}}-gcp
+#  azure:
+#    application:
+#      enabled: true
+#      tenant: {{tenant}}
+#  accessPolicy:
+#    inbound:
+#      rules:
+#        - application: frisinn-prosessering
+#          namespace: default
+#          cluster: {{environment}}-fss
+#
+#        - application: omsorgspengerutbetalingsoknad-arbeidstaker-prosessering
+#          namespace: default
+#          cluster: {{environment}}-fss
+#
+#        - application: omsorgspengesoknad-prosessering
+#          namespace: dusseldorf
+#          cluster: {{environment}}-fss
+#
+#        - application: k9-ettersending-prosessering
+#          namespace: dusseldorf
+#          cluster: {{environment}}-fss
+#
+#        - application: pleiepengesoknad-prosessering
+#          namespace: dusseldorf
+#          cluster: {{environment}}-fss
+#
+#        - application: omsorgspengerutbetalingsoknad-prosessering
+#          namespace: dusseldorf
+#          cluster: {{environment}}-fss
+#
+#        - application: omsorgspenger-midlertidig-alene-prosessering
+#          namespace: dusseldorf
+#          cluster: {{environment}}-gcp
+#
+#        - application: omsorgsdager-melding-prosessering
+#          namespace: dusseldorf
+#          cluster: {{environment}}-gcp
+#
+#        - application: omsorgsdager-aleneomsorg-prosessering
+#          namespace: dusseldorf
+#          cluster: {{environment}}-gcp
   env:
   {{#each env}}
     - name: {{@key}}
