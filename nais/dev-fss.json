@@ -6,6 +6,7 @@
   "team": "dusseldorf",
   "minReplicas": "1",
   "maxReplicas": "2",
+  "tenant": "trygdeetaten.no",
   "ingresses": [
     "https://k9-joark.nais.preprod.local",
     "https://k9-joark.dev-fss-pub.nais.io"
