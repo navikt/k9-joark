@@ -1,5 +1,6 @@
 {
   "app": "k9-joark",
+  "environment": "dev",
   "cluster": "prod-fss",
   "namespace": "dusseldorf",
   "team": "dusseldorf",
