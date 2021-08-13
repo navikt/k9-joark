@@ -45,7 +45,7 @@ spec:
     inbound:
       rules:
         - application: frisinn-prosessering
-          namespace: default
+          namespace: dusseldorf
           cluster: {{environment}}-fss
 
         - application: omsorgspengerutbetalingsoknad-arbeidstaker-prosessering
