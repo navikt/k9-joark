@@ -11,7 +11,7 @@ internal data class JournalPostRequest(
     val kanal: String, // NAV_NO
     val journalfoerendeEnhet: String) {
     val tilleggsopplysninger = listOf(
-        Tilleggsopplysning("K9.KILDE", "DIGITAL_SØKNADSDIALOG")
+        Tilleggsopplysning("k9.kilde", "DIGITAL_SØKNADSDIALOG")
     )
 }
 
