@@ -13,13 +13,18 @@ private const val k9MellomlagringPath = "/k9-mellomlagring"
 
 internal fun WireMockServer.stubMottaInngaaendeForsendelseOk() : WireMockServer{
     WireMock.stubFor(
-        WireMock.post(WireMock.urlMatching(".*$dokarkivMottaInngaaendeForsendelsePath"))
-            .willReturn(
-                WireMock.aResponse()
-                    .withStatus(200)
-                    .withHeader("Content-Type", "application/json")
-                    .withTransformers("dokarkiv")
-            )
+        WireMock.post(
+            WireMock.urlMatching(".*$dokarkivMottaInngaaendeForsendelsePath"))
+                .withRequestBody(WireMock.matchingJsonPath("$.tilleggsopplysninger[0].nokkel", WireMock.equalTo("k9.kilde")))
+                .withRequestBody(WireMock.matchingJsonPath("$.tilleggsopplysninger[0].verdi", WireMock.equalTo("DIGITAL")))
+                .withRequestBody(WireMock.matchingJsonPath("$.tilleggsopplysninger[1].nokkel", WireMock.equalTo("k9.type")))
+                .withRequestBody(WireMock.matchingJsonPath("$.tilleggsopplysninger[1].verdi", WireMock.matching("SØKNAD|MELDING|ETTERSENDELSE")))
+                .willReturn(
+                    WireMock.aResponse()
+                        .withStatus(200)
+                        .withHeader("Content-Type", "application/json")
+                        .withTransformers("dokarkiv")
+                )
     )
     return this
 }

@@ -15,13 +15,11 @@ private val DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:m
 
 object JournalPostRequestV1Factory {
     internal fun instance(
-        tittel: String,
         mottaker: String,
-        tema: Tema,
         kanal: Kanal,
         dokumenter: List<List<Dokument>>,
         datoMottatt: ZonedDateTime,
-        typeReferanse: TypeReferanse,
+        journalpostinfo: Journalpostinfo,
         journalposttype: JournalPostType,
         avsenderMottakerIdType: AvsenderMottakerIdType,
         avsenderMottakerNavn: String?
@@ -34,19 +32,20 @@ object JournalPostRequestV1Factory {
         val vedlegg = mutableListOf<JoarkDokument>()
 
         dokumenter.forEach { dokumentBolk ->
-                vedlegg.add(mapDokument(dokumentBolk, typeReferanse))
+                vedlegg.add(mapDokument(dokumentBolk, journalpostinfo.brevkode))
         }
 
         return JournalPostRequest(
             journalposttype = journalposttype.value,
             avsenderMottaker = AvsenderMottaker(mottaker, avsenderMottakerIdType.value, avsenderMottakerNavn), // I Versjon 1 er det kun innlogget bruker som laster opp vedlegg og fyller ut søknad, så bruker == avsender
             bruker = Bruker(mottaker, avsenderMottakerIdType.value),
-            tema = tema.value,
-            tittel = tittel,
+            tema = journalpostinfo.tema.value,
+            tittel = journalpostinfo.tittel,
             kanal = kanal.value,
             journalfoerendeEnhet = "9999", //  NAV-enheten som har journalført, eventuelt skal journalføre, forsendelsen. Ved automatisk journalføring uten mennesker involvert skal enhet settes til "9999".
             datoMottatt = formatDate(datoMottatt),
-            dokumenter = vedlegg
+            dokumenter = vedlegg,
+            innsendingstype = journalpostinfo.innsendingstype
         )
     }
 

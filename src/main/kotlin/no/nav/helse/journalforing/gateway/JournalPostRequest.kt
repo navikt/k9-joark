@@ -1,5 +1,8 @@
 package no.nav.helse.journalforing.gateway
 
+import com.fasterxml.jackson.annotation.JsonIgnore
+import no.nav.helse.journalforing.v1.Innsendingstype
+
 internal data class JournalPostRequest(
     val dokumenter : List<JoarkDokument>,
     val journalposttype: String, // INNGAAENDE
@@ -9,7 +12,18 @@ internal data class JournalPostRequest(
     val tema: String, /// OMS
     val datoMottatt: String, // yyyy-MM-dd'T'HH:mm:ssZ
     val kanal: String, // NAV_NO
-    val journalfoerendeEnhet: String
+    val journalfoerendeEnhet: String,
+    @JsonIgnore
+    val innsendingstype: Innsendingstype) {
+    val tilleggsopplysninger = listOf(
+        Tilleggsopplysning(nokkel = "k9.kilde", verdi = "DIGITAL"),
+        Tilleggsopplysning(nokkel = "k9.type", verdi = innsendingstype.name)
+    )
+}
+
+internal data class Tilleggsopplysning(
+    val nokkel: String,
+    val verdi: String
 )
 
 internal data class JoarkDokument(
