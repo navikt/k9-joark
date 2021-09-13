@@ -9,7 +9,15 @@ internal data class JournalPostRequest(
     val tema: String, /// OMS
     val datoMottatt: String, // yyyy-MM-dd'T'HH:mm:ssZ
     val kanal: String, // NAV_NO
-    val journalfoerendeEnhet: String
+    val journalfoerendeEnhet: String) {
+    val tilleggsopplysninger = listOf(
+        Tilleggsopplysning("K9.KILDE", "DIGITAL_SØKNADSDIALOG")
+    )
+}
+
+internal data class Tilleggsopplysning(
+    val nokkel: String,
+    val verdi: String
 )
 
 internal data class JoarkDokument(
