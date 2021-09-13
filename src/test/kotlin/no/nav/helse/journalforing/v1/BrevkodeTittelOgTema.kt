@@ -3,6 +3,9 @@ package no.nav.helse.journalforing.v1
 import no.nav.helse.journalforing.BrevKode
 import no.nav.helse.journalforing.Tema
 
+/**
+ * Brukt før `Journalpostinfo`
+ */
 internal object BrevkodeTittelOgTema {
     private val Kapittel9Ytelse = Tema("OMS")
     private val FrilansereOgSelvstendigNæringdrivendesInntektskompensasjon = Tema("FRI")

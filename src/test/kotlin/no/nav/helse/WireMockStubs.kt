@@ -16,7 +16,9 @@ internal fun WireMockServer.stubMottaInngaaendeForsendelseOk() : WireMockServer{
         WireMock.post(
             WireMock.urlMatching(".*$dokarkivMottaInngaaendeForsendelsePath"))
                 .withRequestBody(WireMock.matchingJsonPath("$.tilleggsopplysninger[0].nokkel", WireMock.equalTo("k9.kilde")))
-                .withRequestBody(WireMock.matchingJsonPath("$.tilleggsopplysninger[0].verdi", WireMock.equalTo("DIGITAL_SØKNADSDIALOG")))
+                .withRequestBody(WireMock.matchingJsonPath("$.tilleggsopplysninger[0].verdi", WireMock.equalTo("DIGITAL")))
+                .withRequestBody(WireMock.matchingJsonPath("$.tilleggsopplysninger[1].nokkel", WireMock.equalTo("k9.type")))
+                .withRequestBody(WireMock.matchingJsonPath("$.tilleggsopplysninger[1].verdi", WireMock.matching("SØKNAD|MELDING|ETTERSENDELSE")))
                 .willReturn(
                     WireMock.aResponse()
                         .withStatus(200)
