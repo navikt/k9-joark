@@ -79,6 +79,10 @@ spec:
         - application: omsorgsdager-aleneomsorg-prosessering
           namespace: dusseldorf
           cluster: {{environment}}-gcp
+
+        - application: pleiepenger-livets-sluttfase-prosessering
+          namespace: dusseldorf
+          cluster: {{environment}}-gcp
   env:
   {{#each env}}
     - name: {{@key}}
