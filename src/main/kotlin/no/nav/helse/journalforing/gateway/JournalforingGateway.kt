@@ -55,7 +55,7 @@ class JournalforingGateway(
         }
     }
 
-    internal suspend fun jorunalfor(journalPostRequest: JournalPostRequest): JournalPostResponse {
+    internal suspend fun journalfor(journalPostRequest: JournalPostRequest): JournalPostResponse {
         val authorizationHeader =
             cachedAccessTokenClient.getAccessToken(oppretteJournalPostScopes).asAuthoriationHeader()
 
@@ -86,7 +86,7 @@ class JournalforingGateway(
         ) { error ->
             logger.error("Error response = '${error.response.body().asString("text/plain")}' fra '${request.url}'")
             logger.error(error.toString())
-            throw IllegalStateException("Feil ved opperttelse av jorunalpost.")
+            throw IllegalStateException("Feil ved opperttelse av journalpost.")
         }
     }
 

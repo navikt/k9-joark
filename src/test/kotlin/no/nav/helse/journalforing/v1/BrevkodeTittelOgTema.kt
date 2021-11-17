@@ -16,6 +16,12 @@ internal object BrevkodeTittelOgTema {
         Kapittel9Ytelse
     )
 
+    private val PLEIEPENGER_LIVETS_SLUTTFASE = Triple(
+        BrevKode(brevKode = "NAV 09-12.05", dokumentKategori = "SOK"),
+        "Søknad om pleiepenger ved pleie i hjemmet av nærstående i livets sluttfase - NAV 09-12.05",
+        Kapittel9Ytelse
+    )
+
     private val PLEIEPENGER_BARN_ETTERSENDING = Triple(
         BrevKode(brevKode = "NAVe 09-11.05", dokumentKategori = "SOK"),
         "Søknad om pleiepenger – sykt barn - NAVe 09-11.05",
@@ -108,6 +114,7 @@ internal object BrevkodeTittelOgTema {
 
     internal fun hentFor(søknadstype: Søknadstype) = when (søknadstype) {
         Søknadstype.PLEIEPENGESØKNAD -> PLEIEPENGER_BARN
+        Søknadstype.PLEIEPENGESØKNAD_LIVETS_SLUTTFASE -> PLEIEPENGER_LIVETS_SLUTTFASE
         Søknadstype.PLEIEPENGESØKNAD_ETTERSENDING -> PLEIEPENGER_BARN_ETTERSENDING
         Søknadstype.OMSORGSPENGESØKNAD -> OMSORGSPENGER_UTVIDET_RETT
         Søknadstype.OMSORGSPENGESØKNAD_ETTERSENDING -> OMSORGSPENGER_UTVIDET_RETT_ETTERSENDING

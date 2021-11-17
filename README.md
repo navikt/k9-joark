@@ -2,7 +2,7 @@
 ![CI / CD](https://github.com/navikt/k9-joark/workflows/CI%20/%20CD/badge.svg)
 ![NAIS Alerts](https://github.com/navikt/k9-joark/workflows/Alerts/badge.svg)
 
-Inneholder integrasjon mot joark for å opprette jornalpost i forbindelse med søknader for ytelsen i Kapittel 9 i folketrygdeloven.
+Inneholder integrasjon mot joark for å opprette journalpost i forbindelse med søknader for ytelsen i Kapittel 9 i folketrygdeloven.
 
 ## Versjon 1
 ### Meldingsformat

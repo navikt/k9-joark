@@ -73,7 +73,7 @@ class JournalforingV1Service(
 
         logger.info("Sender melding til Joark")
 
-        val response = journalforingGateway.jorunalfor(request)
+        val response = journalforingGateway.journalfor(request)
 
         logger.info("JournalPost med ID ${response.journalpostId} opprettet")
         return JournalPostId(response.journalpostId)
