@@ -71,7 +71,7 @@ spec:
 
         - application: omsorgspengerutbetalingsoknad-prosessering
           namespace: dusseldorf
-          cluster: {{environment}}-fss
+          cluster: {{environment}}-gcp
 
         - application: omsorgspenger-midlertidig-alene-prosessering
           namespace: dusseldorf
