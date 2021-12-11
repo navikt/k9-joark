@@ -49,13 +49,8 @@ spec:
           cluster: {{environment}}-fss
 
         - application: omsorgspengerutbetalingsoknad-arbeidstaker-prosessering
-          namespace: default
-          cluster: {{environment}}-fss
-
-
-        - application: omsorgspengerutbetalingsoknad-arbeidstaker-prosessering
           namespace: dusseldorf
-          cluster: {{environment}}-fss
+          cluster: {{environment}}-gcp
 
         - application: omsorgspengesoknad-prosessering
           namespace: dusseldorf
