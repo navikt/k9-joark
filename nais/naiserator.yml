@@ -59,7 +59,7 @@ spec:
 
         - application: omsorgspengesoknad-prosessering
           namespace: dusseldorf
-          cluster: {{environment}}-fss
+          cluster: {{environment}}-gcp
 
         - application: k9-ettersending-prosessering
           namespace: dusseldorf
