@@ -49,9 +49,8 @@ spec:
           cluster: {{environment}}-fss
 
         - application: omsorgspengerutbetalingsoknad-arbeidstaker-prosessering
-          namespace: default
-          cluster: {{environment}}-fss
-
+          namespace: dusseldorf
+          cluster: {{environment}}-gcp
 
         - application: omsorgspengerutbetalingsoknad-arbeidstaker-prosessering
           namespace: dusseldorf
@@ -59,7 +58,15 @@ spec:
 
         - application: omsorgspengesoknad-prosessering
           namespace: dusseldorf
+          cluster: {{environment}}-gcp
+
+        - application: omsorgspengesoknad-prosessering
+          namespace: dusseldorf
           cluster: {{environment}}-fss
+
+        - application: k9-ettersending-prosessering
+          namespace: dusseldorf
+          cluster: {{environment}}-gcp
 
         - application: k9-ettersending-prosessering
           namespace: dusseldorf
@@ -67,7 +74,15 @@ spec:
 
         - application: pleiepengesoknad-prosessering
           namespace: dusseldorf
+          cluster: {{environment}}-gcp
+
+        - application: pleiepengesoknad-prosessering
+          namespace: dusseldorf
           cluster: {{environment}}-fss
+
+        - application: omsorgspengerutbetalingsoknad-prosessering
+          namespace: dusseldorf
+          cluster: {{environment}}-gcp
 
         - application: omsorgspengerutbetalingsoknad-prosessering
           namespace: dusseldorf
