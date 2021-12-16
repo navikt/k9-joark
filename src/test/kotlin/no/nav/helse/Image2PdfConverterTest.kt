@@ -2,6 +2,7 @@ package no.nav.helse
 
 import no.nav.helse.dusseldorf.ktor.core.fromResources
 import no.nav.helse.journalforing.converter.ImageScaler
+import org.junit.jupiter.api.assertDoesNotThrow
 import java.io.File
 import java.util.*
 import kotlin.test.Ignore
@@ -10,11 +11,17 @@ import kotlin.test.Test
 class Image2PdfConverterTest {
 
     @Test
-    @Ignore
     fun `Generert skalerte bilder`() {
         scale(resourceName = "hoyopplost.jpg", name = "hoyopplost")
         scale(resourceName = "widescreen.jpg", name = "widescreen")
         scale(resourceName = "legeerklaering_iPhone_XS.jpg", name = "legeerklaering")
+    }
+
+    @Test
+    fun `skalering av gray-scale dokument skal ikke feile`() {
+        assertDoesNotThrow {
+            scale(resourceName = "imageMedFeil.jpeg", name = "feilende")
+        }
     }
 
     private fun scale(
