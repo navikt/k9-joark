@@ -4,6 +4,7 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 val ktorVersion = ext.get("ktorVersion").toString()
 val dusseldorfKtorVersion = "3.1.6.4-e07c5ec"
 val pdfBoxVersion = "2.0.24"
+val ImageIOVersion = "3.8.0"
 val jsonassertVersion = "1.5.0"
 val fuelVersion = "2.3.1"
 
@@ -32,6 +33,7 @@ dependencies {
 
     // Bilde til PNG
     implementation("org.apache.pdfbox:pdfbox:$pdfBoxVersion")
+    implementation("com.twelvemonkeys.imageio:imageio-jpeg:$ImageIOVersion")
 
     // Test
     testImplementation ( "no.nav.helse:dusseldorf-test-support:$dusseldorfKtorVersion")
