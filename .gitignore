@@ -27,3 +27,5 @@ out
 .gradle
 
 *.iml
+
+scaled-image-*
