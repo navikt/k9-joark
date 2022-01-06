@@ -142,6 +142,17 @@ class JournalforingV1Service(
         }
 
         melding.dokumentId?.let {
+            if(melding.aktoerId != null){ //Kan vurdere å legge til støtte for k9-dokument. Kun frisinn som bruker den
+                feil.add(
+                    Violation(
+                        parameterName = "dokumentId",
+                        reason = "Har ikke støtte for å hente dokumenter fra k9-dokument med dokumentId.",
+                        parameterType = ParameterType.ENTITY,
+                        invalidValue = melding.dokumentId
+                    )
+                )
+            }
+
             if(it.isEmpty()){
                 feil.add(
                     Violation(

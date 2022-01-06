@@ -536,6 +536,46 @@ class K9JoarkTest {
     }
 
     @Test
+    fun `melding med aktørId som bruker dokumentId skal feile`(){
+        val melding =  meldingForJournalføring(
+            søkerNavn = Navn(
+                fornavn = "Peie",
+                mellomnavn = "penge",
+                etternavn = "Sen"
+            )
+        )
+
+        val dokumentId = melding.dokumenter!!.map {
+            it.map { it.toString().substringAfterLast("/") }
+        }
+
+        requestAndAssert(
+            request = melding.copy(
+                dokumenter = null,
+                dokumentId = dokumentId
+            ),
+            expectedCode = HttpStatusCode.BadRequest,
+            expectedResponse = """
+                {
+                  "detail": "Requesten inneholder ugyldige paramtere.",
+                  "instance": "about:blank",
+                  "type": "/problem-details/invalid-request-parameters",
+                  "title": "invalid-request-parameters",
+                  "invalid_parameters": [
+                    {
+                      "name": "dokumentId",
+                      "reason": "Har ikke støtte for å hente dokumenter fra k9-dokument med dokumentId.",
+                      "invalid_value": [["4567", "78910"], ["1234"]],
+                      "type": "entity"
+                    }
+                  ],
+                  "status": 400
+                }
+            """.trimIndent()
+        )
+    }
+
+    @Test
     fun `melding med både dokumenter og dokumentId skal feile`(){
         val melding =  meldingForJournalføringMedDokumenterFraK9MellomLagring(
             søkerNavn = Navn(
