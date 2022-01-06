@@ -12,11 +12,13 @@ object TestConfiguration {
         wireMockServer: WireMockServer? = null,
         port : Int = 8080,
         dokarkivUrl : String? = wireMockServer?.getDokarkivUrl(),
+        k9MellomlagringUrl: String? = wireMockServer?.getK9MellomlagringUrl(),
         k9JoarkAzureClientId: String = "pleiepenger-joark"
     ) : Map<String, String>{
         val map = mutableMapOf(
             Pair("ktor.deployment.port","$port"),
-            Pair("nav.dokarkiv_base_url", "$dokarkivUrl")
+            Pair("nav.dokarkiv_base_url", "$dokarkivUrl"),
+            Pair("nav.k9_mellomlagring_base_url", "$k9MellomlagringUrl")
         )
 
         // Clients

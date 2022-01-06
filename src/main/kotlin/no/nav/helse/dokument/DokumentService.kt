@@ -25,6 +25,20 @@ class DokumentService(
     private val contentTypeService: ContentTypeService
 ) {
 
+    suspend fun hentDokumenterMedDokumentId(
+        dokumentId: List<String>,
+        fodselsnummer: Fodselsnummer,
+        correlationId: CorrelationId
+    ): List<Dokument> {
+        val alleDokumenter = k9MellomlagringGateway.hentDokumenterMedDokumentId(
+            dokumentId = dokumentId,
+            eiersFodselsnummer = fodselsnummer,
+            correlationId = correlationId
+        )
+
+        return håndterDokumenter(alleDokumenter)
+    }
+
     suspend fun hentDokumenter(
         urls: List<URI>,
         aktoerId: String?,
@@ -52,14 +66,18 @@ class DokumentService(
             }
         }
 
-        alleDokumenter.tellContentType()
+        return håndterDokumenter(alleDokumenter)
+    }
+
+    fun håndterDokumenter(dokumenter: List<Dokument>) : List<Dokument> {
+        dokumenter.tellContentType()
 
         logger.trace("Alle dokumenter hentet.")
-        val bildeDokumenter = alleDokumenter.filter { contentTypeService.isSupportedImage(it.contentType) }
+        val bildeDokumenter = dokumenter.filter { contentTypeService.isSupportedImage(it.contentType) }
         logger.trace("${bildeDokumenter.size} bilder.")
-        val applicationDokumenter = alleDokumenter.filter { contentTypeService.isSupportedApplication(it.contentType) }
+        val applicationDokumenter = dokumenter.filter { contentTypeService.isSupportedApplication(it.contentType) }
         logger.trace("${applicationDokumenter.size} andre støttede dokumenter.")
-        val ikkeSupporterteDokumenter = alleDokumenter.filter { !contentTypeService.isSupported(it.contentType) }
+        val ikkeSupporterteDokumenter = dokumenter.filter { !contentTypeService.isSupported(it.contentType) }
         if (ikkeSupporterteDokumenter.isNotEmpty()) {
             logger.warn("${ikkeSupporterteDokumenter.size} dokumenter som ikke støttes. Disse vil utelates fra journalføring.")
         }
@@ -78,6 +96,7 @@ class DokumentService(
         }
 
         logger.trace("Endringer fra bilde til PDF gjennomført.")
+
         return supporterteDokumenter
     }
 }

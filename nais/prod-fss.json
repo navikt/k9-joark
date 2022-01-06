@@ -17,6 +17,7 @@
     "AZURE_V1_DISCOVERY_ENDPOINT": "https://login.microsoftonline.com/62366534-1ec3-4962-8869-9b5535279d0b/.well-known/openid-configuration",
     "K9_DOKUMENT_SCOPE": "0c5a6709-ba2a-42b7-bbfc-9b9f844e2ee2/.default",
     "K9_MELLOMLAGRING_SCOPE": "19aaf0b2-f40a-4a64-bf7f-fd2dd62f0552/.default",
+    "K9_MELLOMLAGRING_BASE_URL": "https://k9-mellomlagring.intern.nav.no",
     "ENABLE_OMSORGSPENGESKNAD_UTBETALING_FRILANSER_SELVSTENDIG": "true",
     "ENABLE_OMSORGSPENGESKNAD_UTBETALING_ARBEIDSTAKER": "true",
     "ENABLE_OMSORGSPENGESKNAD_MIDLERTIDIG_ALENE": "true",

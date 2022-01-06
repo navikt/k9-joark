@@ -75,7 +75,8 @@ fun Application.k9Joark() {
 
     val k9MellomLagringGateway = K9MellomlagringGateway(
         accessTokenClient = accessTokenClientResolver.k9Dokument(),
-        k9MellomlagringScope = configuration.getK9MellomlagringScopes()
+        k9MellomlagringScope = configuration.getK9MellomlagringScopes(),
+        k9MellomlagringBaseUrl = configuration.getK9MellomlagringBaseUrl()
     )
 
     val contentTypeService = ContentTypeService()
