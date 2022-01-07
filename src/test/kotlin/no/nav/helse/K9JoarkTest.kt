@@ -26,6 +26,7 @@ class K9JoarkTest {
         private val logger: Logger = LoggerFactory.getLogger(K9JoarkTest::class.java)
 
         private val wireMockServer: WireMockServer = WireMockBuilder()
+            .withPort(53854)
             .withNaisStsSupport()
             .withAzureSupport()
             .wireMockConfiguration {
@@ -133,6 +134,32 @@ class K9JoarkTest {
                     mellomnavn = "penge",
                     etternavn = "Sen"
                 )
+            ),
+            expectedResponse = """{"journal_post_id":"9"}""".trimIndent(),
+            expectedCode = HttpStatusCode.Created,
+            uri = "/v1/pleiepenge/ettersending/journalforing"
+        )
+    }
+
+    @Test
+    fun `Journalpost for pleiepengesøknad ettersending med dokumentId`() {
+        val melding =  meldingForJournalføringMedDokumenterFraK9MellomLagring(
+            søkerNavn = Navn(
+                fornavn = "Peie",
+                mellomnavn = "penge",
+                etternavn = "Sen"
+            ),
+            norskIdent = "12345678910"
+        )
+
+        val dokumentId = melding.dokumenter!!.map {
+            it.map { it.toString().substringAfterLast("/") }
+        }
+
+        requestAndAssert(
+            request = melding.copy(
+                dokumenter = null,
+                dokumentId = dokumentId
             ),
             expectedResponse = """{"journal_post_id":"9"}""".trimIndent(),
             expectedCode = HttpStatusCode.Created,
@@ -448,7 +475,7 @@ class K9JoarkTest {
                 "instance": "about:blank",
                 "invalid_parameters": [{
                     "type": "entity",
-                    "name": "dokument",
+                    "name": "dokumenter",
                     "reason": "Det må sendes minst ett dokument",
                     "invalid_value": []
                 },
@@ -497,12 +524,92 @@ class K9JoarkTest {
                     "instance": "about:blank",
                     "invalid_parameters" : [
                         {
-                            "name" : "dokument_bolk",
+                            "name" : "dokumenter.dokument_bolk",
                             "reason" : "Det må være minst et dokument i en dokument bolk.",
                             "type": "entity",
                             "invalid_value": []
                         }
                     ]
+                }
+            """.trimIndent()
+        )
+    }
+
+    @Test
+    fun `melding med aktørId som bruker dokumentId skal feile`(){
+        val melding =  meldingForJournalføring(
+            søkerNavn = Navn(
+                fornavn = "Peie",
+                mellomnavn = "penge",
+                etternavn = "Sen"
+            )
+        )
+
+        val dokumentId = melding.dokumenter!!.map {
+            it.map { it.toString().substringAfterLast("/") }
+        }
+
+        requestAndAssert(
+            request = melding.copy(
+                dokumenter = null,
+                dokumentId = dokumentId
+            ),
+            expectedCode = HttpStatusCode.BadRequest,
+            expectedResponse = """
+                {
+                  "detail": "Requesten inneholder ugyldige paramtere.",
+                  "instance": "about:blank",
+                  "type": "/problem-details/invalid-request-parameters",
+                  "title": "invalid-request-parameters",
+                  "invalid_parameters": [
+                    {
+                      "name": "dokumentId",
+                      "reason": "Har ikke støtte for å hente dokumenter fra k9-dokument med dokumentId.",
+                      "invalid_value": [["4567", "78910"], ["1234"]],
+                      "type": "entity"
+                    }
+                  ],
+                  "status": 400
+                }
+            """.trimIndent()
+        )
+    }
+
+    @Test
+    fun `melding med både dokumenter og dokumentId skal feile`(){
+        val melding =  meldingForJournalføringMedDokumenterFraK9MellomLagring(
+            søkerNavn = Navn(
+                fornavn = "Peie",
+                mellomnavn = "penge",
+                etternavn = "Sen"
+            ),
+            norskIdent = "12345678910"
+        )
+
+        val dokumentId = melding.dokumenter!!.map {
+            it.map { it.toString().substringAfterLast("/") }
+        }
+
+        requestAndAssert(
+            request = melding.copy(
+                dokumentId = dokumentId
+            ),
+            expectedCode = HttpStatusCode.BadRequest,
+            expectedResponse = """
+                {
+                  "detail": "Requesten inneholder ugyldige paramtere.",
+                  "instance": "about:blank",
+                  "type": "/problem-details/invalid-request-parameters",
+                  "title": "invalid-request-parameters",
+                  "invalid_parameters": [
+                    {
+                      "name": "dokumenter, dokumentId",
+                      "reason": "Kun en av dokumentId og dokumenter kan være satt, ikke begge.",
+                      "invalid_value": "[[http://localhost:53854/k9-mellomlagring/4567, http://localhost:53854/k9-mellomlagring/78910], [http://localhost:53854/k9-mellomlagring/1234]], [[4567, 78910], [1234]]",
+                      "type": "entity"
+                    }
+                  ],
+                  "status": 400
                 }
             """.trimIndent()
         )

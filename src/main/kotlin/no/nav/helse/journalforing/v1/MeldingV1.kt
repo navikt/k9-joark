@@ -8,7 +8,8 @@ data class MeldingV1 (
     val aktoerId: String? = null,
     val mottatt: ZonedDateTime,
     val sokerNavn: Navn?,
-    val dokumenter: List<List<URI>>
+    val dokumenter: List<List<URI>>? = null,
+    val dokumentId: List<List<String>>? = null
 )
 
 data class Navn(

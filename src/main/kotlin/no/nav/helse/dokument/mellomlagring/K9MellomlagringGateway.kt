@@ -16,6 +16,7 @@ import kotlinx.coroutines.coroutineScope
 import no.nav.helse.CorrelationId
 import no.nav.helse.dokument.Dokument
 import no.nav.helse.dokument.DokumentEier
+import no.nav.helse.dusseldorf.ktor.client.buildURL
 import no.nav.helse.dusseldorf.ktor.core.Retry
 import no.nav.helse.dusseldorf.ktor.health.HealthCheck
 import no.nav.helse.dusseldorf.ktor.health.Healthy
@@ -33,7 +34,8 @@ import java.time.Duration
 
 class K9MellomlagringGateway(
     private val accessTokenClient: AccessTokenClient,
-    private val k9MellomlagringScope: Set<String>
+    private val k9MellomlagringScope: Set<String>,
+    private val k9MellomlagringBaseUrl: URI
 ): HealthCheck {
 
     private val objectMapper = configuredObjectMapper()
@@ -71,6 +73,34 @@ class K9MellomlagringGateway(
                 urls.forEach { url ->
                     futures.add(async {
                         hentDokument(url, eiersFodselsnummer, authorizationHeader, correlationId)
+                    })
+                }
+                futures.awaitAll()
+            }
+        }
+    }
+
+    suspend fun hentDokumenterMedDokumentId(
+        dokumentId : List<String>,
+        eiersFodselsnummer: Fodselsnummer,
+        correlationId: CorrelationId
+    ) : List<Dokument> {
+        val authorizationHeader = cachedAccessTokenClient.getAccessToken(k9MellomlagringScope).asAuthoriationHeader()
+
+        return Operation.monitored(
+            app = "k9-joark",
+            operation = HENTE_ALLE_DOKUMENTER_OPERATION
+        ) {
+            coroutineScope {
+                val futures = mutableListOf<Deferred<Dokument>>()
+                dokumentId.forEach { dokumentId ->
+                    val komplettUrl = Url.buildURL(
+                        baseUrl = k9MellomlagringBaseUrl,
+                        pathParts = listOf("v1", "dokument", dokumentId)
+                    )
+
+                    futures.add(async {
+                        hentDokument(komplettUrl, eiersFodselsnummer, authorizationHeader, correlationId)
                     })
                 }
                 futures.awaitAll()
