@@ -51,6 +51,17 @@ fun Route.journalforingApis(journalforingV1Service: JournalforingV1Service) {
         journalfør(melding, metadata)
     }
 
+    post("/v1/pleiepenge/ettersending/journalforing") {
+        val melding = call.receive<MeldingV1>()
+        val metadata = MetadataV1(
+            version = 1,
+            correlationId = call.request.getCorrelationId(),
+            requestId = call.response.getRequestId(),
+            søknadstype = Søknadstype.PLEIEPENGESØKNAD_ETTERSENDING
+        )
+        journalfør(melding, metadata)
+    }
+
     post("/v1/pleiepenge/livets-sluttfase/journalforing") {
         val melding = call.receive<MeldingV1>()
         val metadata = MetadataV1(
@@ -62,16 +73,17 @@ fun Route.journalforingApis(journalforingV1Service: JournalforingV1Service) {
         journalfør(melding, metadata)
     }
 
-    post("/v1/pleiepenge/ettersending/journalforing") {
+    post("/v1/pleiepenge/livets-sluttfase/ettersending/journalforing") {
         val melding = call.receive<MeldingV1>()
         val metadata = MetadataV1(
             version = 1,
             correlationId = call.request.getCorrelationId(),
             requestId = call.response.getRequestId(),
-            søknadstype = Søknadstype.PLEIEPENGESØKNAD_ETTERSENDING
+            søknadstype = Søknadstype.PLEIEPENGESØKNAD_LIVETS_SLUTTFASE_ETTERSENDING
         )
         journalfør(melding, metadata)
     }
+
 
     post("/v1/omsorgspenge/journalforing") {
         val melding = call.receive<MeldingV1>()
