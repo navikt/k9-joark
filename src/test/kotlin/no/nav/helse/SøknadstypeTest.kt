@@ -28,8 +28,9 @@ internal class SøknadstypeTest {
     fun `Disable alle`() {
         val enabled = Søknadstype.enabled(mapOf(
             "ENABLE_PLEIEPENGESKNAD" to "false",
-            "ENABLE_PLEIEPENGESKNAD_LIVETS_SLUTTFASE" to "false",
             "ENABLE_PLEIEPENGESKNAD_ETTERSENDING" to "false",
+            "ENABLE_PLEIEPENGESKNAD_LIVETS_SLUTTFASE" to "false",
+            "ENABLE_PLEIEPENGESKNAD_LIVETS_SLUTTFASE_ETTERSENDING" to "false",
             "ENABLE_OMSORGSPENGESKNAD" to "false",
             "ENABLE_OMSORGSPENGESKNAD_ETTERSENDING" to "false",
             "ENABLE_OMSORGSPENGESKNAD_UTBETALING_FRILANSER_SELVSTENDIG" to "false",

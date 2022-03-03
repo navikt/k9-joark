@@ -126,6 +126,22 @@ class K9JoarkTest {
     }
 
     @Test
+    fun `Journalpost for pleiepenger livets sluttfase ettersending`() {
+        requestAndAssert(
+            request = meldingForJournalføring(
+                søkerNavn = Navn(
+                    fornavn = "Pleiepenger",
+                    mellomnavn = "Livets",
+                    etternavn = "Sluttfase Ettersending"
+                )
+            ),
+            expectedResponse = """{"journal_post_id":"17"}""".trimIndent(),
+            expectedCode = HttpStatusCode.Created,
+            uri = "/v1/pleiepenge/livets-sluttfase/ettersending/journalforing"
+        )
+    }
+
+    @Test
     fun `Journalpost for pleiepengesøknad ettersending`() {
         requestAndAssert(
             request = meldingForJournalføring(

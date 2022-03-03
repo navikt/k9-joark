@@ -38,15 +38,21 @@ internal data class Journalpostinfo(
                 tema = Kapittel9Ytelse,
                 innsendingstype = Innsendingstype.SØKNAD
             ),
+            Søknadstype.PLEIEPENGESØKNAD_ETTERSENDING to Journalpostinfo(
+                brevkode = BrevKode(brevKode = "NAVe 09-11.05", dokumentKategori = "SOK"),
+                tittel = "Søknad om pleiepenger – sykt barn - NAVe 09-11.05",
+                tema = Kapittel9Ytelse,
+                innsendingstype = Innsendingstype.ETTERSENDELSE
+            ),
             Søknadstype.PLEIEPENGESØKNAD_LIVETS_SLUTTFASE to Journalpostinfo(
                 brevkode = BrevKode(brevKode = "NAV 09-12.05", dokumentKategori = "SOK"),
                 tittel = "Søknad om pleiepenger ved pleie i hjemmet av nærstående i livets sluttfase - NAV 09-12.05",
                 tema = Kapittel9Ytelse,
                 innsendingstype = Innsendingstype.SØKNAD
             ),
-            Søknadstype.PLEIEPENGESØKNAD_ETTERSENDING to Journalpostinfo(
-                brevkode = BrevKode(brevKode = "NAVe 09-11.05", dokumentKategori = "SOK"),
-                tittel = "Søknad om pleiepenger – sykt barn - NAVe 09-11.05",
+            Søknadstype.PLEIEPENGESØKNAD_LIVETS_SLUTTFASE_ETTERSENDING to Journalpostinfo(
+                brevkode = BrevKode(brevKode = "NAVe 09-12.05", dokumentKategori = "SOK"),
+                tittel = "Søknad om pleiepenger ved pleie i hjemmet av nærstående i livets sluttfase - NAVe 09-12.05",
                 tema = Kapittel9Ytelse,
                 innsendingstype = Innsendingstype.ETTERSENDELSE
             ),
