@@ -2,9 +2,9 @@ import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 val ktorVersion = ext.get("ktorVersion").toString()
-val dusseldorfKtorVersion = "3.1.6.7-1288df6"
+val dusseldorfKtorVersion = "3.1.6.8-248832c"
 val pdfBoxVersion = "2.0.25"
-val ImageIOVersion = "3.8.1"
+val imageIOVersion = "3.8.2"
 val jsonassertVersion = "1.5.0"
 val fuelVersion = "2.3.1"
 
@@ -16,7 +16,7 @@ plugins {
 }
 
 buildscript {
-    apply("https://raw.githubusercontent.com/navikt/dusseldorf-ktor/1288df6f88f6fa07ab0007df2a36c10eb7a71402/gradle/dusseldorf-ktor.gradle.kts")
+    apply("https://raw.githubusercontent.com/navikt/dusseldorf-ktor/248832c3f3f7518a5cfe51cbc0c063ca73a98f81/gradle/dusseldorf-ktor.gradle.kts")
 }
 
 dependencies {
@@ -33,7 +33,7 @@ dependencies {
 
     // Bilde til PNG
     implementation("org.apache.pdfbox:pdfbox:$pdfBoxVersion")
-    implementation("com.twelvemonkeys.imageio:imageio-jpeg:$ImageIOVersion")
+    implementation("com.twelvemonkeys.imageio:imageio-jpeg:$imageIOVersion")
 
     // Test
     testImplementation ( "no.nav.helse:dusseldorf-test-support:$dusseldorfKtorVersion")
