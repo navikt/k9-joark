@@ -42,7 +42,7 @@ object JournalPostRequestV1Factory {
             tema = journalpostinfo.tema.value,
             tittel = journalpostinfo.tittel,
             kanal = kanal.value,
-            journalfoerendeEnhet = "9999", //  NAV-enheten som har journalført, eventuelt skal journalføre, forsendelsen. Ved automatisk journalføring uten mennesker involvert skal enhet settes til "9999".
+            journalfoerendeEnhet = null, //  NAV-enheten som har journalført, eventuelt skal journalføre, forsendelsen. Ved automatisk journalføring uten mennesker involvert skal enhet settes til "9999".
             datoMottatt = formatDate(datoMottatt),
             dokumenter = vedlegg,
             innsendingstype = journalpostinfo.innsendingstype
