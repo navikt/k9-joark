@@ -69,25 +69,25 @@ internal data class Journalpostinfo(
                 innsendingstype = Innsendingstype.ETTERSENDELSE
             ),
             Søknadstype.OMSORGSPENGESØKNAD_UTBETALING_FRILANSER_SELVSTENDIG to Journalpostinfo(
-                brevkode = BrevKode(brevKode = "NAV 09-35.01", dokumentKategori = "SOK"),
+                brevkode = BrevKode(brevKode = "NAV 09-35.01", dokumentKategori = "SOK"), // TODO: Riktig kode er: NAV 09-09.03
                 tittel = "Søknad om utbetaling av omsorgsdager frilanser/selvstendig - NAV 09-35.01",
                 tema = Kapittel9Ytelse,
                 innsendingstype = Innsendingstype.SØKNAD
             ),
             Søknadstype.OMSORGSPENGESØKNAD_UTBETALING_FRILANSER_SELVSTENDIG_ETTERSENDING to Journalpostinfo(
-                brevkode = BrevKode(brevKode = "NAVe 09-35.01", dokumentKategori = "SOK"),
+                brevkode = BrevKode(brevKode = "NAVe 09-35.01", dokumentKategori = "SOK"), // TODO: Riktig kode er: NAVe 09-09.03
                 tittel = "Søknad om utbetaling av omsorgsdager frilanser/selvstendig - NAVe 09-35.01",
                 tema = Kapittel9Ytelse,
                 innsendingstype = Innsendingstype.ETTERSENDELSE
             ),
             Søknadstype.OMSORGSPENGESØKNAD_UTBETALING_ARBEIDSTAKER to Journalpostinfo(
-                brevkode = BrevKode(brevKode = "NAV 09-35.02", dokumentKategori = "SOK"),
+                brevkode = BrevKode(brevKode = "NAV 09-35.02", dokumentKategori = "SOK"), // TODO: Riktig kode er: NAV 09-09.01
                 tittel = "Søknad om utbetaling av omsorgspenger for arbeidstakere - NAV 09-35.02",
                 tema = Kapittel9Ytelse,
                 innsendingstype = Innsendingstype.SØKNAD
             ),
             Søknadstype.OMSORGSPENGESØKNAD_UTBETALING_ARBEIDSTAKER_ETTERSENDING to Journalpostinfo(
-                brevkode = BrevKode(brevKode = "NAVe 09-35.02", dokumentKategori = "SOK"),
+                brevkode = BrevKode(brevKode = "NAVe 09-35.02", dokumentKategori = "SOK"), // TODO: Riktig kode er: NAVe 09-09.01
                 tittel = "Søknad om utbetaling av omsorgspenger for arbeidstakere - NAVe 09-35.02",
                 tema = Kapittel9Ytelse,
                 innsendingstype = Innsendingstype.ETTERSENDELSE
