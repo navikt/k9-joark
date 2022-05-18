@@ -13,10 +13,6 @@ internal class AccessTokenClientResolver(
     private val clients: Map<String, Client>
 ) {
 
-    private companion object {
-        private val logger: Logger = LoggerFactory.getLogger(AccessTokenClientResolver::class.java)
-    }
-
     private val naisSts : AccessTokenClient
     private val azureV2 : AccessTokenClient
 
