@@ -42,13 +42,9 @@ object TestConfiguration {
 
         // Issuers
         wireMockServer?.apply {
-            map["no.nav.security.jwt.issuers.0.issuer_name"] = "azure-v1"
-            map["no.nav.security.jwt.issuers.0.discoveryurl"] = "${mockOAuth2Server.wellKnownUrl("azure-v1")}"
+            map["no.nav.security.jwt.issuers.0.issuer_name"] = "azure-v2"
+            map["no.nav.security.jwt.issuers.0.discoveryurl"] = "${mockOAuth2Server.wellKnownUrl("azure-v2")}"
             map["no.nav.security.jwt.issuers.0.accepted_audience"] = "dev-gcp:dusseldorf:k9-joark"
-
-            map["no.nav.security.jwt.issuers.1.issuer_name"] = "azure-v2"
-            map["no.nav.security.jwt.issuers.1.discoveryurl"] = "${mockOAuth2Server.wellKnownUrl("azure-v2")}"
-            map["no.nav.security.jwt.issuers.1.accepted_audience"] = "dev-gcp:dusseldorf:k9-joark"
         }
 
         return map.toMap()
