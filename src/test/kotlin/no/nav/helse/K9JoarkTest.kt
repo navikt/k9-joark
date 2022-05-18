@@ -10,6 +10,7 @@ import no.nav.helse.dusseldorf.testsupport.jws.Azure
 import no.nav.helse.dusseldorf.testsupport.wiremock.WireMockBuilder
 import no.nav.helse.journalforing.v1.MeldingV1
 import no.nav.helse.journalforing.v1.Navn
+import no.nav.security.mock.oauth2.MockOAuth2Server
 import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.BeforeAll
 import org.skyscreamer.jsonassert.JSONAssert
@@ -24,7 +25,7 @@ class K9JoarkTest {
 
     private companion object {
         private val logger: Logger = LoggerFactory.getLogger(K9JoarkTest::class.java)
-
+        private val mockOAuth2Server = MockOAuth2Server().apply { start() }
         private val wireMockServer: WireMockServer = WireMockBuilder()
             .withPort(53854)
             .withNaisStsSupport()
@@ -39,17 +40,18 @@ class K9JoarkTest {
             .stubMottaInngaaendeForsendelseOk()
 
         private val objectMapper = jacksonObjectMapper().k9JoarkConfigured()
-        private val authorizedAccessToken =
-            Azure.V1_0.generateJwt(
-                clientId = "hvilkem-som-helst-authorized-client-ia-aad-iac",
-                audience = "pleiepenger-joark"
-            )
+        private val azureToken = mockOAuth2Server.issueToken(
+            issuerId = "azure-v2",
+            audience = "dev-gcp:dusseldorf:k9-joark",
+            claims = mapOf("roles" to "access_as_application")
+        ).serialize()
 
         fun getConfig(): ApplicationConfig {
             val fileConfig = ConfigFactory.load()
             val testConfig = ConfigFactory.parseMap(
                 TestConfiguration.asMap(
-                    wireMockServer = wireMockServer
+                    wireMockServer = wireMockServer,
+                    mockOAuth2Server = mockOAuth2Server
                 )
             )
             val mergedConfig = testConfig.withFallback(fileConfig)
@@ -72,6 +74,7 @@ class K9JoarkTest {
         fun tearDown() {
             logger.info("Tearing down")
             wireMockServer.stop()
+            mockOAuth2Server.shutdown()
             logger.info("Tear down complete")
         }
     }
@@ -430,39 +433,30 @@ class K9JoarkTest {
             )
         )
 
-        val feilAuidence = Azure.V2_0.generateJwt(
-            clientId = "hvilen-som-helst-app",
-            audience = "feil-audience"
-        )
+        val feilAuidence = mockOAuth2Server.issueToken(
+            issuerId = "azure-v2",
+            audience = "dev-gcp:dusseldorf:k9-mellomlagring",
+            claims = mapOf("roles" to "access_as_application")
+        ).serialize()
 
-        val ikkeAuthorizedApplication = Azure.V2_0.generateJwt(
-            clientId = "hvilen-som-helst-app",
-            audience = "pleiepenger-joark",
-            accessAsApplication = false
-        )
-
-        val forventetResponse = """
-            {
-                "type": "/problem-details/unauthorized",
-                "title": "unauthorized",
-                "status": 403,
-                "detail": "Requesten inneholder ikke tilstrekkelige tilganger.",
-                "instance": "about:blank"
-            }
-            """.trimIndent()
+        val ikkeAuthorizedApplication = mockOAuth2Server.issueToken(
+            issuerId = "azure-v2",
+            audience = "dev-gcp:dusseldorf:k9-joark",
+            claims = mapOf("roles" to "no_access_as_application")
+        ).serialize()
 
         requestAndAssert(
             request = request,
-            expectedCode = HttpStatusCode.Forbidden,
-            accessToken = ikkeAuthorizedApplication,
-            expectedResponse = forventetResponse
-        )
-
-        requestAndAssert(
-            request = request,
-            expectedCode = HttpStatusCode.Forbidden,
+            expectedCode = HttpStatusCode.Unauthorized,
             accessToken = feilAuidence,
-            expectedResponse = forventetResponse
+            expectedResponse = null
+        )
+
+        requestAndAssert(
+            request = request,
+            expectedCode = HttpStatusCode.Unauthorized,
+            accessToken = ikkeAuthorizedApplication,
+            expectedResponse = null
         )
     }
 
@@ -640,7 +634,7 @@ class K9JoarkTest {
         expectedCode: HttpStatusCode,
         leggTilCorrelationId: Boolean = true,
         leggTilAuthorization: Boolean = true,
-        accessToken: String = authorizedAccessToken,
+        accessToken: String = azureToken,
         uri: String = "/v1/pleiepenge/journalforing"
     ) {
         with(engine) {
