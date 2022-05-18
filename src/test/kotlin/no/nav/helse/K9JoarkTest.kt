@@ -41,7 +41,7 @@ class K9JoarkTest {
 
         private val objectMapper = jacksonObjectMapper().k9JoarkConfigured()
         private val azureToken = mockOAuth2Server.issueToken(
-            issuerId = "azure-v2",
+            issuerId = "azure",
             audience = "dev-gcp:dusseldorf:k9-joark",
             claims = mapOf("roles" to "access_as_application")
         ).serialize()
@@ -434,13 +434,13 @@ class K9JoarkTest {
         )
 
         val feilAuidence = mockOAuth2Server.issueToken(
-            issuerId = "azure-v2",
+            issuerId = "azure",
             audience = "dev-gcp:dusseldorf:k9-mellomlagring",
             claims = mapOf("roles" to "access_as_application")
         ).serialize()
 
         val ikkeAuthorizedApplication = mockOAuth2Server.issueToken(
-            issuerId = "azure-v2",
+            issuerId = "azure",
             audience = "dev-gcp:dusseldorf:k9-joark",
             claims = mapOf("roles" to "no_access_as_application")
         ).serialize()
