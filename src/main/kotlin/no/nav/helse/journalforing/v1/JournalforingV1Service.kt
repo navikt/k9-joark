@@ -62,7 +62,6 @@ class JournalforingV1Service(
                 dokumentService.hentDokumenter(
                     urls = it,
                     correlationId = correlationId,
-                    aktoerId = melding.aktoerId,
                     fodselsnummer = fodselsnummer
                 )
             )
@@ -142,17 +141,6 @@ class JournalforingV1Service(
         }
 
         melding.dokumentId?.let {
-            if(melding.aktoerId != null){ //Kan vurdere å legge til støtte for k9-dokument. Kun frisinn som bruker den
-                feil.add(
-                    Violation(
-                        parameterName = "dokumentId",
-                        reason = "Har ikke støtte for å hente dokumenter fra k9-dokument med dokumentId.",
-                        parameterType = ParameterType.ENTITY,
-                        invalidValue = melding.dokumentId
-                    )
-                )
-            }
-
             if(it.isEmpty()){
                 feil.add(
                     Violation(
@@ -185,17 +173,6 @@ class JournalforingV1Service(
         val violations = mutableSetOf<Violation>()
 
         violations.addAll(validerDokumenter(melding))
-
-        if (melding.aktoerId != null && !melding.aktoerId.matches(ONLY_DIGITS)) {
-            violations.add(
-                Violation(
-                    parameterName = "aktoer_id",
-                    reason = "Ugyldig AktørID. Kan kun være siffer.",
-                    parameterType = ParameterType.ENTITY,
-                    invalidValue = melding.aktoerId
-                )
-            )
-        }
 
         if (!melding.norskIdent.matches(ONLY_DIGITS)) {
             violations.add(

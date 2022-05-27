@@ -22,7 +22,6 @@ class K9JoarkWithMocks {
                     it.extensions(DokarkivResponseTransformer())
                 }
                 .build()
-                .stubGetDokument()
                 .stubDomotInngaaendeIsReady()
                 .stubMottaInngaaendeForsendelseOk()
 

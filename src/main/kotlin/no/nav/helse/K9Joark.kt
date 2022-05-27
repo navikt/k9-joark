@@ -11,13 +11,10 @@ import io.ktor.metrics.micrometer.*
 import io.ktor.routing.*
 import io.prometheus.client.hotspot.DefaultExports
 import no.nav.helse.dokument.ContentTypeService
-import no.nav.helse.dokument.DokumentGateway
 import no.nav.helse.dokument.DokumentService
 import no.nav.helse.dokument.mellomlagring.K9MellomlagringGateway
 import no.nav.helse.dusseldorf.ktor.auth.AuthStatusPages
-import no.nav.helse.dusseldorf.ktor.auth.allIssuers
 import no.nav.helse.dusseldorf.ktor.auth.idToken
-import no.nav.helse.dusseldorf.ktor.auth.multipleJwtIssuers
 import no.nav.helse.dusseldorf.ktor.client.HttpRequestHealthCheck
 import no.nav.helse.dusseldorf.ktor.client.HttpRequestHealthConfig
 import no.nav.helse.dusseldorf.ktor.client.buildURL
@@ -79,17 +76,12 @@ fun Application.k9Joark() {
 
     val journalforingGateway = JournalforingGateway(
         baseUrl = configuration.getDokarkivBaseUrl(),
-        accessTokenClient = accessTokenClientResolver.joark(),
-        oppretteJournalPostScopes = configuration.getOppretteJournalpostScopes()
-    )
-
-    val dokumentGateway = DokumentGateway(
-        accessTokenClient = accessTokenClientResolver.k9Dokument(),
-        henteDokumentScopes = configuration.getHenteDokumentScopes()
+        accessTokenClient = accessTokenClientResolver.azureClient(),
+        oppretteJournalPostScopes = configuration.getDokarkivScope()
     )
 
     val k9MellomLagringGateway = K9MellomlagringGateway(
-        accessTokenClient = accessTokenClientResolver.k9Dokument(),
+        accessTokenClient = accessTokenClientResolver.azureClient(),
         k9MellomlagringScope = configuration.getK9MellomlagringScopes(),
         k9MellomlagringBaseUrl = configuration.getK9MellomlagringBaseUrl()
     )
@@ -97,7 +89,6 @@ fun Application.k9Joark() {
     val contentTypeService = ContentTypeService()
 
     val dokumentService = DokumentService(
-        dokumentGateway = dokumentGateway,
         k9MellomlagringGateway = k9MellomLagringGateway,
         image2PDFConverter = Image2PDFConverter(),
         contentTypeService = contentTypeService
@@ -105,7 +96,6 @@ fun Application.k9Joark() {
 
     val healthService = HealthService(setOf(
         journalforingGateway,
-        dokumentGateway,
         k9MellomLagringGateway,
         HttpRequestHealthCheck(
             mapOf(
