@@ -18,5 +18,5 @@
    },
   "slack-channel": "sif-alerts-dev",
   "slack-notify-type": "<!here> | k9-joark | ",
-  "app-alert-ingress": "https://k9-joark.dev-intern.nav.no"
+  "app-alert-ingress": "https://k9-joark.dev.intern.nav.no"
 }
