@@ -28,6 +28,5 @@ internal class AccessTokenClientResolver(
         return client as PrivateKeyClient
     }
 
-    internal fun k9Dokument() = azureV2
-    internal fun dokarkiv() = azureV2
+    internal fun azureClient() = azureV2
 }

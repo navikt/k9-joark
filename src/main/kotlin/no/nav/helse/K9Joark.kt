@@ -77,17 +77,17 @@ fun Application.k9Joark() {
 
     val journalforingGateway = JournalforingGateway(
         baseUrl = configuration.getDokarkivBaseUrl(),
-        accessTokenClient = accessTokenClientResolver.dokarkiv(),
+        accessTokenClient = accessTokenClientResolver.azureClient(),
         oppretteJournalPostScopes = configuration.getDokarkivScope()
     )
 
     val dokumentGateway = DokumentGateway(
-        accessTokenClient = accessTokenClientResolver.k9Dokument(),
+        accessTokenClient = accessTokenClientResolver.azureClient(),
         henteDokumentScopes = configuration.getHenteDokumentScopes()
     )
 
     val k9MellomLagringGateway = K9MellomlagringGateway(
-        accessTokenClient = accessTokenClientResolver.k9Dokument(),
+        accessTokenClient = accessTokenClientResolver.azureClient(),
         k9MellomlagringScope = configuration.getK9MellomlagringScopes(),
         k9MellomlagringBaseUrl = configuration.getK9MellomlagringBaseUrl()
     )
