@@ -14,7 +14,6 @@
   "env": {
     "DOKARKIV_BASE_URL": "https://dokarkiv-q1.nais.preprod.local",
     "DOKARKIV_SCOPE": "133ed9a4-fa3d-4e1e-a533-610afc02a56e/.default",
-    "K9_DOKUMENT_SCOPE": "97f0b1bc-6aa9-4d44-a3c7-60b4318fbec4/.default",
     "K9_MELLOMLAGRING_SCOPE": "8d0460bd-ea81-4b08-b524-cf04874a794c/.default",
     "K9_MELLOMLAGRING_BASE_URL": "https://k9-mellomlagring.dev.intern.nav.no"
    },

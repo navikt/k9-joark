@@ -34,9 +34,6 @@ internal data class Configuration(private val config : ApplicationConfig) {
 
     internal fun getDokarkivScope() = config.getRequiredList("nav.auth.scopes.dokarkiv-scope", secret = false, builder = { it }).toSet()
 
-    internal fun getHenteDokumentScopes() : Set<String> {
-        return config.getRequiredList("nav.auth.scopes.k9-dokument-scope", secret = false, builder = { it }).toSet()
-    }
 
     internal fun getK9MellomlagringScopes() : Set<String> {
         return config.getRequiredList("nav.auth.scopes.k9-mellomlagring-scope", secret = false, builder = { it }).toSet()

@@ -34,8 +34,7 @@ class K9JoarkTest {
                 it.extensions(DokarkivResponseTransformer())
             }
             .build()
-            .stubGetDokument()
-            .stubGetDokumentFraK9Mellomlagring("12345678910")
+            .stubGetDokumentFraK9Mellomlagring("012345678901")
             .stubDomotInngaaendeIsReady()
             .stubMottaInngaaendeForsendelseOk()
 
@@ -168,7 +167,7 @@ class K9JoarkTest {
                 mellomnavn = "penge",
                 etternavn = "Sen"
             ),
-            norskIdent = "12345678910"
+            norskIdent = "012345678901"
         )
 
         val dokumentId = melding.dokumenter!!.map {
@@ -287,16 +286,6 @@ class K9JoarkTest {
     }
 
     @Test
-    fun `Journalpost for frisinnsøknad`() {
-        requestAndAssert(
-            request = meldingForJournalføring(),
-            expectedResponse = """{"journal_post_id":"7"}""".trimIndent(),
-            expectedCode = HttpStatusCode.Created,
-            uri = "/v1/frisinn/journalforing"
-        )
-    }
-
-    @Test
     fun `Journalpost for omsorgspenger - midlertidig alene`() {
         requestAndAssert(
             request = meldingForJournalføringMedDokumenterFraK9MellomLagring(
@@ -305,7 +294,7 @@ class K9JoarkTest {
                     mellomnavn = "penge",
                     etternavn = "Sen"
                 ),
-                norskIdent = "12345678910"
+                norskIdent = "012345678901"
             ),
             expectedResponse = """{"journal_post_id":"8"}""".trimIndent(),
             expectedCode = HttpStatusCode.Created,
@@ -322,7 +311,7 @@ class K9JoarkTest {
                     mellomnavn = "penge",
                     etternavn = "Sen"
                 ),
-                norskIdent = "12345678910"
+                norskIdent = "012345678901"
             ),
             expectedResponse = """{"journal_post_id":"13"}""".trimIndent(),
             expectedCode = HttpStatusCode.Created,
@@ -339,7 +328,7 @@ class K9JoarkTest {
                     mellomnavn = "penge",
                     etternavn = "Sen"
                 ),
-                norskIdent = "12345678910"
+                norskIdent = "012345678901"
             ),
             expectedResponse = """{"journal_post_id":"15"}""".trimIndent(),
             expectedCode = HttpStatusCode.Created,
@@ -354,11 +343,10 @@ class K9JoarkTest {
             mottatt = ZonedDateTime.now(),
             dokumenter = listOf(
                 listOf(
-                    getDokumentUrl("1234"),
-                    getDokumentUrl("5678")
+                    getK9MellomlagringDokumentUrl("1234"),
+                    getK9MellomlagringDokumentUrl("5678")
                 )
             ),
-            aktoerId = "12345",
             sokerNavn = Navn(
                 fornavn = "ole",
                 etternavn = "Nordmann"
@@ -396,11 +384,10 @@ class K9JoarkTest {
             mottatt = ZonedDateTime.now(),
             dokumenter = listOf(
                 listOf(
-                    getDokumentUrl("1234"),
-                    getDokumentUrl("5678")
+                    getK9MellomlagringDokumentUrl("1234"),
+                    getK9MellomlagringDokumentUrl("5678")
                 )
             ),
-            aktoerId = "12345",
             sokerNavn = Navn(
                 fornavn = "ole",
                 etternavn = "Nordmann"
@@ -422,11 +409,10 @@ class K9JoarkTest {
             mottatt = ZonedDateTime.now(),
             dokumenter = listOf(
                 listOf(
-                    getDokumentUrl("1234"),
-                    getDokumentUrl("5678")
+                    getK9MellomlagringDokumentUrl("1234"),
+                    getK9MellomlagringDokumentUrl("5678")
                 )
             ),
-            aktoerId = "12345",
             sokerNavn = Navn(
                 fornavn = "ole",
                 etternavn = "Nordmann"
@@ -466,7 +452,6 @@ class K9JoarkTest {
             norskIdent = "012345678901F",
             mottatt = ZonedDateTime.now(),
             dokumenter = listOf(),
-            aktoerId = "12345F",
             sokerNavn = Navn(
                 fornavn = "ole",
                 etternavn = "Nordmann"
@@ -491,12 +476,6 @@ class K9JoarkTest {
                 },
                 {
                     "type": "entity",
-                    "name": "aktoer_id",
-                    "reason": "Ugyldig AktørID. Kan kun være siffer.",
-                    "invalid_value": "12345F"
-                },
-                {
-                    "type": "entity",
                     "name": "norsk_ident",
                     "reason": "Ugyldig Norsk Ident. Kan kun være siffer.",
                     "invalid_value": "012345678901F"
@@ -512,10 +491,9 @@ class K9JoarkTest {
             norskIdent = "012345678901",
             mottatt = ZonedDateTime.now(),
             dokumenter = listOf(
-                listOf(getDokumentUrl("1234")),
+                listOf(getK9MellomlagringDokumentUrl("1234")),
                 listOf()
             ),
-            aktoerId = "12345",
             sokerNavn = Navn(
                 fornavn = "ole",
                 etternavn = "Nordmann"
@@ -540,46 +518,6 @@ class K9JoarkTest {
                             "invalid_value": []
                         }
                     ]
-                }
-            """.trimIndent()
-        )
-    }
-
-    @Test
-    fun `melding med aktørId som bruker dokumentId skal feile`(){
-        val melding =  meldingForJournalføring(
-            søkerNavn = Navn(
-                fornavn = "Peie",
-                mellomnavn = "penge",
-                etternavn = "Sen"
-            )
-        )
-
-        val dokumentId = melding.dokumenter!!.map {
-            it.map { it.toString().substringAfterLast("/") }
-        }
-
-        requestAndAssert(
-            request = melding.copy(
-                dokumenter = null,
-                dokumentId = dokumentId
-            ),
-            expectedCode = HttpStatusCode.BadRequest,
-            expectedResponse = """
-                {
-                  "detail": "Requesten inneholder ugyldige paramtere.",
-                  "instance": "about:blank",
-                  "type": "/problem-details/invalid-request-parameters",
-                  "title": "invalid-request-parameters",
-                  "invalid_parameters": [
-                    {
-                      "name": "dokumentId",
-                      "reason": "Har ikke støtte for å hente dokumenter fra k9-dokument med dokumentId.",
-                      "invalid_value": [["4567", "78910"], ["1234"]],
-                      "type": "entity"
-                    }
-                  ],
-                  "status": 400
                 }
             """.trimIndent()
         )
@@ -625,7 +563,6 @@ class K9JoarkTest {
         )
     }
 
-    private fun getDokumentUrl(dokumentId: String) = URI("${wireMockServer.getK9DokumentUrl()}/$dokumentId")
     private fun getK9MellomlagringDokumentUrl(dokumentId: String) = URI("${wireMockServer.getK9MellomlagringUrl()}/$dokumentId")
 
     private fun requestAndAssert(
@@ -662,23 +599,20 @@ class K9JoarkTest {
     ): MeldingV1 {
         val jpegDokumentId = "1234" // Default mocket som JPEG
         val pdfDokumentId = "4567"
-        stubGetDokumentPdf(pdfDokumentId)
         val jsonDokumentId = "78910"
-        stubGetDokumentJson(jsonDokumentId)
 
         return MeldingV1(
             norskIdent = "012345678901",
             mottatt = ZonedDateTime.now(),
             dokumenter = listOf(
                 listOf(
-                    getDokumentUrl(pdfDokumentId),
-                    getDokumentUrl(jsonDokumentId)
+                    getK9MellomlagringDokumentUrl(pdfDokumentId),
+                    getK9MellomlagringDokumentUrl(jsonDokumentId)
                 ),
                 listOf(
-                    getDokumentUrl(jpegDokumentId)
+                    getK9MellomlagringDokumentUrl(jpegDokumentId)
                 )
             ),
-            aktoerId = "12345",
             sokerNavn = søkerNavn
         )
     }

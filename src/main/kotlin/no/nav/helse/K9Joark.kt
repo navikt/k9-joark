@@ -11,7 +11,6 @@ import io.ktor.metrics.micrometer.*
 import io.ktor.routing.*
 import io.prometheus.client.hotspot.DefaultExports
 import no.nav.helse.dokument.ContentTypeService
-import no.nav.helse.dokument.DokumentGateway
 import no.nav.helse.dokument.DokumentService
 import no.nav.helse.dokument.mellomlagring.K9MellomlagringGateway
 import no.nav.helse.dusseldorf.ktor.auth.AuthStatusPages
@@ -81,11 +80,6 @@ fun Application.k9Joark() {
         oppretteJournalPostScopes = configuration.getDokarkivScope()
     )
 
-    val dokumentGateway = DokumentGateway(
-        accessTokenClient = accessTokenClientResolver.azureClient(),
-        henteDokumentScopes = configuration.getHenteDokumentScopes()
-    )
-
     val k9MellomLagringGateway = K9MellomlagringGateway(
         accessTokenClient = accessTokenClientResolver.azureClient(),
         k9MellomlagringScope = configuration.getK9MellomlagringScopes(),
@@ -95,7 +89,6 @@ fun Application.k9Joark() {
     val contentTypeService = ContentTypeService()
 
     val dokumentService = DokumentService(
-        dokumentGateway = dokumentGateway,
         k9MellomlagringGateway = k9MellomLagringGateway,
         image2PDFConverter = Image2PDFConverter(),
         contentTypeService = contentTypeService
@@ -103,7 +96,6 @@ fun Application.k9Joark() {
 
     val healthService = HealthService(setOf(
         journalforingGateway,
-        dokumentGateway,
         k9MellomLagringGateway,
         HttpRequestHealthCheck(
             mapOf(
