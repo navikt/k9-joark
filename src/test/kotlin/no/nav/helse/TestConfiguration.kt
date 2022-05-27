@@ -14,7 +14,7 @@ object TestConfiguration {
         port : Int = 8080,
         dokarkivUrl : String? = wireMockServer?.getDokarkivUrl(),
         k9MellomlagringUrl: String? = wireMockServer?.getK9MellomlagringUrl(),
-        k9JoarkAzureClientId: String = "pleiepenger-joark",
+        k9JoarkAzureClientId: String = "k9-joark",
         mockOAuth2Server: MockOAuth2Server
     ) : Map<String, String>{
         val map = mutableMapOf(
@@ -25,19 +25,13 @@ object TestConfiguration {
 
         // Clients
         wireMockServer?.apply {
-            map["nav.auth.clients.0.alias"] = "nais-sts"
-            map["nav.auth.clients.0.client_id"] = "srvpleiepenger-joark"
-            map["nav.auth.clients.0.client_secret"] = "very-secret"
-            map["nav.auth.clients.0.discovery_endpoint"] = wireMockServer.getNaisStsWellKnownUrl()
-        }
-
-        wireMockServer?.apply {
-            map["nav.auth.clients.1.alias"] = "azure-v2"
-            map["nav.auth.clients.1.client_id"] = k9JoarkAzureClientId
-            map["nav.auth.clients.1.private_key_jwk"] = ClientCredentials.ClientA.privateKeyJwk
-            map["nav.auth.clients.1.discovery_endpoint"] = wireMockServer.getAzureV2WellKnownUrl()
+            map["nav.auth.clients.0.alias"] = "azure-v2"
+            map["nav.auth.clients.0.client_id"] = k9JoarkAzureClientId
+            map["nav.auth.clients.0.private_key_jwk"] = ClientCredentials.ClientA.privateKeyJwk
+            map["nav.auth.clients.0.discovery_endpoint"] = wireMockServer.getAzureV2WellKnownUrl()
             map["nav.auth.scopes.k9-dokument-scope"] = "k9-dokument/.default"
             map["nav.auth.scopes.k9-mellomlagring-scope"] = "k9-mellomlagring/.default"
+            map["nav.auth.scopes.dokarkiv-scope"] = "dokarkiv/.default"
         }
 
         // Issuers

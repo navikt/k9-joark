@@ -8,11 +8,11 @@
   "maxReplicas": "4",
   "tenant": "nav.no",
   "ingresses": [
-    "https://k9-joark.nais.adeo.no",
-    "https://k9-joark.prod-fss-pub.nais.io"
+    "https://k9-joark.prod-fss-pub.nais.io",
+    "https://k9-joark.intern.nav.no"
   ],
   "env": {
-    "DOKARKIV_BASE_URL": "https://dokarkiv.nais.adeo.no",
+    "DOKARKIV_BASE_URL": "https://dokarkiv.prod-fss-pub.nais.io",
     "DOKARKIV_SCOPE": "162b3255-2f72-4399-8f7a-244add9ffaac/.default",
     "K9_DOKUMENT_SCOPE": "0c5a6709-ba2a-42b7-bbfc-9b9f844e2ee2/.default",
     "K9_MELLOMLAGRING_SCOPE": "19aaf0b2-f40a-4a64-bf7f-fd2dd62f0552/.default",
@@ -24,5 +24,5 @@
   },
   "slack-channel": "sif-alerts",
   "slack-notify-type": "<!channel> | k9-joark | ",
-  "app-alert-ingress": "https://k9-joark.nais.adeo.no"
+  "app-alert-ingress": "https://k9-joark.intern.nav.no"
 }

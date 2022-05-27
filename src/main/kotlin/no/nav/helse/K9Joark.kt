@@ -15,9 +15,7 @@ import no.nav.helse.dokument.DokumentGateway
 import no.nav.helse.dokument.DokumentService
 import no.nav.helse.dokument.mellomlagring.K9MellomlagringGateway
 import no.nav.helse.dusseldorf.ktor.auth.AuthStatusPages
-import no.nav.helse.dusseldorf.ktor.auth.allIssuers
 import no.nav.helse.dusseldorf.ktor.auth.idToken
-import no.nav.helse.dusseldorf.ktor.auth.multipleJwtIssuers
 import no.nav.helse.dusseldorf.ktor.client.HttpRequestHealthCheck
 import no.nav.helse.dusseldorf.ktor.client.HttpRequestHealthConfig
 import no.nav.helse.dusseldorf.ktor.client.buildURL
@@ -79,8 +77,8 @@ fun Application.k9Joark() {
 
     val journalforingGateway = JournalforingGateway(
         baseUrl = configuration.getDokarkivBaseUrl(),
-        accessTokenClient = accessTokenClientResolver.joark(),
-        oppretteJournalPostScopes = configuration.getOppretteJournalpostScopes()
+        accessTokenClient = accessTokenClientResolver.dokarkiv(),
+        oppretteJournalPostScopes = configuration.getDokarkivScope()
     )
 
     val dokumentGateway = DokumentGateway(
