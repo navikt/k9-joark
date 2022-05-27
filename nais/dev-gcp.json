@@ -8,7 +8,6 @@
   "maxReplicas": "2",
   "tenant": "trygdeetaten.no",
   "ingresses": [
-    "https://k9-joark.dev-fss-pub.nais.io",
     "https://k9-joark.dev.intern.nav.no"
   ],
   "env": {
