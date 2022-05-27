@@ -1,7 +1,7 @@
 {
   "app": "k9-joark",
   "environment": "prod",
-  "cluster": "prod-fss",
+  "cluster": "prod-gcp",
   "namespace": "dusseldorf",
   "team": "dusseldorf",
   "minReplicas": "2",
