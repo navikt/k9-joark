@@ -10,6 +10,7 @@ import no.nav.helse.dusseldorf.testsupport.jws.Azure
 import no.nav.helse.dusseldorf.testsupport.wiremock.WireMockBuilder
 import no.nav.helse.journalforing.v1.MeldingV1
 import no.nav.helse.journalforing.v1.Navn
+import no.nav.security.mock.oauth2.MockOAuth2Server
 import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.BeforeAll
 import org.skyscreamer.jsonassert.JSONAssert
@@ -24,7 +25,7 @@ class K9JoarkTest {
 
     private companion object {
         private val logger: Logger = LoggerFactory.getLogger(K9JoarkTest::class.java)
-
+        private val mockOAuth2Server = MockOAuth2Server().apply { start() }
         private val wireMockServer: WireMockServer = WireMockBuilder()
             .withPort(53854)
             .withNaisStsSupport()
@@ -33,23 +34,23 @@ class K9JoarkTest {
                 it.extensions(DokarkivResponseTransformer())
             }
             .build()
-            .stubGetDokument()
-            .stubGetDokumentFraK9Mellomlagring("12345678910")
+            .stubGetDokumentFraK9Mellomlagring("012345678901")
             .stubDomotInngaaendeIsReady()
             .stubMottaInngaaendeForsendelseOk()
 
         private val objectMapper = jacksonObjectMapper().k9JoarkConfigured()
-        private val authorizedAccessToken =
-            Azure.V1_0.generateJwt(
-                clientId = "hvilkem-som-helst-authorized-client-ia-aad-iac",
-                audience = "pleiepenger-joark"
-            )
+        private val azureToken = mockOAuth2Server.issueToken(
+            issuerId = "azure",
+            audience = "dev-gcp:dusseldorf:k9-joark",
+            claims = mapOf("roles" to "access_as_application")
+        ).serialize()
 
         fun getConfig(): ApplicationConfig {
             val fileConfig = ConfigFactory.load()
             val testConfig = ConfigFactory.parseMap(
                 TestConfiguration.asMap(
-                    wireMockServer = wireMockServer
+                    wireMockServer = wireMockServer,
+                    mockOAuth2Server = mockOAuth2Server
                 )
             )
             val mergedConfig = testConfig.withFallback(fileConfig)
@@ -72,6 +73,7 @@ class K9JoarkTest {
         fun tearDown() {
             logger.info("Tearing down")
             wireMockServer.stop()
+            mockOAuth2Server.shutdown()
             logger.info("Tear down complete")
         }
     }
@@ -165,7 +167,7 @@ class K9JoarkTest {
                 mellomnavn = "penge",
                 etternavn = "Sen"
             ),
-            norskIdent = "12345678910"
+            norskIdent = "012345678901"
         )
 
         val dokumentId = melding.dokumenter!!.map {
@@ -284,16 +286,6 @@ class K9JoarkTest {
     }
 
     @Test
-    fun `Journalpost for frisinnsøknad`() {
-        requestAndAssert(
-            request = meldingForJournalføring(),
-            expectedResponse = """{"journal_post_id":"7"}""".trimIndent(),
-            expectedCode = HttpStatusCode.Created,
-            uri = "/v1/frisinn/journalforing"
-        )
-    }
-
-    @Test
     fun `Journalpost for omsorgspenger - midlertidig alene`() {
         requestAndAssert(
             request = meldingForJournalføringMedDokumenterFraK9MellomLagring(
@@ -302,7 +294,7 @@ class K9JoarkTest {
                     mellomnavn = "penge",
                     etternavn = "Sen"
                 ),
-                norskIdent = "12345678910"
+                norskIdent = "012345678901"
             ),
             expectedResponse = """{"journal_post_id":"8"}""".trimIndent(),
             expectedCode = HttpStatusCode.Created,
@@ -319,7 +311,7 @@ class K9JoarkTest {
                     mellomnavn = "penge",
                     etternavn = "Sen"
                 ),
-                norskIdent = "12345678910"
+                norskIdent = "012345678901"
             ),
             expectedResponse = """{"journal_post_id":"13"}""".trimIndent(),
             expectedCode = HttpStatusCode.Created,
@@ -336,7 +328,7 @@ class K9JoarkTest {
                     mellomnavn = "penge",
                     etternavn = "Sen"
                 ),
-                norskIdent = "12345678910"
+                norskIdent = "012345678901"
             ),
             expectedResponse = """{"journal_post_id":"15"}""".trimIndent(),
             expectedCode = HttpStatusCode.Created,
@@ -351,11 +343,10 @@ class K9JoarkTest {
             mottatt = ZonedDateTime.now(),
             dokumenter = listOf(
                 listOf(
-                    getDokumentUrl("1234"),
-                    getDokumentUrl("5678")
+                    getK9MellomlagringDokumentUrl("1234"),
+                    getK9MellomlagringDokumentUrl("5678")
                 )
             ),
-            aktoerId = "12345",
             sokerNavn = Navn(
                 fornavn = "ole",
                 etternavn = "Nordmann"
@@ -393,11 +384,10 @@ class K9JoarkTest {
             mottatt = ZonedDateTime.now(),
             dokumenter = listOf(
                 listOf(
-                    getDokumentUrl("1234"),
-                    getDokumentUrl("5678")
+                    getK9MellomlagringDokumentUrl("1234"),
+                    getK9MellomlagringDokumentUrl("5678")
                 )
             ),
-            aktoerId = "12345",
             sokerNavn = Navn(
                 fornavn = "ole",
                 etternavn = "Nordmann"
@@ -419,50 +409,40 @@ class K9JoarkTest {
             mottatt = ZonedDateTime.now(),
             dokumenter = listOf(
                 listOf(
-                    getDokumentUrl("1234"),
-                    getDokumentUrl("5678")
+                    getK9MellomlagringDokumentUrl("1234"),
+                    getK9MellomlagringDokumentUrl("5678")
                 )
             ),
-            aktoerId = "12345",
             sokerNavn = Navn(
                 fornavn = "ole",
                 etternavn = "Nordmann"
             )
         )
 
-        val feilAuidence = Azure.V2_0.generateJwt(
-            clientId = "hvilen-som-helst-app",
-            audience = "feil-audience"
-        )
+        val feilAuidence = mockOAuth2Server.issueToken(
+            issuerId = "azure",
+            audience = "dev-gcp:dusseldorf:k9-mellomlagring",
+            claims = mapOf("roles" to "access_as_application")
+        ).serialize()
 
-        val ikkeAuthorizedApplication = Azure.V2_0.generateJwt(
-            clientId = "hvilen-som-helst-app",
-            audience = "pleiepenger-joark",
-            accessAsApplication = false
-        )
-
-        val forventetResponse = """
-            {
-                "type": "/problem-details/unauthorized",
-                "title": "unauthorized",
-                "status": 403,
-                "detail": "Requesten inneholder ikke tilstrekkelige tilganger.",
-                "instance": "about:blank"
-            }
-            """.trimIndent()
+        val ikkeAuthorizedApplication = mockOAuth2Server.issueToken(
+            issuerId = "azure",
+            audience = "dev-gcp:dusseldorf:k9-joark",
+            claims = mapOf("roles" to "no_access_as_application")
+        ).serialize()
 
         requestAndAssert(
             request = request,
-            expectedCode = HttpStatusCode.Forbidden,
-            accessToken = ikkeAuthorizedApplication,
-            expectedResponse = forventetResponse
-        )
-
-        requestAndAssert(
-            request = request,
-            expectedCode = HttpStatusCode.Forbidden,
+            expectedCode = HttpStatusCode.Unauthorized,
             accessToken = feilAuidence,
-            expectedResponse = forventetResponse
+            expectedResponse = null
+        )
+
+        requestAndAssert(
+            request = request,
+            expectedCode = HttpStatusCode.Unauthorized,
+            accessToken = ikkeAuthorizedApplication,
+            expectedResponse = null
         )
     }
 
@@ -472,7 +452,6 @@ class K9JoarkTest {
             norskIdent = "012345678901F",
             mottatt = ZonedDateTime.now(),
             dokumenter = listOf(),
-            aktoerId = "12345F",
             sokerNavn = Navn(
                 fornavn = "ole",
                 etternavn = "Nordmann"
@@ -497,12 +476,6 @@ class K9JoarkTest {
                 },
                 {
                     "type": "entity",
-                    "name": "aktoer_id",
-                    "reason": "Ugyldig AktørID. Kan kun være siffer.",
-                    "invalid_value": "12345F"
-                },
-                {
-                    "type": "entity",
                     "name": "norsk_ident",
                     "reason": "Ugyldig Norsk Ident. Kan kun være siffer.",
                     "invalid_value": "012345678901F"
@@ -518,10 +491,9 @@ class K9JoarkTest {
             norskIdent = "012345678901",
             mottatt = ZonedDateTime.now(),
             dokumenter = listOf(
-                listOf(getDokumentUrl("1234")),
+                listOf(getK9MellomlagringDokumentUrl("1234")),
                 listOf()
             ),
-            aktoerId = "12345",
             sokerNavn = Navn(
                 fornavn = "ole",
                 etternavn = "Nordmann"
@@ -546,46 +518,6 @@ class K9JoarkTest {
                             "invalid_value": []
                         }
                     ]
-                }
-            """.trimIndent()
-        )
-    }
-
-    @Test
-    fun `melding med aktørId som bruker dokumentId skal feile`(){
-        val melding =  meldingForJournalføring(
-            søkerNavn = Navn(
-                fornavn = "Peie",
-                mellomnavn = "penge",
-                etternavn = "Sen"
-            )
-        )
-
-        val dokumentId = melding.dokumenter!!.map {
-            it.map { it.toString().substringAfterLast("/") }
-        }
-
-        requestAndAssert(
-            request = melding.copy(
-                dokumenter = null,
-                dokumentId = dokumentId
-            ),
-            expectedCode = HttpStatusCode.BadRequest,
-            expectedResponse = """
-                {
-                  "detail": "Requesten inneholder ugyldige paramtere.",
-                  "instance": "about:blank",
-                  "type": "/problem-details/invalid-request-parameters",
-                  "title": "invalid-request-parameters",
-                  "invalid_parameters": [
-                    {
-                      "name": "dokumentId",
-                      "reason": "Har ikke støtte for å hente dokumenter fra k9-dokument med dokumentId.",
-                      "invalid_value": [["4567", "78910"], ["1234"]],
-                      "type": "entity"
-                    }
-                  ],
-                  "status": 400
                 }
             """.trimIndent()
         )
@@ -631,7 +563,6 @@ class K9JoarkTest {
         )
     }
 
-    private fun getDokumentUrl(dokumentId: String) = URI("${wireMockServer.getK9DokumentUrl()}/$dokumentId")
     private fun getK9MellomlagringDokumentUrl(dokumentId: String) = URI("${wireMockServer.getK9MellomlagringUrl()}/$dokumentId")
 
     private fun requestAndAssert(
@@ -640,7 +571,7 @@ class K9JoarkTest {
         expectedCode: HttpStatusCode,
         leggTilCorrelationId: Boolean = true,
         leggTilAuthorization: Boolean = true,
-        accessToken: String = authorizedAccessToken,
+        accessToken: String = azureToken,
         uri: String = "/v1/pleiepenge/journalforing"
     ) {
         with(engine) {
@@ -668,23 +599,20 @@ class K9JoarkTest {
     ): MeldingV1 {
         val jpegDokumentId = "1234" // Default mocket som JPEG
         val pdfDokumentId = "4567"
-        stubGetDokumentPdf(pdfDokumentId)
         val jsonDokumentId = "78910"
-        stubGetDokumentJson(jsonDokumentId)
 
         return MeldingV1(
             norskIdent = "012345678901",
             mottatt = ZonedDateTime.now(),
             dokumenter = listOf(
                 listOf(
-                    getDokumentUrl(pdfDokumentId),
-                    getDokumentUrl(jsonDokumentId)
+                    getK9MellomlagringDokumentUrl(pdfDokumentId),
+                    getK9MellomlagringDokumentUrl(jsonDokumentId)
                 ),
                 listOf(
-                    getDokumentUrl(jpegDokumentId)
+                    getK9MellomlagringDokumentUrl(jpegDokumentId)
                 )
             ),
-            aktoerId = "12345",
             sokerNavn = søkerNavn
         )
     }

@@ -11,12 +11,10 @@ import io.ktor.metrics.micrometer.*
 import io.ktor.routing.*
 import io.prometheus.client.hotspot.DefaultExports
 import no.nav.helse.dokument.ContentTypeService
-import no.nav.helse.dokument.DokumentGateway
 import no.nav.helse.dokument.DokumentService
 import no.nav.helse.dokument.mellomlagring.K9MellomlagringGateway
 import no.nav.helse.dusseldorf.ktor.auth.AuthStatusPages
-import no.nav.helse.dusseldorf.ktor.auth.allIssuers
-import no.nav.helse.dusseldorf.ktor.auth.multipleJwtIssuers
+import no.nav.helse.dusseldorf.ktor.auth.idToken
 import no.nav.helse.dusseldorf.ktor.client.HttpRequestHealthCheck
 import no.nav.helse.dusseldorf.ktor.client.HttpRequestHealthConfig
 import no.nav.helse.dusseldorf.ktor.client.buildURL
@@ -31,6 +29,10 @@ import no.nav.helse.journalforing.api.journalforingApis
 import no.nav.helse.journalforing.converter.Image2PDFConverter
 import no.nav.helse.journalforing.gateway.JournalforingGateway
 import no.nav.helse.journalforing.v1.JournalforingV1Service
+import no.nav.security.token.support.ktor.RequiredClaims
+import no.nav.security.token.support.ktor.asIssuerProps
+import no.nav.security.token.support.ktor.tokenValidationSupport
+import org.slf4j.LoggerFactory
 
 fun main(args: Array<String>): Unit = io.ktor.server.netty.EngineMain.main(args)
 
@@ -39,11 +41,21 @@ fun Application.k9Joark() {
     logProxyProperties()
     DefaultExports.initialize()
 
+    val logger = LoggerFactory.getLogger("no.nav.k9.k9Joark")
     val configuration = Configuration(environment.config)
-    val issuers = configuration.issuers()
+    val allIssuers = environment.config.asIssuerProps().keys
 
     install(Authentication) {
-        multipleJwtIssuers(issuers)
+        allIssuers.forEach { issuer: String ->
+            tokenValidationSupport(
+                name = issuer,
+                config = environment.config,
+                requiredClaims = RequiredClaims(
+                    issuer = issuer,
+                    claimMap = arrayOf("roles=access_as_application")
+                )
+            )
+        }
     }
 
     install(ContentNegotiation) {
@@ -64,17 +76,12 @@ fun Application.k9Joark() {
 
     val journalforingGateway = JournalforingGateway(
         baseUrl = configuration.getDokarkivBaseUrl(),
-        accessTokenClient = accessTokenClientResolver.joark(),
-        oppretteJournalPostScopes = configuration.getOppretteJournalpostScopes()
-    )
-
-    val dokumentGateway = DokumentGateway(
-        accessTokenClient = accessTokenClientResolver.k9Dokument(),
-        henteDokumentScopes = configuration.getHenteDokumentScopes()
+        accessTokenClient = accessTokenClientResolver.azureClient(),
+        oppretteJournalPostScopes = configuration.getDokarkivScope()
     )
 
     val k9MellomLagringGateway = K9MellomlagringGateway(
-        accessTokenClient = accessTokenClientResolver.k9Dokument(),
+        accessTokenClient = accessTokenClientResolver.azureClient(),
         k9MellomlagringScope = configuration.getK9MellomlagringScopes(),
         k9MellomlagringBaseUrl = configuration.getK9MellomlagringBaseUrl()
     )
@@ -82,7 +89,6 @@ fun Application.k9Joark() {
     val contentTypeService = ContentTypeService()
 
     val dokumentService = DokumentService(
-        dokumentGateway = dokumentGateway,
         k9MellomlagringGateway = k9MellomLagringGateway,
         image2PDFConverter = Image2PDFConverter(),
         contentTypeService = contentTypeService
@@ -90,7 +96,6 @@ fun Application.k9Joark() {
 
     val healthService = HealthService(setOf(
         journalforingGateway,
-        dokumentGateway,
         k9MellomLagringGateway,
         HttpRequestHealthCheck(
             mapOf(
@@ -102,7 +107,7 @@ fun Application.k9Joark() {
     install(CallIdRequired)
 
     install(Routing) {
-        authenticate(*issuers.allIssuers()) {
+        authenticate(*allIssuers.toTypedArray()) {
             requiresCallId {
                 journalforingApis(
                     journalforingV1Service = JournalforingV1Service(
@@ -135,6 +140,15 @@ fun Application.k9Joark() {
     install(CallLogging) {
         correlationIdAndRequestIdInMdc()
         logRequests()
+        mdc("id_token_jti") { call ->
+            try {
+                val idToken = call.idToken()
+                logger.info("Issuer [{}]", idToken.issuer())
+                idToken.getId()
+            } catch (cause: Throwable) {
+                null
+            }
+        }
     }
 }
 
