@@ -1,3 +1,5 @@
-FROM navikt/java:17
+FROM amazoncorretto:17.0.2-alpine3.15
 
-COPY build/libs/app.jar ./
+COPY build/libs/app.jar app.jar
+
+CMD ["java", "-jar", "app.jar"]
