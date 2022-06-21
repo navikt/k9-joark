@@ -1,6 +1,6 @@
 package no.nav.helse
 
-import io.ktor.config.*
+import io.ktor.server.config.*
 import no.nav.helse.dusseldorf.ktor.auth.Client
 import no.nav.helse.dusseldorf.ktor.auth.clients
 import no.nav.helse.dusseldorf.ktor.auth.issuers
