@@ -1,6 +1,6 @@
 package no.nav.helse
 
-import io.ktor.server.testing.withApplication
+import io.ktor.server.testing.*
 import no.nav.helse.dusseldorf.testsupport.asArguments
 import no.nav.helse.dusseldorf.testsupport.wiremock.WireMockBuilder
 import no.nav.security.mock.oauth2.MockOAuth2Server
@@ -40,7 +40,7 @@ class K9JoarkWithMocks {
                 }
             })
 
-            withApplication { no.nav.helse.main(testArgs) }
+            testApplication { no.nav.helse.main(testArgs) }
         }
     }
 }

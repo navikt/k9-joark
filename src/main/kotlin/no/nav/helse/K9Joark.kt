@@ -2,13 +2,16 @@ package no.nav.helse
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.PropertyNamingStrategies
-import io.ktor.application.*
-import io.ktor.auth.*
-import io.ktor.features.*
+import io.ktor.server.application.*
+import io.ktor.server.auth.*
 import io.ktor.http.*
-import io.ktor.jackson.*
-import io.ktor.metrics.micrometer.*
-import io.ktor.routing.*
+import io.ktor.serialization.jackson.*
+import io.ktor.server.metrics.micrometer.*
+import io.ktor.server.plugins.callid.*
+import io.ktor.server.plugins.callloging.*
+import io.ktor.server.plugins.contentnegotiation.*
+import io.ktor.server.plugins.statuspages.*
+import io.ktor.server.routing.*
 import io.prometheus.client.hotspot.DefaultExports
 import no.nav.helse.dokument.ContentTypeService
 import no.nav.helse.dokument.DokumentService
@@ -29,27 +32,28 @@ import no.nav.helse.journalforing.api.journalforingApis
 import no.nav.helse.journalforing.converter.Image2PDFConverter
 import no.nav.helse.journalforing.gateway.JournalforingGateway
 import no.nav.helse.journalforing.v1.JournalforingV1Service
-import no.nav.security.token.support.ktor.RequiredClaims
-import no.nav.security.token.support.ktor.asIssuerProps
-import no.nav.security.token.support.ktor.tokenValidationSupport
+import no.nav.security.token.support.v2.RequiredClaims
+import no.nav.security.token.support.v2.asIssuerProps
+import no.nav.security.token.support.v2.tokenValidationSupport
 import org.slf4j.LoggerFactory
 
 fun main(args: Array<String>): Unit = io.ktor.server.netty.EngineMain.main(args)
 
 fun Application.k9Joark() {
-    val appId = environment.config.id()
+    val applicationConfig = environment.config
+    val appId = applicationConfig.id()
     logProxyProperties()
     DefaultExports.initialize()
 
     val logger = LoggerFactory.getLogger("no.nav.k9.k9Joark")
-    val configuration = Configuration(environment.config)
-    val allIssuers = environment.config.asIssuerProps().keys
+    val configuration = Configuration(applicationConfig)
+    val allIssuers = applicationConfig.asIssuerProps().keys
 
     install(Authentication) {
         allIssuers.forEach { issuer: String ->
             tokenValidationSupport(
                 name = issuer,
-                config = environment.config,
+                config = applicationConfig,
                 requiredClaims = RequiredClaims(
                     issuer = issuer,
                     claimMap = arrayOf("roles=access_as_application")

@@ -1,16 +1,16 @@
 package no.nav.helse.journalforing.api
 
-import io.ktor.application.ApplicationCall
-import io.ktor.application.call
+import io.ktor.server.application.call
 import io.ktor.http.HttpHeaders
 import io.ktor.http.HttpStatusCode
-import io.ktor.request.ApplicationRequest
-import io.ktor.request.header
-import io.ktor.request.receive
-import io.ktor.response.ApplicationResponse
-import io.ktor.response.respond
-import io.ktor.routing.Route
-import io.ktor.routing.post
+import io.ktor.server.application.*
+import io.ktor.server.request.ApplicationRequest
+import io.ktor.server.request.header
+import io.ktor.server.request.receive
+import io.ktor.server.response.ApplicationResponse
+import io.ktor.server.response.respond
+import io.ktor.server.routing.Route
+import io.ktor.server.routing.post
 import io.ktor.util.pipeline.PipelineContext
 import no.nav.helse.journalforing.v1.JournalforingV1Service
 import no.nav.helse.journalforing.v1.MeldingV1
