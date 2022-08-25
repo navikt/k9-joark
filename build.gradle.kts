@@ -1,19 +1,19 @@
 import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
-val dusseldorfKtorVersion = "3.2.0.2-b18c5fe"
+val dusseldorfKtorVersion = "3.2.1.0-ebe617a"
 val ktorVersion = ext.get("ktorVersion").toString()
 val pdfBoxVersion = "2.0.26"
-val imageIOVersion = "3.8.2"
-val jsonassertVersion = "1.5.0"
+val imageIOVersion = "3.8.3"
+val jsonassertVersion = "1.5.1"
 val fuelVersion = "2.3.1"
-val tokenSupportVersion = "2.1.0"
+val tokenSupportVersion = "2.1.3"
 val mockOauth2ServerVersion = "0.5.1"
 
 val mainClass = "no.nav.helse.K9JoarkKt"
 
 plugins {
-    kotlin("jvm") version "1.7.0"
+    kotlin("jvm") version "1.7.10"
     id("com.github.johnrengelman.shadow") version "7.1.2"
 }
 
