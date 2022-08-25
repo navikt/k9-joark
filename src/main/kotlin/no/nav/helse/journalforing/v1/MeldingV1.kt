@@ -1,14 +1,12 @@
 package no.nav.helse.journalforing.v1
 
-import java.net.URI
 import java.time.ZonedDateTime
 
 data class MeldingV1 (
     val norskIdent: String,
     val mottatt: ZonedDateTime,
     val sokerNavn: Navn?,
-    val dokumenter: List<List<URI>>? = null,
-    val dokumentId: List<List<String>>? = null
+    val dokumentId: List<List<String>>
 )
 
 data class Navn(

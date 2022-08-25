@@ -64,56 +64,5 @@ internal fun WireMockServer.stubGetDokumentFraK9Mellomlagring(eiersFødselsnumme
     return this
 }
 
-internal fun stubGetDokumentJsonFraK9Mellomlagring(eiersFødselsnummer: String, dokumentId: String) {
-    val content = Base64.getEncoder().encodeToString("jwkset.json".fromResources().readBytes())
-    WireMock.stubFor(
-        WireMock.post(WireMock.urlPathMatching(".*$k9MellomlagringPath.*/$dokumentId"))
-            .withRequestBody(WireMock.equalToJson("""{"eiers_fødselsnummer": "$eiersFødselsnummer"}""".trimIndent()))
-            .withHeader(Headers.CONTENT_TYPE, WireMock.equalTo("application/json"))
-            .willReturn(
-                WireMock.aResponse()
-                    .withStatus(200)
-                    .withHeader("Content-Type", "application/json")
-                    .withBody("""
-                            {
-                                "content": "$content",
-                                "content_type": "application/json",
-                                "title": "Dette er en tittel",
-                                "eier": {
-                                    "eiers_fødselsnummer": "$eiersFødselsnummer"
-                                }
-                            }
-                        """.trimIndent()
-                    )
-            )
-    )
-}
-
-internal fun stubGetDokumentPdfFraK9Mellomlagring(eiersFødselsnummer: String, dokumentId: String) {
-    val content = Base64.getEncoder().encodeToString("test.pdf".fromResources().readBytes())
-    WireMock.stubFor(
-        WireMock.post(WireMock.urlPathMatching(".*$k9MellomlagringPath.*/$dokumentId"))
-            .withRequestBody(WireMock.equalToJson("""{"eiers_fødselsnummer": "$eiersFødselsnummer"}""".trimIndent()))
-            .withHeader(Headers.CONTENT_TYPE, WireMock.equalTo("application/json"))
-            .willReturn(
-                WireMock.aResponse()
-                    .withStatus(200)
-                    .withHeader("Content-Type", "application/json")
-                    .withBody("""
-                            {
-                                "content": "$content",
-                                "content_type": "application/pdf",
-                                "title": "Dette er en tittel",
-                                "eier": {
-                                    "eiers_fødselsnummer": "$eiersFødselsnummer"
-                                }
-                            }
-                        """.trimIndent()
-                    )
-            )
-    )
-}
-
-
 internal fun WireMockServer.getDokarkivUrl() = baseUrl() + dokarkivBasePath
 internal fun WireMockServer.getK9MellomlagringUrl() = baseUrl() + k9MellomlagringPath

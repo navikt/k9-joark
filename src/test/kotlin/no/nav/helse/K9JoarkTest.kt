@@ -15,7 +15,6 @@ import org.junit.jupiter.api.BeforeAll
 import org.skyscreamer.jsonassert.JSONAssert
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
-import java.net.URI
 import java.time.ZonedDateTime
 import kotlin.test.Test
 import kotlin.test.assertEquals
@@ -98,13 +97,7 @@ class K9JoarkTest {
     @Test
     fun `Journalpost for pleiepengesøknad`() {
         requestAndAssert(
-            request = meldingForJournalføring(
-                søkerNavn = Navn(
-                    fornavn = "Peie",
-                    mellomnavn = "penge",
-                    etternavn = "Sen"
-                )
-            ),
+            request = meldingForJournalføring(),
             expectedResponse = """{"journal_post_id":"1"}""".trimIndent(),
             expectedCode = HttpStatusCode.Created
         )
@@ -113,13 +106,7 @@ class K9JoarkTest {
     @Test
     fun `Journalpost for pleiepenger livets sluttfase`() {
         requestAndAssert(
-            request = meldingForJournalføring(
-                søkerNavn = Navn(
-                    fornavn = "Pleiepenger",
-                    mellomnavn = "Livets",
-                    etternavn = "Sluttfase"
-                )
-            ),
+            request = meldingForJournalføring(),
             expectedResponse = """{"journal_post_id":"16"}""".trimIndent(),
             expectedCode = HttpStatusCode.Created,
             uri = "/v1/pleiepenge/livets-sluttfase/journalforing"
@@ -129,13 +116,7 @@ class K9JoarkTest {
     @Test
     fun `Journalpost for pleiepenger livets sluttfase ettersending`() {
         requestAndAssert(
-            request = meldingForJournalføring(
-                søkerNavn = Navn(
-                    fornavn = "Pleiepenger",
-                    mellomnavn = "Livets",
-                    etternavn = "Sluttfase Ettersending"
-                )
-            ),
+            request = meldingForJournalføring(),
             expectedResponse = """{"journal_post_id":"17"}""".trimIndent(),
             expectedCode = HttpStatusCode.Created,
             uri = "/v1/pleiepenge/livets-sluttfase/ettersending/journalforing"
@@ -145,39 +126,7 @@ class K9JoarkTest {
     @Test
     fun `Journalpost for pleiepengesøknad ettersending`() {
         requestAndAssert(
-            request = meldingForJournalføring(
-                søkerNavn = Navn(
-                    fornavn = "Peie",
-                    mellomnavn = "penge",
-                    etternavn = "Sen"
-                )
-            ),
-            expectedResponse = """{"journal_post_id":"9"}""".trimIndent(),
-            expectedCode = HttpStatusCode.Created,
-            uri = "/v1/pleiepenge/ettersending/journalforing"
-        )
-    }
-
-    @Test
-    fun `Journalpost for pleiepengesøknad ettersending med dokumentId`() {
-        val melding =  meldingForJournalføringMedDokumenterFraK9MellomLagring(
-            søkerNavn = Navn(
-                fornavn = "Peie",
-                mellomnavn = "penge",
-                etternavn = "Sen"
-            ),
-            norskIdent = "012345678901"
-        )
-
-        val dokumentId = melding.dokumenter!!.map {
-            it.map { it.toString().substringAfterLast("/") }
-        }
-
-        requestAndAssert(
-            request = melding.copy(
-                dokumenter = null,
-                dokumentId = dokumentId
-            ),
+            request = meldingForJournalføring(),
             expectedResponse = """{"journal_post_id":"9"}""".trimIndent(),
             expectedCode = HttpStatusCode.Created,
             uri = "/v1/pleiepenge/ettersending/journalforing"
@@ -287,14 +236,7 @@ class K9JoarkTest {
     @Test
     fun `Journalpost for omsorgspenger - midlertidig alene`() {
         requestAndAssert(
-            request = meldingForJournalføringMedDokumenterFraK9MellomLagring(
-                søkerNavn = Navn(
-                    fornavn = "Peie",
-                    mellomnavn = "penge",
-                    etternavn = "Sen"
-                ),
-                norskIdent = "012345678901"
-            ),
+            request = meldingForJournalføring(),
             expectedResponse = """{"journal_post_id":"8"}""".trimIndent(),
             expectedCode = HttpStatusCode.Created,
             uri = "/v1/omsorgspenger/midlertidig-alene/journalforing"
@@ -304,14 +246,7 @@ class K9JoarkTest {
     @Test
     fun `Journalpost for omsorgspenger ettersending - midlertidig alene`() {
         requestAndAssert(
-            request = meldingForJournalføringMedDokumenterFraK9MellomLagring(
-                søkerNavn = Navn(
-                    fornavn = "Peie",
-                    mellomnavn = "penge",
-                    etternavn = "Sen"
-                ),
-                norskIdent = "012345678901"
-            ),
+            request = meldingForJournalføring(),
             expectedResponse = """{"journal_post_id":"13"}""".trimIndent(),
             expectedCode = HttpStatusCode.Created,
             uri = "/v1/omsorgspenger/midlertidig-alene/ettersending/journalforing"
@@ -321,14 +256,7 @@ class K9JoarkTest {
     @Test
     fun `Journalpost for omsorgsdager aleneomsorg`() {
         requestAndAssert(
-            request = meldingForJournalføringMedDokumenterFraK9MellomLagring(
-                søkerNavn = Navn(
-                    fornavn = "Peie",
-                    mellomnavn = "penge",
-                    etternavn = "Sen"
-                ),
-                norskIdent = "012345678901"
-            ),
+            request = meldingForJournalføring(),
             expectedResponse = """{"journal_post_id":"15"}""".trimIndent(),
             expectedCode = HttpStatusCode.Created,
             uri = "/v1/omsorgsdager/aleneomsorg/journalforing"
@@ -337,24 +265,8 @@ class K9JoarkTest {
 
     @Test
     fun `melding uten correlation id skal feile`() {
-        val request = MeldingV1(
-            norskIdent = "12345",
-            mottatt = ZonedDateTime.now(),
-            dokumenter = listOf(
-                listOf(
-                    getK9MellomlagringDokumentUrl("1234"),
-                    getK9MellomlagringDokumentUrl("5678")
-                )
-            ),
-            sokerNavn = Navn(
-                fornavn = "ole",
-                etternavn = "Nordmann"
-            )
-        )
-
-
         requestAndAssert(
-            request = request,
+            request = meldingForJournalføring(),
             leggTilCorrelationId = false,
             expectedCode = HttpStatusCode.BadRequest,
             expectedResponse = """
@@ -378,23 +290,8 @@ class K9JoarkTest {
 
     @Test
     fun `mangler authorization header`() {
-        val request = MeldingV1(
-            norskIdent = "12345",
-            mottatt = ZonedDateTime.now(),
-            dokumenter = listOf(
-                listOf(
-                    getK9MellomlagringDokumentUrl("1234"),
-                    getK9MellomlagringDokumentUrl("5678")
-                )
-            ),
-            sokerNavn = Navn(
-                fornavn = "ole",
-                etternavn = "Nordmann"
-            )
-        )
-
         requestAndAssert(
-            request = request,
+            request = meldingForJournalføring(),
             leggTilAuthorization = false,
             expectedCode = HttpStatusCode.Unauthorized,
             expectedResponse = null
@@ -403,21 +300,6 @@ class K9JoarkTest {
 
     @Test
     fun `request fra ikke tillatt system`() {
-        val request = MeldingV1(
-            norskIdent = "12345",
-            mottatt = ZonedDateTime.now(),
-            dokumenter = listOf(
-                listOf(
-                    getK9MellomlagringDokumentUrl("1234"),
-                    getK9MellomlagringDokumentUrl("5678")
-                )
-            ),
-            sokerNavn = Navn(
-                fornavn = "ole",
-                etternavn = "Nordmann"
-            )
-        )
-
         val feilAuidence = mockOAuth2Server.issueToken(
             issuerId = "azure",
             audience = "dev-gcp:dusseldorf:k9-mellomlagring",
@@ -431,14 +313,14 @@ class K9JoarkTest {
         ).serialize()
 
         requestAndAssert(
-            request = request,
+            request = meldingForJournalføring(),
             expectedCode = HttpStatusCode.Unauthorized,
             accessToken = feilAuidence,
             expectedResponse = null
         )
 
         requestAndAssert(
-            request = request,
+            request = meldingForJournalføring(),
             expectedCode = HttpStatusCode.Unauthorized,
             accessToken = ikkeAuthorizedApplication,
             expectedResponse = null
@@ -447,18 +329,8 @@ class K9JoarkTest {
 
     @Test
     fun `melding uten dokumenter skal feile`() {
-        val request = MeldingV1(
-            norskIdent = "012345678901F",
-            mottatt = ZonedDateTime.now(),
-            dokumenter = listOf(),
-            sokerNavn = Navn(
-                fornavn = "ole",
-                etternavn = "Nordmann"
-            )
-        )
-
         requestAndAssert(
-            request = request,
+            request = meldingForJournalføring().copy(dokumentId = emptyList()),
             expectedCode = HttpStatusCode.BadRequest,
             expectedResponse = """
             {
@@ -469,15 +341,9 @@ class K9JoarkTest {
                 "instance": "about:blank",
                 "invalid_parameters": [{
                     "type": "entity",
-                    "name": "dokumenter",
+                    "name": "dokumentId",
                     "reason": "Det må sendes minst ett dokument",
                     "invalid_value": []
-                },
-                {
-                    "type": "entity",
-                    "name": "norsk_ident",
-                    "reason": "Ugyldig Norsk Ident. Kan kun være siffer.",
-                    "invalid_value": "012345678901F"
                 }]          
             }
             """.trimIndent()
@@ -486,21 +352,10 @@ class K9JoarkTest {
 
     @Test
     fun `melding med tomme dokumentbolker skal feile`() {
-        val request = MeldingV1(
-            norskIdent = "012345678901",
-            mottatt = ZonedDateTime.now(),
-            dokumenter = listOf(
-                listOf(getK9MellomlagringDokumentUrl("1234")),
-                listOf()
-            ),
-            sokerNavn = Navn(
-                fornavn = "ole",
-                etternavn = "Nordmann"
-            )
-        )
-
         requestAndAssert(
-            request = request,
+            request = meldingForJournalføring().copy(
+                dokumentId = listOf(listOf("123"), emptyList())
+            ),
             expectedCode = HttpStatusCode.BadRequest,
             expectedResponse = """
                 {
@@ -511,7 +366,7 @@ class K9JoarkTest {
                     "instance": "about:blank",
                     "invalid_parameters" : [
                         {
-                            "name" : "dokumenter.dokument_bolk",
+                            "name" : "dokumentId.dokument_bolk",
                             "reason" : "Det må være minst et dokument i en dokument bolk.",
                             "type": "entity",
                             "invalid_value": []
@@ -521,48 +376,6 @@ class K9JoarkTest {
             """.trimIndent()
         )
     }
-
-    @Test
-    fun `melding med både dokumenter og dokumentId skal feile`(){
-        val melding =  meldingForJournalføringMedDokumenterFraK9MellomLagring(
-            søkerNavn = Navn(
-                fornavn = "Peie",
-                mellomnavn = "penge",
-                etternavn = "Sen"
-            ),
-            norskIdent = "12345678910"
-        )
-
-        val dokumentId = melding.dokumenter!!.map {
-            it.map { it.toString().substringAfterLast("/") }
-        }
-
-        requestAndAssert(
-            request = melding.copy(
-                dokumentId = dokumentId
-            ),
-            expectedCode = HttpStatusCode.BadRequest,
-            expectedResponse = """
-                {
-                  "detail": "Requesten inneholder ugyldige paramtere.",
-                  "instance": "about:blank",
-                  "type": "/problem-details/invalid-request-parameters",
-                  "title": "invalid-request-parameters",
-                  "invalid_parameters": [
-                    {
-                      "name": "dokumenter, dokumentId",
-                      "reason": "Kun en av dokumentId og dokumenter kan være satt, ikke begge.",
-                      "invalid_value": "[[http://localhost:53854/k9-mellomlagring/4567, http://localhost:53854/k9-mellomlagring/78910], [http://localhost:53854/k9-mellomlagring/1234]], [[4567, 78910], [1234]]",
-                      "type": "entity"
-                    }
-                  ],
-                  "status": 400
-                }
-            """.trimIndent()
-        )
-    }
-
-    private fun getK9MellomlagringDokumentUrl(dokumentId: String) = URI("${wireMockServer.getK9MellomlagringUrl()}/$dokumentId")
 
     private fun requestAndAssert(
         request: MeldingV1,
@@ -594,7 +407,7 @@ class K9JoarkTest {
     }
 
     private fun meldingForJournalføring(
-        søkerNavn: Navn? = null
+        søkerNavn: Navn? = Navn("Ole", "Nordmann", "Noo")
     ): MeldingV1 {
         val jpegDokumentId = "1234" // Default mocket som JPEG
         val pdfDokumentId = "4567"
@@ -603,40 +416,9 @@ class K9JoarkTest {
         return MeldingV1(
             norskIdent = "012345678901",
             mottatt = ZonedDateTime.now(),
-            dokumenter = listOf(
-                listOf(
-                    getK9MellomlagringDokumentUrl(pdfDokumentId),
-                    getK9MellomlagringDokumentUrl(jsonDokumentId)
-                ),
-                listOf(
-                    getK9MellomlagringDokumentUrl(jpegDokumentId)
-                )
-            ),
-            sokerNavn = søkerNavn
-        )
-    }
-
-    private fun meldingForJournalføringMedDokumenterFraK9MellomLagring(
-        søkerNavn: Navn? = null,
-        norskIdent: String,
-    ): MeldingV1 {
-        val jpegDokumentId = "1234" // Default mocket som JPEG
-        val pdfDokumentId = "4567"
-        stubGetDokumentPdfFraK9Mellomlagring(norskIdent, pdfDokumentId)
-        val jsonDokumentId = "78910"
-        stubGetDokumentJsonFraK9Mellomlagring(norskIdent, jsonDokumentId)
-
-        return MeldingV1(
-            norskIdent = norskIdent,
-            mottatt = ZonedDateTime.now(),
-            dokumenter = listOf(
-                listOf(
-                    getK9MellomlagringDokumentUrl(pdfDokumentId),
-                    getK9MellomlagringDokumentUrl(jsonDokumentId)
-                ),
-                listOf(
-                    getK9MellomlagringDokumentUrl(jpegDokumentId)
-                )
+            dokumentId = listOf(
+                listOf(pdfDokumentId, jsonDokumentId),
+                listOf(jpegDokumentId)
             ),
             sokerNavn = søkerNavn
         )

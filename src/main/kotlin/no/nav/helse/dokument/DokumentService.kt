@@ -37,23 +37,6 @@ class DokumentService(
         return håndterDokumenter(alleDokumenter)
     }
 
-    suspend fun hentDokumenter(
-        urls: List<URI>,
-        fodselsnummer: Fodselsnummer,
-        correlationId: CorrelationId
-    ): List<Dokument> {
-        logger.trace("Henter ${urls.size} dokumenter.")
-
-        logger.info("Henter dokumenter fra k9-mellomlagring")
-        val alleDokumenter = k9MellomlagringGateway.hentDokumenter(
-            urls = urls,
-            eiersFodselsnummer = fodselsnummer,
-            correlationId = correlationId
-        )
-
-        return håndterDokumenter(alleDokumenter)
-    }
-
     fun håndterDokumenter(dokumenter: List<Dokument>): List<Dokument> {
         dokumenter.tellContentType()
 

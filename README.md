@@ -10,8 +10,8 @@ Inneholder integrasjon mot joark for å opprette journalpost i forbindelse med s
 - norsk_ident: Norsk ident for personen dokumentene skal journalføres på
 - soker_navn: Navn på personen dokumente skal journalføres på. Denner optional, og om satt er også mellomnavn optional.
 - mottatt : tidspunkt for når dokumentene er mottatt på ISO8601 format
-- dokumenter : En liste med lister av URL'er til dokumenter som skal journalføres som må peke på "k9-mellomlagring"
-- dokumenter : Må inneholde minst en liste, og hvert liste må inneholde minst en entry.
+- dokumentId : En liste med lister av ID'er til dokumenter lagret i k9-mellomlagring som skal journalføres som må peke på "k9-mellomlagring"
+- dokumentId : Må inneholde minst en liste, og hvert liste må inneholde minst en entry.
 - dokumenter[0] : Vil bli "Hoveddokument" i Joark
 - En liste med URL'er skal være > 1 om man ønsker å journalføre samme dokument på forskjellige format. For eksempel PDF & JSON
 
