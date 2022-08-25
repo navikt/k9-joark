@@ -57,29 +57,6 @@ class K9MellomlagringGateway(
         }
     }
 
-    suspend fun hentDokumenter(
-        urls : List<URI>,
-        eiersFodselsnummer: Fodselsnummer,
-        correlationId: CorrelationId
-    ) : List<Dokument> {
-        val authorizationHeader = cachedAccessTokenClient.getAccessToken(k9MellomlagringScope).asAuthoriationHeader()
-
-        return Operation.monitored(
-            app = "k9-joark",
-            operation = HENTE_ALLE_DOKUMENTER_OPERATION
-        ) {
-            coroutineScope {
-                val futures = mutableListOf<Deferred<Dokument>>()
-                urls.forEach { url ->
-                    futures.add(async {
-                        hentDokument(url, eiersFodselsnummer, authorizationHeader, correlationId)
-                    })
-                }
-                futures.awaitAll()
-            }
-        }
-    }
-
     suspend fun hentDokumenterMedDokumentId(
         dokumentId : List<String>,
         eiersFodselsnummer: Fodselsnummer,

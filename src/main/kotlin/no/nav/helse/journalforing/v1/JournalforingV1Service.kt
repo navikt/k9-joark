@@ -46,21 +46,11 @@ class JournalforingV1Service(
         logger.trace("Henter dokumenter")
         val alleDokumenter = mutableListOf<List<Dokument>>()
 
-        melding.dokumentId?.forEach { dokumentId ->
+        melding.dokumentId.forEach { dokumentId ->
             logger.info("Henter dokumenter basert på dokumentId")
             alleDokumenter.add(
                 dokumentService.hentDokumenterMedDokumentId(
                     dokumentId = dokumentId,
-                    correlationId = correlationId,
-                    fodselsnummer = fodselsnummer
-                )
-            )
-        }
-
-        melding.dokumenter?.forEach {
-            alleDokumenter.add(
-                dokumentService.hentDokumenter(
-                    urls = it,
                     correlationId = correlationId,
                     fodselsnummer = fodselsnummer
                 )
@@ -92,77 +82,27 @@ class JournalforingV1Service(
     private fun validerDokumenter(melding: MeldingV1): MutableSet<Violation> {
         val feil = mutableSetOf<Violation>()
 
-        if(melding.dokumentId == null && melding.dokumenter == null){
+        if (melding.dokumentId.isEmpty()) {
             feil.add(
                 Violation(
-                    parameterName = "dokumenter, dokumentId",
-                    reason = "dokumentId eller dokumenter må være satt. Ikke begge kan være null.",
+                    parameterName = "dokumentId",
+                    reason = "Det må sendes minst ett dokument",
                     parameterType = ParameterType.ENTITY,
-                    invalidValue = "${melding.dokumenter}, ${melding.dokumentId}"
+                    invalidValue = melding.dokumentId
                 )
             )
         }
 
-        if(melding.dokumentId != null && melding.dokumenter != null){
-            feil.add(
-                Violation(
-                    parameterName = "dokumenter, dokumentId",
-                    reason = "Kun en av dokumentId og dokumenter kan være satt, ikke begge.",
-                    parameterType = ParameterType.ENTITY,
-                    invalidValue = "${melding.dokumenter}, ${melding.dokumentId}"
-                )
-            )
-        }
-
-        melding.dokumenter?.let {
-            if(it.isEmpty()){
+        melding.dokumentId.forEach { dokumentBolk ->
+            if (dokumentBolk.isEmpty()) {
                 feil.add(
                     Violation(
-                        parameterName = "dokumenter",
-                        reason = "Det må sendes minst ett dokument",
+                        parameterName = "dokumentId.dokument_bolk",
+                        reason = "Det må være minst et dokument i en dokument bolk.",
                         parameterType = ParameterType.ENTITY,
-                        invalidValue = melding.dokumenter
+                        invalidValue = dokumentBolk
                     )
                 )
-            }
-
-            it.forEach { dokumentBolk ->
-                if (dokumentBolk.isEmpty()) {
-                    feil.add(
-                        Violation(
-                            parameterName = "dokumenter.dokument_bolk",
-                            reason = "Det må være minst et dokument i en dokument bolk.",
-                            parameterType = ParameterType.ENTITY,
-                            invalidValue = dokumentBolk
-                        )
-                    )
-                }
-            }
-        }
-
-        melding.dokumentId?.let {
-            if(it.isEmpty()){
-                feil.add(
-                    Violation(
-                        parameterName = "dokumentId",
-                        reason = "Det må sendes minst ett dokument",
-                        parameterType = ParameterType.ENTITY,
-                        invalidValue = melding.dokumentId
-                    )
-                )
-            }
-
-            it.forEach { dokumentBolk ->
-                if (dokumentBolk.isEmpty()) {
-                    feil.add(
-                        Violation(
-                            parameterName = "dokumentId.dokument_bolk",
-                            reason = "Det må være minst et dokument i en dokument bolk.",
-                            parameterType = ParameterType.ENTITY,
-                            invalidValue = dokumentBolk
-                        )
-                    )
-                }
             }
         }
 
