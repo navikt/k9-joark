@@ -20,7 +20,7 @@ object TestConfiguration {
         val map = mutableMapOf(
             Pair("ktor.deployment.port","$port"),
             Pair("nav.dokarkiv_base_url", "$dokarkivUrl"),
-            Pair("nav.k9_mellomlagring_base_url", "$k9MellomlagringUrl")
+            Pair("nav.k9_mellomlagring_service_discovery", "$k9MellomlagringUrl")
         )
 
         // Clients

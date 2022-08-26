@@ -22,7 +22,7 @@ internal data class Configuration(private val config : ApplicationConfig) {
     }
 
     internal fun getDokarkivBaseUrl() = URI(config.getRequiredString("nav.dokarkiv_base_url", secret = false))
-    internal fun getK9MellomlagringBaseUrl() = URI(config.getRequiredString("nav.k9_mellomlagring_base_url", secret = false))
+    internal fun getK9MellomlagringUrl() = URI(config.getRequiredString("nav.k9_mellomlagring_service_discovery", secret = false))
 
     internal fun issuers() = config.issuers().withoutAdditionalClaimRules()
 
