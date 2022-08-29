@@ -43,7 +43,7 @@ spec:
   accessPolicy:
     outbound:
       rules:
-        - application: k9-mellomlagring-api
+        - application: k9-mellomlagring
     inbound:
       rules:
         - application: frisinn-prosessering
