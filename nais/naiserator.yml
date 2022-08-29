@@ -25,10 +25,6 @@ spec:
     requests:
       cpu: 200m
       memory: 1024Mi
-  ingresses:
-  {{#each ingresses as |url|}}
-    - {{url}}
-  {{/each}}
   replicas:
     min: {{minReplicas}}
     max: {{maxReplicas}}
@@ -46,45 +42,15 @@ spec:
         - application: k9-mellomlagring
     inbound:
       rules:
-        - application: frisinn-prosessering
-          namespace: dusseldorf
-          cluster: {{environment}}-fss
-
         - application: omsorgspengerutbetalingsoknad-arbeidstaker-prosessering
-          namespace: dusseldorf
-          cluster: {{environment}}-gcp
-
         - application: omsorgspengesoknad-prosessering
-          namespace: dusseldorf
-          cluster: {{environment}}-gcp
-
         - application: k9-ettersending-prosessering
-          namespace: dusseldorf
-          cluster: {{environment}}-gcp
-
         - application: pleiepengesoknad-prosessering
-          namespace: dusseldorf
-          cluster: {{environment}}-gcp
-
         - application: omsorgspengerutbetalingsoknad-prosessering
-          namespace: dusseldorf
-          cluster: {{environment}}-gcp
-
         - application: omsorgspenger-midlertidig-alene-prosessering
-          namespace: dusseldorf
-          cluster: {{environment}}-gcp
-
         - application: omsorgsdager-melding-prosessering
-          namespace: dusseldorf
-          cluster: {{environment}}-gcp
-
         - application: omsorgsdager-aleneomsorg-prosessering
-          namespace: dusseldorf
-          cluster: {{environment}}-gcp
-
         - application: pleiepenger-livets-sluttfase-prosessering
-          namespace: dusseldorf
-          cluster: {{environment}}-gcp
   env:
   {{#each env}}
     - name: {{@key}}
