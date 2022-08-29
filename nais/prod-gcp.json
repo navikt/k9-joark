@@ -14,7 +14,7 @@
     "DOKARKIV_BASE_URL": "https://dokarkiv.prod-fss-pub.nais.io",
     "DOKARKIV_SCOPE": "162b3255-2f72-4399-8f7a-244add9ffaac/.default",
     "K9_MELLOMLAGRING_SCOPE": "19aaf0b2-f40a-4a64-bf7f-fd2dd62f0552/.default",
-    "K9_MELLOMLAGRING_BASE_URL": "https://k9-mellomlagring.intern.nav.no",
+    "K9_MELLOMLAGRING_SERVICE_DISCOVERY": "http://k9-mellomlagring",
     "ENABLE_OMSORGSPENGESKNAD_UTBETALING_FRILANSER_SELVSTENDIG": "true",
     "ENABLE_OMSORGSPENGESKNAD_UTBETALING_ARBEIDSTAKER": "true",
     "ENABLE_OMSORGSPENGESKNAD_MIDLERTIDIG_ALENE": "true",
