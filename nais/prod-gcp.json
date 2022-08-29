@@ -7,9 +7,6 @@
   "minReplicas": "2",
   "maxReplicas": "4",
   "tenant": "nav.no",
-  "ingresses": [
-    "https://k9-joark.intern.nav.no"
-  ],
   "env": {
     "DOKARKIV_BASE_URL": "https://dokarkiv.prod-fss-pub.nais.io",
     "DOKARKIV_SCOPE": "162b3255-2f72-4399-8f7a-244add9ffaac/.default",
