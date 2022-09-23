@@ -1,7 +1,7 @@
 import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
-val dusseldorfKtorVersion = "3.2.0.2-b18c5fe"
+val dusseldorfKtorVersion = "3.2.1.1-89912d2"
 val ktorVersion = ext.get("ktorVersion").toString()
 val pdfBoxVersion = "2.0.26"
 val imageIOVersion = "3.8.3"
