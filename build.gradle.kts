@@ -1,24 +1,20 @@
 import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
-val dusseldorfKtorVersion = "3.2.1.2-93aa998"
-val ktorVersion = ext.get("ktorVersion").toString()
+val dusseldorfKtorVersion = "3.2.2.1-4942135"
+val ktorVersion = "2.2.1"
 val pdfBoxVersion = "2.0.27"
-val imageIOVersion = "3.9.3"
+val imageIOVersion = "3.9.4"
 val jsonassertVersion = "1.5.1"
 val fuelVersion = "2.3.1"
-val tokenSupportVersion = "2.1.6"
+val tokenSupportVersion = "3.0.2"
 val mockOauth2ServerVersion = "0.5.6"
 
 val mainClass = "no.nav.helse.K9JoarkKt"
 
 plugins {
-    kotlin("jvm") version "1.7.20"
+    kotlin("jvm") version "1.7.22"
     id("com.github.johnrengelman.shadow") version "7.1.2"
-}
-
-buildscript {
-    apply("https://raw.githubusercontent.com/navikt/dusseldorf-ktor/3bd7664b0352f77c0d6c124d1d03c57bc0284690/gradle/dusseldorf-ktor.gradle.kts")
 }
 
 dependencies {
