@@ -1,4 +1,13 @@
 # k9-joark
+
+![Lines of Code](https://sonarcloud.io/api/project_badges/measure?project=navikt_k9-joark&metric=ncloc)
+![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=navikt_k9-joark&metric=alert_status)
+![Coverage](https://sonarcloud.io/api/project_badges/measure?project=navikt_k9-joark&metric=coverage)
+![Code Smells](https://sonarcloud.io/api/project_badges/measure?project=navikt_k9-joark&metric=code_smells)
+![Technical Debt](https://sonarcloud.io/api/project_badges/measure?project=navikt_k9-joark&metric=sqale_index)
+![Duplicated Lines (%)](https://sonarcloud.io/api/project_badges/measure?project=navikt_k9-joark&metric=duplicated_lines_density)
+![Bugs](https://sonarcloud.io/api/project_badges/measure?project=navikt_k9-joark&metric=bugs)
+
 ![CI / CD](https://github.com/navikt/k9-joark/workflows/CI%20/%20CD/badge.svg)
 ![NAIS Alerts](https://github.com/navikt/k9-joark/workflows/Alerts/badge.svg)
 
