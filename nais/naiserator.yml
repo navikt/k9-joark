@@ -48,7 +48,6 @@ spec:
         - application: pleiepengesoknad-prosessering
         - application: omsorgspengerutbetalingsoknad-prosessering
         - application: omsorgspenger-midlertidig-alene-prosessering
-        - application: omsorgsdager-melding-prosessering
         - application: omsorgsdager-aleneomsorg-prosessering
         - application: pleiepenger-livets-sluttfase-prosessering
   env:
