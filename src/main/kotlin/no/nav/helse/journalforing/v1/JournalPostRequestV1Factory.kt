@@ -22,7 +22,8 @@ object JournalPostRequestV1Factory {
         journalpostinfo: Journalpostinfo,
         journalposttype: JournalPostType,
         avsenderMottakerIdType: AvsenderMottakerIdType,
-        avsenderMottakerNavn: String?
+        avsenderMottakerNavn: String?,
+        eksternReferanseId: String
     ) : JournalPostRequest {
 
         if (dokumenter.isEmpty()) {
@@ -45,7 +46,8 @@ object JournalPostRequestV1Factory {
             journalfoerendeEnhet = "9999", //  NAV-enheten som har journalført, eventuelt skal journalføre, forsendelsen. Ved automatisk journalføring uten mennesker involvert skal enhet settes til "9999".
             datoMottatt = formatDate(datoMottatt),
             dokumenter = vedlegg,
-            innsendingstype = journalpostinfo.innsendingstype
+            innsendingstype = journalpostinfo.innsendingstype,
+            eksternReferanseId = eksternReferanseId
         )
     }
 

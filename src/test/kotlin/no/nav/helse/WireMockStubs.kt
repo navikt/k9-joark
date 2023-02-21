@@ -18,6 +18,7 @@ internal fun WireMockServer.stubMottaInngaaendeForsendelseOk() : WireMockServer{
                 .withRequestBody(WireMock.matchingJsonPath("$.tilleggsopplysninger[0].verdi", WireMock.equalTo("DIGITAL")))
                 .withRequestBody(WireMock.matchingJsonPath("$.tilleggsopplysninger[1].nokkel", WireMock.equalTo("k9.type")))
                 .withRequestBody(WireMock.matchingJsonPath("$.tilleggsopplysninger[1].verdi", WireMock.matching("SØKNAD|MELDING|ETTERSENDELSE|ENDRING")))
+                .withRequestBody(WireMock.matchingJsonPath("$.eksternReferanseId", WireMock.equalTo("123156")))
                 .willReturn(
                     WireMock.aResponse()
                         .withStatus(200)

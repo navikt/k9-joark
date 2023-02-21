@@ -28,7 +28,8 @@ class JournalforingV1Service(
 ) {
     suspend fun journalfor(
         melding: MeldingV1,
-        metaData: MetadataV1
+        metaData: MetadataV1,
+        callId: String
     ): JournalPostId {
 
         val correlationId = CorrelationId(metaData.correlationId)
@@ -68,7 +69,8 @@ class JournalforingV1Service(
             datoMottatt = melding.mottatt,
             journalpostinfo = journalpostinfo,
             avsenderMottakerIdType = AVSENDER_MOTTAKER_ID_TYPE,
-            avsenderMottakerNavn = melding.sokerNavn?.sammensattNavn()
+            avsenderMottakerNavn = melding.sokerNavn?.sammensattNavn(),
+            eksternReferanseId = callId
         )
 
         logger.info("Sender melding til Joark")

@@ -13,6 +13,7 @@ internal data class JournalPostRequest(
     val datoMottatt: String, // yyyy-MM-dd'T'HH:mm:ssZ
     val kanal: String, // NAV_NO
     val journalfoerendeEnhet: String,
+    val eksternReferanseId: String,
     @JsonIgnore
     val innsendingstype: Innsendingstype) {
     val tilleggsopplysninger = listOf(

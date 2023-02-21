@@ -3,6 +3,7 @@ package no.nav.helse.journalforing.api
 import io.ktor.http.HttpHeaders
 import io.ktor.http.HttpStatusCode
 import io.ktor.server.application.*
+import io.ktor.server.plugins.callid.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
@@ -27,7 +28,8 @@ fun Route.journalforingApis(journalforingV1Service: JournalforingV1Service) {
         melding: MeldingV1,
         metadata: MetadataV1) = when (isEnabled.getValue(metadata.søknadstype)) {
         true -> {
-            val journalPostId = journalforingV1Service.journalfor(melding = melding, metaData = metadata)
+            val callId = call.callId!!
+            val journalPostId = journalforingV1Service.journalfor(melding = melding, metaData = metadata, callId)
             call.respond(HttpStatusCode.Created, JournalforingResponse(journalPostId = journalPostId.value))
         }
         false -> {
