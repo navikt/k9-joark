@@ -39,7 +39,7 @@ internal data class Journalpostinfo(
                 tema = Kapittel9Ytelse,
                 innsendingstype = Innsendingstype.SØKNAD
             ),
-            Søknadstype.ENDRINGSMELDING_PLEIEPENGESØKNAD to Journalpostinfo(
+            Søknadstype.PLEIEPENGESØKNAD_ENDRINGSMELDING to Journalpostinfo(
                 brevkode = BrevKode(brevKode = "NAV 09-11.05", dokumentKategori = "SOK"),
                 tittel = "Søknad om pleiepenger – sykt barn - NAV 09-11.05",
                 tema = Kapittel9Ytelse,

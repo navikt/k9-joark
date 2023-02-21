@@ -9,7 +9,7 @@ data class MetadataV1(
 
 enum class Søknadstype {
     PLEIEPENGESØKNAD,
-    ENDRINGSMELDING_PLEIEPENGESØKNAD,
+    PLEIEPENGESØKNAD_ENDRINGSMELDING,
     PLEIEPENGESØKNAD_ETTERSENDING,
     PLEIEPENGESØKNAD_LIVETS_SLUTTFASE,
     PLEIEPENGESØKNAD_LIVETS_SLUTTFASE_ETTERSENDING,
@@ -34,7 +34,9 @@ enum class Søknadstype {
             "ENABLE_${name.replace(norskeBokstaver, "")}"
         internal fun enabled(env: Map<String, String> = System.getenv()) =
             values().map {
-                it to (env[it.envKey()]?.equals("true")?:true)
+                val envKey = it.envKey()
+                val value = env[envKey]?.equals("true") ?: true
+                it to value
             }.toMap()
         }
 }
