@@ -3,10 +3,11 @@ package no.nav.helse.journalforing.v1
 import no.nav.helse.journalforing.BrevKode
 import no.nav.helse.journalforing.Tema
 
-internal enum class Innsendingstype {
+enum class Innsendingstype {
     SØKNAD,
     MELDING,
-    ETTERSENDELSE
+    ETTERSENDELSE,
+    ENDRING
 }
 
 internal data class Journalpostinfo(
@@ -37,6 +38,12 @@ internal data class Journalpostinfo(
                 tittel = "Søknad om pleiepenger – sykt barn - NAV 09-11.05",
                 tema = Kapittel9Ytelse,
                 innsendingstype = Innsendingstype.SØKNAD
+            ),
+            Søknadstype.ENDRINGSMELDING_PLEIEPENGESØKNAD to Journalpostinfo(
+                brevkode = BrevKode(brevKode = "NAV 09-11.05", dokumentKategori = "SOK"),
+                tittel = "Søknad om pleiepenger – sykt barn - NAV 09-11.05",
+                tema = Kapittel9Ytelse,
+                innsendingstype = Innsendingstype.ENDRING
             ),
             Søknadstype.PLEIEPENGESØKNAD_ETTERSENDING to Journalpostinfo(
                 brevkode = BrevKode(brevKode = "NAVe 09-11.05", dokumentKategori = "SOK"),

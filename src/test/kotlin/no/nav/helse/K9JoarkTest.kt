@@ -103,6 +103,17 @@ class K9JoarkTest {
         )
     }
 
+
+    @Test
+    fun `Journalpost for endringsmelding pleiepengesøknad`() {
+        requestAndAssert(
+            request = meldingForJournalføring(),
+            expectedResponse = """{"journal_post_id":"1"}""".trimIndent(),
+            expectedCode = HttpStatusCode.Created,
+            uri = "/v1/pleiepenge/endringsmelding/journalforing"
+        )
+    }
+
     @Test
     fun `Journalpost for pleiepenger livets sluttfase`() {
         requestAndAssert(

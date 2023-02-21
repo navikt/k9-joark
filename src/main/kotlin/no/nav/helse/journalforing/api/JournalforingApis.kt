@@ -42,6 +42,12 @@ fun Route.journalforingApis(journalforingV1Service: JournalforingV1Service) {
         journalfør(melding, metadata)
     }
 
+    post("/v1/pleiepenge/endringsmelding/journalforing") {
+        val melding = call.receive<MeldingV1>()
+        val metadata = call.genererMetadata(ENDRINGSMELDING_PLEIEPENGESØKNAD)
+        journalfør(melding, metadata)
+    }
+
     post("/v1/pleiepenge/ettersending/journalforing") {
         val melding = call.receive<MeldingV1>()
         val metadata = call.genererMetadata(PLEIEPENGESØKNAD_ETTERSENDING)
