@@ -76,7 +76,7 @@ class JournalforingGateway(
         val (request, _, result) = Operation.monitored(
             app = "k9-joark",
             operation = "opprette-journalpost",
-            resultResolver = { 200 == it.second.statusCode }
+            resultResolver = { 200 == it.second.statusCode || 409 == it.second.statusCode } // 409 = Journalpost finnes fra før
         ) { httpRequest.awaitStringResponseResult() }
 
         logger.info("Håndterer response")
