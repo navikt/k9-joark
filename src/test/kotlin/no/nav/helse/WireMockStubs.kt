@@ -10,7 +10,7 @@ private const val dokarkivBasePath = "/dokarkiv-mock"
 private const val dokarkivMottaInngaaendeForsendelsePath = "$dokarkivBasePath/rest/journalpostapi/v1/journalpost"
 private const val k9MellomlagringPath = "/k9-mellomlagring"
 
-internal fun WireMockServer.stubMottaInngaaendeForsendelseOk() : WireMockServer{
+internal fun WireMockServer.stubMottaInngaaendeForsendelseOk(status: Int = 200): WireMockServer{
     WireMock.stubFor(
         WireMock.post(
             WireMock.urlMatching(".*$dokarkivMottaInngaaendeForsendelsePath"))
@@ -21,7 +21,7 @@ internal fun WireMockServer.stubMottaInngaaendeForsendelseOk() : WireMockServer{
                 .withRequestBody(WireMock.matchingJsonPath("$.eksternReferanseId", WireMock.equalTo("123156")))
                 .willReturn(
                     WireMock.aResponse()
-                        .withStatus(200)
+                        .withStatus(status)
                         .withHeader("Content-Type", "application/json")
                         .withTransformers("dokarkiv")
                 )

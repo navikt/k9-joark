@@ -103,6 +103,17 @@ class K9JoarkTest {
         )
     }
 
+    @Test
+    fun `Journalpost for pleiepengesøknad med 409 conflict skal ikke feile`() {
+        wireMockServer.stubMottaInngaaendeForsendelseOk(409)
+        requestAndAssert(
+            request = meldingForJournalføring(),
+            expectedResponse = """{"journal_post_id":"1"}""".trimIndent(),
+            expectedCode = HttpStatusCode.Created
+        )
+        wireMockServer.stubMottaInngaaendeForsendelseOk()
+    }
+
 
     @Test
     fun `Journalpost for endringsmelding pleiepengesøknad`() {

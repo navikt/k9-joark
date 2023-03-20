@@ -23,7 +23,7 @@ class K9JoarkWithMocks {
                 }
                 .build()
                 .stubDomotInngaaendeIsReady()
-                .stubMottaInngaaendeForsendelseOk()
+                .stubMottaInngaaendeForsendelseOk(200)
 
             val testArgs = TestConfiguration.asMap(
                 wireMockServer = wireMockServer,

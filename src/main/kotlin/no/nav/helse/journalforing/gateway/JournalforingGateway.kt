@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.DeserializationFeature
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
-import com.github.kittinunf.fuel.core.Headers
+import com.github.kittinunf.fuel.core.*
 import com.github.kittinunf.fuel.coroutines.awaitStringResponseResult
 import com.github.kittinunf.fuel.httpPost
 import io.ktor.http.Url
@@ -76,18 +76,23 @@ class JournalforingGateway(
         val (request, _, result) = Operation.monitored(
             app = "k9-joark",
             operation = "opprette-journalpost",
-            resultResolver = { 200 == it.second.statusCode || 409 == it.second.statusCode } // 409 = Journalpost finnes fra før
+            resultResolver = { setOf(200, 409).contains(it.second.statusCode) } // 409 = Journalpost finnes fra før
         ) { httpRequest.awaitStringResponseResult() }
 
         logger.info("Håndterer response")
 
         return result.fold(
-            { success -> objectMapper.readValue(success) }
-        ) { error ->
-            logger.error("Error response = '${error.response.body().asString("text/plain")}' fra '${request.url}'")
-            logger.error(error.toString())
-            throw IllegalStateException("Feil ved opperttelse av journalpost.")
-        }
+            success = { success -> objectMapper.readValue(success) },
+            failure = { error ->
+                if (error.response.statusCode == 409) {
+                    logger.info("Journalpost finnes fra før.")
+                    return objectMapper.readValue(error.response.body().asString("application/json"))
+                }
+                logger.error("Error response = '${error.response.body().asString("text/plain")}' fra '${request.url}'")
+                logger.error(error.toString())
+                throw IllegalStateException("Feil ved opperttelse av journalpost.")
+            }
+        )
     }
 
     private fun configuredObjectMapper(): ObjectMapper {
