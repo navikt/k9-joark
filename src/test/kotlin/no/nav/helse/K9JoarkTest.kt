@@ -181,7 +181,7 @@ class K9JoarkTest {
             request = meldingForJournalføring(),
             expectedResponse = """{"journal_post_id":"3"}""".trimIndent(),
             expectedCode = HttpStatusCode.Created,
-            uri = "/v1/omsorgspengeutbetaling/journalforing?arbeidstype=frilanser&arbeidstype=selvstendig-naeringsdrivende"
+            uri = "/v1/omsorgspengeutbetaling/journalforing?arbeidstype=frilanser&arbeidstype=selvstendig næringsdrivende"
         )
     }
 
@@ -191,7 +191,7 @@ class K9JoarkTest {
             request = meldingForJournalføring(),
             expectedResponse = """{"journal_post_id":"11"}""".trimIndent(),
             expectedCode = HttpStatusCode.Created,
-            uri = "/v1/omsorgspengeutbetaling/ettersending/journalforing?arbeidstype=frilanser&arbeidstype=selvstendig-naeringsdrivende"
+            uri = "/v1/omsorgspengeutbetaling/ettersending/journalforing?arbeidstype=frilanser&arbeidstype=selvstendig næringsdrivende"
         )
     }
 
