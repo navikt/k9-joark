@@ -171,7 +171,7 @@ private fun ApplicationCall.genererMetadata(søknadstype: Søknadstype, version:
 
 private fun ApplicationRequest.gjelderFrilanserOgSelvstendigNæringsdrivende() : Boolean {
     val arbeidstyper = queryParameters.getAll("arbeidstype")?: emptyList()
-    return arbeidstyper.size == 2 && arbeidstyper.contains("frilanser") && arbeidstyper.contains("selvstendig-naeringsdrivende")
+    return arbeidstyper.size == 2 && arbeidstyper.contains("frilanser") && arbeidstyper.contains("selvstendig næringsdrivende")
 }
 
 private fun ApplicationRequest.gjelderArbeidstaker() : Boolean {
