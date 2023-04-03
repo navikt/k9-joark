@@ -38,6 +38,10 @@ spec:
       tenant: {{tenant}}
   accessPolicy:
     outbound:
+      external:
+        {{#each externalHosts as |host|}}
+          - host: {{host }}
+        {{/each}}
       rules:
         - application: k9-mellomlagring
     inbound:

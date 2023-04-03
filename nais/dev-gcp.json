@@ -7,6 +7,9 @@
   "minReplicas": "1",
   "maxReplicas": "2",
   "tenant": "trygdeetaten.no",
+  "externalHosts": [
+    "dokarkiv.dev-fss-pub.nais.io"
+  ],
   "env": {
     "DOKARKIV_BASE_URL": "https://dokarkiv.dev-fss-pub.nais.io",
     "DOKARKIV_SCOPE": "133ed9a4-fa3d-4e1e-a533-610afc02a56e/.default",
