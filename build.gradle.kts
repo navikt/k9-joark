@@ -3,7 +3,7 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 val dusseldorfKtorVersion = "3.2.3.1-96f392b"
 val ktorVersion = "2.3.1"
-val pdfBoxVersion = "2.0.28"
+val pdfBoxVersion = "2.0.29"
 val imageIOVersion = "3.9.4"
 val jsonassertVersion = "1.5.1"
 val fuelVersion = "2.3.1"
