@@ -111,7 +111,7 @@ sonarqube {
         property("sonar.projectKey", "navikt_k9-joark")
         property("sonar.organization", "navikt")
         property("sonar.host.url", "https://sonarcloud.io")
-        property("sonar.login", System.getenv("SONAR_TOKEN"))
+        property("sonar.token", System.getenv("SONAR_TOKEN"))
         property("sonar.sourceEncoding", "UTF-8")
     }
 }
