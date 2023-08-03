@@ -7,7 +7,6 @@ import no.nav.helse.journalforing.Fodselsnummer
 import no.nav.helse.journalforing.converter.Image2PDFConverter
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
-import java.net.URI
 
 private val logger: Logger = LoggerFactory.getLogger(DokumentService::class.java)
 
@@ -58,7 +57,7 @@ class DokumentService(
                 Dokument(
                     title = it.title,
                     contentType = "application/pdf",
-                    content = image2PDFConverter.convert(bytes = it.content, contentType = it.contentType)
+                    content = image2PDFConverter.convertToPDF(bytes = it.content, contentType = it.contentType)
                 )
             )
         }
