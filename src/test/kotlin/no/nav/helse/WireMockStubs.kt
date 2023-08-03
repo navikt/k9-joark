@@ -40,7 +40,7 @@ internal fun WireMockServer.stubDomotInngaaendeIsReady() : WireMockServer {
 }
 
 internal fun WireMockServer.stubGetDokumentFraK9Mellomlagring(eiersFødselsnummer: String): WireMockServer {
-    val content = Base64.getEncoder().encodeToString("iPhone_6.jpg".fromResources().readBytes())
+    val content = Base64.getEncoder().encodeToString("grafana-board.png".fromResources().readBytes())
     WireMock.stubFor(
         WireMock.post(WireMock.urlPathMatching(".*$k9MellomlagringPath.*"))
             .withRequestBody(WireMock.equalToJson("""{"eiers_fødselsnummer": "$eiersFødselsnummer"}""".trimIndent()))
