@@ -36,6 +36,7 @@ dependencies {
 
     // Bilde til PNG
     implementation("org.apache.pdfbox:pdfbox:$pdfBoxVersion")
+    implementation("org.apache.pdfbox:pdfbox-io:$pdfBoxVersion")
     implementation("com.twelvemonkeys.imageio:imageio-jpeg:$imageIOVersion")
 
     // Test
