@@ -1,6 +1,6 @@
 package no.nav.helse.journalforing.converter
 
-import org.apache.pdfbox.io.MemoryUsageSetting
+import org.apache.pdfbox.io.IOUtils
 import org.apache.pdfbox.pdmodel.PDDocument
 import org.apache.pdfbox.pdmodel.PDPage
 import org.apache.pdfbox.pdmodel.PDPageContentStream
@@ -20,14 +20,14 @@ class Image2PDFConverter {
     fun convertToPDF(bytes: ByteArray, contentType: String): ByteArray {
         runCatching {
             logger.trace("Konverterer fra $contentType til PDF.")
-            PDDocument(MemoryUsageSetting.setupTempFileOnly()).use { doc ->
+            PDDocument(IOUtils.createTempFileOnlyStreamCache()).use { doc: PDDocument ->
                 ByteArrayOutputStream().use { os ->
                     pdfFraBilde(doc, bytes)
                     doc.save(os)
                     return os.toByteArray()
                 }
             }
-        }.getOrElse { cause ->
+        }.getOrElse { cause: Throwable ->
             throw  IllegalStateException("Klarte ikke å gjøre om $contentType bilde til PDF", cause)
         }
     }
