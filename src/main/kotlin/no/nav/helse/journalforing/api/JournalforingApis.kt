@@ -160,6 +160,12 @@ fun Route.journalforingApis(journalforingV1Service: JournalforingV1Service) {
         val metadata = call.genererMetadata(OMSORGSDAGER_ALENEOMSORG)
         journalfør(melding, metadata)
     }
+
+    post("/v1/omsorgsdager/aleneomsorg/ettersending/journalforing") {
+        val melding = call.receive<MeldingV1>()
+        val metadata = call.genererMetadata(OMSORGSDAGER_ALENEOMSORG_ETTERSENDING)
+        journalfør(melding, metadata)
+    }
 }
 
 private fun ApplicationCall.genererMetadata(søknadstype: Søknadstype, version: Int = 1) = MetadataV1(

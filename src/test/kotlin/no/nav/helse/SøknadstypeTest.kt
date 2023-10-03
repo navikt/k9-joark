@@ -46,9 +46,10 @@ internal class SøknadstypeTest {
             "ENABLE_OMSORGSPENGER_ALENEOMSORG" to "false",
             "ENABLE_OPPLRINGSPENGESKNAD" to "false",
             "ENABLE_FRISINNSKNAD" to "false",
-            "ENABLE_OMSORGSDAGER_ALENEOMSORG" to "false"
+            "ENABLE_OMSORGSDAGER_ALENEOMSORG" to "false",
+            "ENABLE_OMSORGSDAGER_ALENEOMSORG_ETTERSENDING" to "false",
         ))
-        assertTrue(enabled.keys.toSet().containsAll(Søknadstype.values().toSet()))
+        assertTrue(enabled.keys.toSet().containsAll(Søknadstype.entries.toSet()))
         assertTrue(enabled.values.none { it })
     }
 }
