@@ -135,6 +135,12 @@ internal data class Journalpostinfo(
                 tema = Kapittel9Ytelse,
                 innsendingstype = Innsendingstype.MELDING
             ),
+            Søknadstype.OMSORGSDAGER_ALENEOMSORG_ETTERSENDING to Journalpostinfo(
+                brevkode = BrevKode(brevKode = "NAVe 09-06.10", dokumentKategori = "SOK"),
+                tittel = "Registrering av aleneomsorg for omsorgsdager - NAVe 09-06.10",
+                tema = Kapittel9Ytelse,
+                innsendingstype = Innsendingstype.ETTERSENDELSE
+            ),
             Søknadstype.OPPLÆRINGSPENGESØKNAD to Journalpostinfo(
                 brevkode = BrevKode(brevKode = "NAV 09-11.08", dokumentKategori = "SOK"),
                 tittel = "Søknad om opplæringspenger - NAV 09-11.08",

@@ -286,6 +286,16 @@ class K9JoarkTest {
     }
 
     @Test
+    fun `Journalpost for omsorgsdager aleneomsorg ettersending`() {
+        requestAndAssert(
+            request = meldingForJournalføring(),
+            expectedResponse = """{"journal_post_id":"18"}""".trimIndent(),
+            expectedCode = HttpStatusCode.Created,
+            uri = "/v1/omsorgsdager/aleneomsorg/ettersending/journalforing"
+        )
+    }
+
+    @Test
     fun `melding uten correlation id skal feile`() {
         requestAndAssert(
             request = meldingForJournalføring(),
