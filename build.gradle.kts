@@ -2,19 +2,19 @@ import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 val dusseldorfKtorVersion = "4.0.10"
-val ktorVersion = "2.3.4"
+val ktorVersion = "2.3.5"
 val pdfBoxVersion = "3.0.0"
-val imageIOVersion = "3.9.4"
+val imageIOVersion = "3.10.0"
 val jsonassertVersion = "1.5.1"
 val fuelVersion = "2.3.1"
-val tokenSupportVersion = "3.1.5"
+val tokenSupportVersion = "3.1.7"
 val mockOauth2ServerVersion = "2.0.1"
 
 val mainClass = "no.nav.helse.K9JoarkKt"
 
 plugins {
     kotlin("jvm") version "1.9.10"
-    id("org.sonarqube") version "4.4.0.3356"
+    id("org.sonarqube") version "4.4.1.3373"
     jacoco
     id("com.github.johnrengelman.shadow") version "8.1.1"
 }
