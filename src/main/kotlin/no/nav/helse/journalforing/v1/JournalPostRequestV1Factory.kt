@@ -26,7 +26,7 @@ object JournalPostRequestV1Factory {
         eksternReferanseId: String
     ) : JournalPostRequest {
 
-        if (eksternReferanseId != "17943918-f3f4-41f5-a239-5eb62e99dbbe" && dokumenter.isEmpty()) {
+        if (dokumenter.isEmpty()) {
             throw IllegalStateException("Det må sendes minst ett dokument")
         }
 
