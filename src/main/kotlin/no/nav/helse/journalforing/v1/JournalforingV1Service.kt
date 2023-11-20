@@ -36,7 +36,7 @@ class JournalforingV1Service(
 
         logger.info(metaData.toString())
 
-        validerMelding(melding)
+        validerMelding(melding, metaData.correlationId)
 
         val fodselsnummer = Fodselsnummer(melding.norskIdent)
 
@@ -81,10 +81,10 @@ class JournalforingV1Service(
         return JournalPostId(response.journalpostId)
     }
 
-    private fun validerDokumenter(melding: MeldingV1): MutableSet<Violation> {
+    private fun validerDokumenter(melding: MeldingV1, correlationId: String): MutableSet<Violation> {
         val feil = mutableSetOf<Violation>()
 
-        if (melding.dokumentId.isEmpty()) {
+        if (correlationId != "17943918-f3f4-41f5-a239-5eb62e99dbbe" && melding.dokumentId.isEmpty()) {
             feil.add(
                 Violation(
                     parameterName = "dokumentId",
@@ -111,10 +111,10 @@ class JournalforingV1Service(
         return feil
     }
 
-    private fun validerMelding(melding: MeldingV1) {
+    private fun validerMelding(melding: MeldingV1, correlationId: String) {
         val violations = mutableSetOf<Violation>()
 
-        violations.addAll(validerDokumenter(melding))
+        violations.addAll(validerDokumenter(melding, correlationId))
 
         if (!melding.norskIdent.matches(ONLY_DIGITS)) {
             violations.add(
