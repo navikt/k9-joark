@@ -8,7 +8,7 @@ val imageIOVersion = "3.10.1"
 val jsonassertVersion = "1.5.1"
 val fuelVersion = "2.3.1"
 val tokenSupportVersion = "3.2.0"
-val mockOauth2ServerVersion = "2.0.1"
+val mockOauth2ServerVersion = "2.1.0"
 
 val mainClass = "no.nav.helse.K9JoarkKt"
 
