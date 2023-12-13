@@ -47,14 +47,6 @@ spec:
     inbound:
       rules:
         - application: k9-brukerdialog-prosessering
-        - application: omsorgspengerutbetalingsoknad-arbeidstaker-prosessering
-        - application: omsorgspengesoknad-prosessering
-        - application: k9-ettersending-prosessering
-        - application: pleiepengesoknad-prosessering
-        - application: omsorgspengerutbetalingsoknad-prosessering
-        - application: omsorgspenger-midlertidig-alene-prosessering
-        - application: omsorgsdager-aleneomsorg-prosessering
-        - application: pleiepenger-livets-sluttfase-prosessering
   env:
   {{#each env}}
     - name: {{@key}}
