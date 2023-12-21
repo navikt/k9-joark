@@ -13,7 +13,7 @@ val mockOauth2ServerVersion = "2.1.0"
 val mainClass = "no.nav.helse.K9JoarkKt"
 
 plugins {
-    kotlin("jvm") version "1.9.21"
+    kotlin("jvm") version "1.9.22"
     id("org.sonarqube") version "4.4.1.3373"
     jacoco
     id("com.github.johnrengelman.shadow") version "8.1.1"
