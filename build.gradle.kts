@@ -1,20 +1,20 @@
 import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
-val dusseldorfKtorVersion = "4.1.4"
-val ktorVersion = "2.3.7"
-val pdfBoxVersion = "3.0.1"
+val dusseldorfKtorVersion = "4.2.2"
+val ktorVersion = "2.3.10"
+val pdfBoxVersion = "3.0.2"
 val imageIOVersion = "3.10.1"
 val jsonassertVersion = "1.5.1"
 val fuelVersion = "2.3.1"
-val tokenSupportVersion = "3.2.0"
-val mockOauth2ServerVersion = "2.1.0"
+val tokenSupportVersion = "4.1.4"
+val mockOauth2ServerVersion = "2.1.4"
 
 val mainClass = "no.nav.helse.K9JoarkKt"
 
 plugins {
-    kotlin("jvm") version "1.9.21"
-    id("org.sonarqube") version "4.4.1.3373"
+    kotlin("jvm") version "1.9.23"
+    id("org.sonarqube") version "5.0.0.4638"
     jacoco
     id("com.github.johnrengelman.shadow") version "8.1.1"
 }
@@ -68,13 +68,13 @@ repositories {
 
 
 java {
-    sourceCompatibility = JavaVersion.VERSION_17
-    targetCompatibility = JavaVersion.VERSION_17
+    sourceCompatibility = JavaVersion.VERSION_21
+    targetCompatibility = JavaVersion.VERSION_21
 }
 
 tasks {
     withType<KotlinCompile> {
-        kotlinOptions.jvmTarget = "17"
+        kotlinOptions.jvmTarget = "21"
     }
 
     withType<ShadowJar> {
@@ -90,7 +90,7 @@ tasks {
     }
 
     withType<Wrapper> {
-        gradleVersion = "8.2.1"
+        gradleVersion = "8.5"
     }
 
     withType<Test> {
