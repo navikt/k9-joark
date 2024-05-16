@@ -7,7 +7,7 @@ val pdfBoxVersion = "3.0.2"
 val imageIOVersion = "3.10.1"
 val jsonassertVersion = "1.5.1"
 val fuelVersion = "2.3.1"
-val tokenSupportVersion = "4.1.5"
+val tokenSupportVersion = "4.1.7"
 val mockOauth2ServerVersion = "2.1.5"
 
 val mainClass = "no.nav.helse.K9JoarkKt"
