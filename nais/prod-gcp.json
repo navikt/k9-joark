@@ -10,7 +10,7 @@
   "externalHosts": [
     "dokarkiv.prod-fss-pub.nais.io"
   ],
-  "observabilityEnabled": "false",
+  "observabilityEnabled": "true",
   "env": {
     "DOKARKIV_BASE_URL": "https://dokarkiv.prod-fss-pub.nais.io",
     "DOKARKIV_SCOPE": "162b3255-2f72-4399-8f7a-244add9ffaac/.default",
