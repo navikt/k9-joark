@@ -54,7 +54,7 @@ internal object BrevkodeTittelOgTema {
     )
 
     private val OMSORGSPENGER_UTBETALING_FRILANSER_OG_SELVSTENDIG_ETTERSENDING = Triple(
-        BrevKode(brevKode = "NAVe 09-35.02", dokumentKategori = "SOK"),
+        BrevKode(brevKode = "NAVe 09-35.01", dokumentKategori = "SOK"),
         "Søknad om utbetaling av omsorgsdager frilanser/selvstendig - NAVe 09-35.01",
         Kapittel9Ytelse
     )
@@ -127,13 +127,13 @@ internal object BrevkodeTittelOgTema {
 
     private val UNNGOMSYTELSE_SØKNAD = Triple(
         BrevKode(brevKode = "UNG Søknad", dokumentKategori = "SOK"),
-        "Søknad om ungdomsytelse - Ung Søknad",
+        "Søknad om ungdomsytelse - UNG Søknad",
         Ungomsytelse
     )
 
     private val UNNGOMSYTELSE_ENDRINGSSØKNAD = Triple(
         BrevKode(brevKode = "UNG Endringssøknad", dokumentKategori = "SOK"),
-        "Endringssøknad for ungdomsytelsen - Ung Endringssøknad",
+        "Endringssøknad for ungdomsytelsen - UNG Endringssøknad",
         Ungomsytelse
     )
 
