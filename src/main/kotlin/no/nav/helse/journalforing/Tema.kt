@@ -1,3 +1,8 @@
 package no.nav.helse.journalforing
 
-data class Tema(val value: String)
+enum class Tema(val kode: String) {
+    KAPITTEL_9_YTELSER("OMS"),
+    FRISINN("FRI"),
+    UNGDOMSYTELSE("UNG")
+    ;
+}
