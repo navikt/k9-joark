@@ -31,6 +31,7 @@ internal data class Journalpostinfo(
     internal companion object {
         private val Kapittel9Ytelse = Tema("OMS")
         private val FrilansereOgSelvstendigNæringdrivendesInntektskompensasjon = Tema("FRI")
+        private val Ungdomsytelse = Tema("UNG")
 
         private val journalpostinfo = mapOf(
             Søknadstype.PLEIEPENGESØKNAD to Journalpostinfo(
@@ -151,6 +152,18 @@ internal data class Journalpostinfo(
                 brevkode = BrevKode(brevKode = "NAV 00-03.02", dokumentKategori = "SOK"),
                 tittel = "Søknad om inntektskompensasjon for frilansere og selvstendig næringdrivende - NAV 00-03.02",
                 tema = FrilansereOgSelvstendigNæringdrivendesInntektskompensasjon,
+                innsendingstype = Innsendingstype.SØKNAD
+            ),
+            Søknadstype.UNGDOMSYTELSE_SØKNAD to Journalpostinfo(
+                brevkode = BrevKode(brevKode = "UNG Søknad", dokumentKategori = "SOK"),
+                tittel = "Søknad om ungdomsytelse - UNG Søknad",
+                tema = Ungdomsytelse,
+                innsendingstype = Innsendingstype.SØKNAD
+            ),
+            Søknadstype.UNGDOMSYTELSE_ENDRINGSSØKNAD to Journalpostinfo(
+                brevkode = BrevKode(brevKode = "UNG Endringssøknad", dokumentKategori = "SOK"),
+                tittel = "Endringssøknad for ungdomsytelsen - UNG Endringssøknad",
+                tema = Ungdomsytelse,
                 innsendingstype = Innsendingstype.SØKNAD
             )
         )

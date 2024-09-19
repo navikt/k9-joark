@@ -9,6 +9,7 @@ val jsonassertVersion = "1.5.3"
 val fuelVersion = "2.3.1"
 val tokenSupportVersion = "5.0.3"
 val mockOauth2ServerVersion = "2.1.9"
+val junitVersion = "5.9.3"
 
 val mainClass = "no.nav.helse.K9JoarkKt"
 
@@ -49,6 +50,7 @@ dependencies {
         exclude(group = "org.jetbrains.kotlinx", module = "kotlinx-coroutines-core")
     }
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
+    testImplementation("org.junit.jupiter:junit-jupiter-params:$junitVersion")
     testImplementation("org.skyscreamer:jsonassert:$jsonassertVersion")
     testImplementation("no.nav.security:mock-oauth2-server:$mockOauth2ServerVersion")
 }

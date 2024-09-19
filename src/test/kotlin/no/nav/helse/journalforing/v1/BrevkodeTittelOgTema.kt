@@ -9,6 +9,7 @@ import no.nav.helse.journalforing.Tema
 internal object BrevkodeTittelOgTema {
     private val Kapittel9Ytelse = Tema("OMS")
     private val FrilansereOgSelvstendigNæringdrivendesInntektskompensasjon = Tema("FRI")
+    private val Ungomsytelse = Tema("UNG")
 
     private val PLEIEPENGER_BARN = Triple(
         BrevKode(brevKode = "NAV 09-11.05", dokumentKategori = "SOK"),
@@ -53,7 +54,7 @@ internal object BrevkodeTittelOgTema {
     )
 
     private val OMSORGSPENGER_UTBETALING_FRILANSER_OG_SELVSTENDIG_ETTERSENDING = Triple(
-        BrevKode(brevKode = "NAVe 09-35.01", dokumentKategori = "SOK"),
+        BrevKode(brevKode = "NAVe 09-35.02", dokumentKategori = "SOK"),
         "Søknad om utbetaling av omsorgsdager frilanser/selvstendig - NAVe 09-35.01",
         Kapittel9Ytelse
     )
@@ -124,7 +125,19 @@ internal object BrevkodeTittelOgTema {
         FrilansereOgSelvstendigNæringdrivendesInntektskompensasjon
     )
 
-    internal fun hentFor(søknadstype: Søknadstype) = when (søknadstype) {
+    private val UNNGOMSYTELSE_SØKNAD = Triple(
+        BrevKode(brevKode = "UNG Søknad", dokumentKategori = "SOK"),
+        "Søknad om ungdomsytelse - Ung Søknad",
+        Ungomsytelse
+    )
+
+    private val UNNGOMSYTELSE_ENDRINGSSØKNAD = Triple(
+        BrevKode(brevKode = "UNG Endringssøknad", dokumentKategori = "SOK"),
+        "Endringssøknad for ungdomsytelsen - Ung Endringssøknad",
+        Ungomsytelse
+    )
+
+    internal fun hentFor(søknadstype: Søknadstype): Triple<BrevKode, String, Tema> = when (søknadstype) {
         Søknadstype.PLEIEPENGESØKNAD, Søknadstype.PLEIEPENGESØKNAD_ENDRINGSMELDING -> PLEIEPENGER_BARN
         Søknadstype.PLEIEPENGESØKNAD_ETTERSENDING -> PLEIEPENGER_BARN_ETTERSENDING
         Søknadstype.PLEIEPENGESØKNAD_LIVETS_SLUTTFASE -> PLEIEPENGER_LIVETS_SLUTTFASE
@@ -144,5 +157,7 @@ internal object BrevkodeTittelOgTema {
         Søknadstype.OMSORGSDAGER_ALENEOMSORG_ETTERSENDING -> OMSORGSDAGER_ALENEOMSORG_ETTERSENDING
         Søknadstype.OPPLÆRINGSPENGESØKNAD -> OPPLÆRINGSPENGER
         Søknadstype.FRISINNSØKNAD -> FRISINN
+        Søknadstype.UNGDOMSYTELSE_SØKNAD -> UNNGOMSYTELSE_SØKNAD
+        Søknadstype.UNGDOMSYTELSE_ENDRINGSSØKNAD -> UNNGOMSYTELSE_ENDRINGSSØKNAD
     }
 }

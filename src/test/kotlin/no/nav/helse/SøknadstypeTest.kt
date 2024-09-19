@@ -48,6 +48,8 @@ internal class SøknadstypeTest {
             "ENABLE_FRISINNSKNAD" to "false",
             "ENABLE_OMSORGSDAGER_ALENEOMSORG" to "false",
             "ENABLE_OMSORGSDAGER_ALENEOMSORG_ETTERSENDING" to "false",
+            "ENABLE_UNGDOMSYTELSE_SØKNAD" to "false",
+            "ENABLE_UNGDOMSYTELSE_ENDRINGSSØKNAD" to "false",
         ))
         assertTrue(enabled.keys.toSet().containsAll(Søknadstype.entries.toSet()))
         assertTrue(enabled.values.none { it })

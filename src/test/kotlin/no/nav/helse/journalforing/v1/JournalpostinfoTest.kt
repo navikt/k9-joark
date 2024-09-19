@@ -8,7 +8,7 @@ internal class JournalpostinfoTest {
 
     @Test
     internal fun `journalpostinfo fra søknadstype`() {
-        Søknadstype.values().forEach { søknadstype ->
+        Søknadstype.entries.forEach { søknadstype ->
             val (brevkode, tittel, tema) = BrevkodeTittelOgTema.hentFor(søknadstype)
             val journalpostinfo = søknadstype.somJournalpostinfo()
             // Sjekker at mappingen er som før
