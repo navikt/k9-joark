@@ -20,8 +20,8 @@
     "ENABLE_OMSORGSPENGESKNAD_UTBETALING_ARBEIDSTAKER": "true",
     "ENABLE_OMSORGSPENGESKNAD_MIDLERTIDIG_ALENE": "true",
     "ENABLE_OPPLRINGSPENGESKNAD": "false",
-    "ENABLE_UNGDOMSYTELSE_SKNAD": "false",
-    "ENABLE_UNGDOMSYTELSE_ENDRINGSSKNAD": "false"
+    "ENABLE_UNGDOMSYTELSE_SKNAD": "true",
+    "ENABLE_UNGDOMSYTELSE_ENDRINGSSKNAD": "true"
   },
   "slack-channel": "sif-alerts",
   "slack-notify-type": "<!channel> | k9-joark | ",
