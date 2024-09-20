@@ -29,8 +29,8 @@ internal class DokarkivResponseTransformer : ResponseTransformerV2 {
             PLEIEPENGESØKNAD_LIVETS_SLUTTFASE to "16",
             PLEIEPENGESØKNAD_LIVETS_SLUTTFASE_ETTERSENDING to "17",
             OMSORGSDAGER_ALENEOMSORG_ETTERSENDING to "18",
-            UNGDOMSYTELSE_SØKNAD to "19", // TODO Bruk Tema.UNGDOMSYTELSE før lansering
-            UNGDOMSYTELSE_ENDRINGSSØKNAD to "20" // TODO Bruk Tema.UNGDOMSYTELSE før lansering
+            UNGDOMSYTELSE_SØKNAD to "19",
+            UNGDOMSYTELSE_ENDRINGSSØKNAD to "20"
         )
     }
 

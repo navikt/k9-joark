@@ -180,7 +180,7 @@ enum class Søknadstype(
         urlPath = "/v1/ungdomsytelse/soknad/journalforing",
         brevkode = BrevKode(brevKode = "UNG Søknad", dokumentKategori = "SOK"),
         tittel = "Søknad om ungdomsytelse - UNG Søknad",
-        tema = Tema.K9_YTELSER, // TODO Bruk Tema.UNGDOMSYTELSE før lansering
+        tema = Tema.UNGDOMSYTELSE,
         innsendingstype = Innsendingstype.SØKNAD
     ),
 
@@ -188,7 +188,7 @@ enum class Søknadstype(
         urlPath = "/v1/ungdomsytelse/endringssoknad/journalforing",
         brevkode = BrevKode(brevKode = "UNG Endringssøknad", dokumentKategori = "SOK"),
         tittel = "Endringssøknad for ungdomsytelsen - UNG Endringssøknad",
-        tema = Tema.K9_YTELSER, // TODO Bruk Tema.UNGDOMSYTELSE før lansering
+        tema = Tema.UNGDOMSYTELSE,
         innsendingstype = Innsendingstype.SØKNAD
     )
     ;
