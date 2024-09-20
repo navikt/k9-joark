@@ -6,12 +6,16 @@ import com.typesafe.config.ConfigFactory
 import io.ktor.server.config.*
 import io.ktor.http.*
 import io.ktor.server.testing.*
+import no.nav.helse.DokarkivResponseTransformer.Companion.BREVKODE_MED_FORVENTET_JOURNALPOST_ID
 import no.nav.helse.dusseldorf.testsupport.wiremock.WireMockBuilder
 import no.nav.helse.journalforing.v1.MeldingV1
 import no.nav.helse.journalforing.v1.Navn
+import no.nav.helse.journalforing.v1.Søknadstype
 import no.nav.security.mock.oauth2.MockOAuth2Server
 import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.BeforeAll
+import org.junit.jupiter.params.ParameterizedTest
+import org.junit.jupiter.params.provider.MethodSource
 import org.skyscreamer.jsonassert.JSONAssert
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
@@ -21,7 +25,7 @@ import kotlin.test.assertEquals
 
 class K9JoarkTest {
 
-    private companion object {
+    companion object {
         private val logger: Logger = LoggerFactory.getLogger(K9JoarkTest::class.java)
         private val mockOAuth2Server = MockOAuth2Server().apply { start() }
         private val wireMockServer: WireMockServer = WireMockBuilder()
@@ -74,6 +78,28 @@ class K9JoarkTest {
             mockOAuth2Server.shutdown()
             logger.info("Tear down complete")
         }
+
+        @JvmStatic
+        fun søknaderForJournalføring(): List<Journalføring> {
+            return Søknadstype.entries.map {
+                val journalpostId = BREVKODE_MED_FORVENTET_JOURNALPOST_ID.getValue(it)
+
+                val (urlPath, forventetJournalpostId) = when(it) {
+                    Søknadstype.OMSORGSPENGESØKNAD_UTBETALING_FRILANSER_SELVSTENDIG -> it.urlPath + "?arbeidstype=frilanser&arbeidstype=selvstendig-naeringsdrivende" to journalpostId
+                    Søknadstype.OMSORGSPENGESØKNAD_UTBETALING_ARBEIDSTAKER -> it.urlPath + "?arbeidstype=arbeidstaker" to journalpostId
+                    Søknadstype.OMSORGSPENGESØKNAD_UTBETALING_FRILANSER_SELVSTENDIG_ETTERSENDING -> it.urlPath + "?arbeidstype=frilanser&arbeidstype=selvstendig-naeringsdrivende" to journalpostId
+                    Søknadstype.OMSORGSPENGESØKNAD_UTBETALING_ARBEIDSTAKER_ETTERSENDING -> it.urlPath + "?arbeidstype=arbeidstaker" to journalpostId
+                    else -> it.urlPath to journalpostId
+                }
+
+                Journalføring(urlPath, forventetJournalpostId)
+            }
+        }
+
+        data class Journalføring(
+            val urlPath: String,
+            val forventetJournalpostId: String
+        )
     }
 
     @Test
@@ -95,15 +121,6 @@ class K9JoarkTest {
     }
 
     @Test
-    fun `Journalpost for pleiepengesøknad`() {
-        requestAndAssert(
-            request = meldingForJournalføring(),
-            expectedResponse = """{"journal_post_id":"1"}""".trimIndent(),
-            expectedCode = HttpStatusCode.Created
-        )
-    }
-
-    @Test
     fun `Journalpost for pleiepengesøknad med 409 conflict skal ikke feile`() {
         wireMockServer.stubMottaInngaaendeForsendelseOk(409)
         requestAndAssert(
@@ -114,184 +131,14 @@ class K9JoarkTest {
         wireMockServer.stubMottaInngaaendeForsendelseOk()
     }
 
-
-    @Test
-    fun `Journalpost for endringsmelding pleiepengesøknad`() {
+    @ParameterizedTest
+    @MethodSource("søknaderForJournalføring")
+    fun `Journalføring fungerer som forventet`(journalføring: Journalføring) {
         requestAndAssert(
             request = meldingForJournalføring(),
-            expectedResponse = """{"journal_post_id":"1"}""".trimIndent(),
+            expectedResponse = """{"journal_post_id":"${journalføring.forventetJournalpostId}"}""".trimIndent(),
             expectedCode = HttpStatusCode.Created,
-            uri = "/v1/pleiepenge/endringsmelding/journalforing"
-        )
-    }
-
-    @Test
-    fun `Journalpost for pleiepenger livets sluttfase`() {
-        requestAndAssert(
-            request = meldingForJournalføring(),
-            expectedResponse = """{"journal_post_id":"16"}""".trimIndent(),
-            expectedCode = HttpStatusCode.Created,
-            uri = "/v1/pleiepenge/livets-sluttfase/journalforing"
-        )
-    }
-
-    @Test
-    fun `Journalpost for pleiepenger livets sluttfase ettersending`() {
-        requestAndAssert(
-            request = meldingForJournalføring(),
-            expectedResponse = """{"journal_post_id":"17"}""".trimIndent(),
-            expectedCode = HttpStatusCode.Created,
-            uri = "/v1/pleiepenge/livets-sluttfase/ettersending/journalforing"
-        )
-    }
-
-    @Test
-    fun `Journalpost for pleiepengesøknad ettersending`() {
-        requestAndAssert(
-            request = meldingForJournalføring(),
-            expectedResponse = """{"journal_post_id":"9"}""".trimIndent(),
-            expectedCode = HttpStatusCode.Created,
-            uri = "/v1/pleiepenge/ettersending/journalforing"
-        )
-    }
-
-    @Test
-    fun `Journalpost for omsorgpengesøknad`() {
-        requestAndAssert(
-            request = meldingForJournalføring(),
-            expectedResponse = """{"journal_post_id":"2"}""".trimIndent(),
-            expectedCode = HttpStatusCode.Created,
-            uri = "/v1/omsorgspenge/journalforing"
-        )
-    }
-
-    @Test
-    fun `Journalpost for omsorgpengesøknad ettersending`() {
-        requestAndAssert(
-            request = meldingForJournalføring(),
-            expectedResponse = """{"journal_post_id":"10"}""".trimIndent(),
-            expectedCode = HttpStatusCode.Created,
-            uri = "/v1/omsorgspenge/ettersending/journalforing"
-        )
-    }
-
-    @Test
-    fun `Journalpost for omsorgspengeutbetaling for frilansere og selvstendig næringsdrivende`() {
-        requestAndAssert(
-            request = meldingForJournalføring(),
-            expectedResponse = """{"journal_post_id":"3"}""".trimIndent(),
-            expectedCode = HttpStatusCode.Created,
-            uri = "/v1/omsorgspengeutbetaling/journalforing?arbeidstype=frilanser&arbeidstype=selvstendig-naeringsdrivende"
-        )
-    }
-
-    @Test
-    fun `Journalpost for omsorgspengeutbetaling ettersending for frilansere og selvstendig næringsdrivende`() {
-        requestAndAssert(
-            request = meldingForJournalføring(),
-            expectedResponse = """{"journal_post_id":"11"}""".trimIndent(),
-            expectedCode = HttpStatusCode.Created,
-            uri = "/v1/omsorgspengeutbetaling/ettersending/journalforing?arbeidstype=frilanser&arbeidstype=selvstendig-naeringsdrivende"
-        )
-    }
-
-    @Test
-    fun `Journalpost for omsorgpengesøknad for overføring av dager`() {
-        requestAndAssert(
-            request = meldingForJournalføring(),
-            expectedResponse = """{"journal_post_id":"5"}""".trimIndent(),
-            expectedCode = HttpStatusCode.Created,
-            uri = "/v1/omsorgsdageroverforing/journalforing"
-        )
-    }
-
-    @Test
-    fun `Journalpost for omsorgspengemelding for deling av dager`() {
-        requestAndAssert(
-            request = meldingForJournalføring(),
-            expectedResponse = """{"journal_post_id":"5"}""".trimIndent(),
-            expectedCode = HttpStatusCode.Created,
-            uri = "/v1/omsorgsdagerdeling/journalforing"
-        )
-    }
-
-    @Test
-    fun `Journalpost for omsorgspengemelding ettersending for deling av dager`() {
-        requestAndAssert(
-            request = meldingForJournalføring(),
-            expectedResponse = """{"journal_post_id":"14"}""".trimIndent(),
-            expectedCode = HttpStatusCode.Created,
-            uri = "/v1/omsorgsdagerdeling/ettersending/journalforing"
-        )
-    }
-
-    @Test
-    fun `Journalpost for omsorgspengeutbetaling for arbeidstakere`() {
-        requestAndAssert(
-            request = meldingForJournalføring(),
-            expectedResponse = """{"journal_post_id":"4"}""".trimIndent(),
-            expectedCode = HttpStatusCode.Created,
-            uri = "/v1/omsorgspengeutbetaling/journalforing?arbeidstype=arbeidstaker"
-        )
-    }
-
-    @Test
-    fun `Journalpost for omsorgspengeutbetaling ettersending for arbeidstakere`() {
-        requestAndAssert(
-            request = meldingForJournalføring(),
-            expectedResponse = """{"journal_post_id":"12"}""".trimIndent(),
-            expectedCode = HttpStatusCode.Created,
-            uri = "/v1/omsorgspengeutbetaling/ettersending/journalforing?arbeidstype=arbeidstaker"
-        )
-    }
-
-    @Test
-    fun `Journalpost for opplæringspengesøknad`() {
-        requestAndAssert(
-            request = meldingForJournalføring(),
-            expectedResponse = """{"journal_post_id":"6"}""".trimIndent(),
-            expectedCode = HttpStatusCode.Created,
-            uri = "/v1/opplæringspenge/journalforing"
-        )
-    }
-
-    @Test
-    fun `Journalpost for omsorgspenger - midlertidig alene`() {
-        requestAndAssert(
-            request = meldingForJournalføring(),
-            expectedResponse = """{"journal_post_id":"8"}""".trimIndent(),
-            expectedCode = HttpStatusCode.Created,
-            uri = "/v1/omsorgspenger/midlertidig-alene/journalforing"
-        )
-    }
-
-    @Test
-    fun `Journalpost for omsorgspenger ettersending - midlertidig alene`() {
-        requestAndAssert(
-            request = meldingForJournalføring(),
-            expectedResponse = """{"journal_post_id":"13"}""".trimIndent(),
-            expectedCode = HttpStatusCode.Created,
-            uri = "/v1/omsorgspenger/midlertidig-alene/ettersending/journalforing"
-        )
-    }
-
-    @Test
-    fun `Journalpost for omsorgsdager aleneomsorg`() {
-        requestAndAssert(
-            request = meldingForJournalføring(),
-            expectedResponse = """{"journal_post_id":"15"}""".trimIndent(),
-            expectedCode = HttpStatusCode.Created,
-            uri = "/v1/omsorgsdager/aleneomsorg/journalforing"
-        )
-    }
-
-    @Test
-    fun `Journalpost for omsorgsdager aleneomsorg ettersending`() {
-        requestAndAssert(
-            request = meldingForJournalføring(),
-            expectedResponse = """{"journal_post_id":"18"}""".trimIndent(),
-            expectedCode = HttpStatusCode.Created,
-            uri = "/v1/omsorgsdager/aleneomsorg/ettersending/journalforing"
+            uri = journalføring.urlPath
         )
     }
 

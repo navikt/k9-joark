@@ -38,44 +38,44 @@ fun Route.journalforingApis(journalforingV1Service: JournalforingV1Service) {
         }
     }
 
-    post("/v1/pleiepenge/journalforing") {
+    post(PLEIEPENGESØKNAD.urlPath) {
         val melding = call.receive<MeldingV1>()
         val metadata = call.genererMetadata(PLEIEPENGESØKNAD)
         journalfør(melding, metadata)
     }
 
-    post("/v1/pleiepenge/endringsmelding/journalforing") {
+    post(PLEIEPENGESØKNAD_ENDRINGSMELDING.urlPath) {
         val melding = call.receive<MeldingV1>()
         val metadata = call.genererMetadata(PLEIEPENGESØKNAD_ENDRINGSMELDING)
         journalfør(melding, metadata)
     }
 
-    post("/v1/pleiepenge/ettersending/journalforing") {
+    post(PLEIEPENGESØKNAD_ETTERSENDING.urlPath) {
         val melding = call.receive<MeldingV1>()
         val metadata = call.genererMetadata(PLEIEPENGESØKNAD_ETTERSENDING)
         journalfør(melding, metadata)
     }
 
-    post("/v1/pleiepenge/livets-sluttfase/journalforing") {
+    post(PLEIEPENGESØKNAD_LIVETS_SLUTTFASE.urlPath) {
         val melding = call.receive<MeldingV1>()
         val metadata = call.genererMetadata(PLEIEPENGESØKNAD_LIVETS_SLUTTFASE)
         journalfør(melding, metadata)
     }
 
-    post("/v1/pleiepenge/livets-sluttfase/ettersending/journalforing") {
+    post(PLEIEPENGESØKNAD_LIVETS_SLUTTFASE_ETTERSENDING.urlPath) {
         val melding = call.receive<MeldingV1>()
         val metadata = call.genererMetadata(PLEIEPENGESØKNAD_LIVETS_SLUTTFASE_ETTERSENDING)
         journalfør(melding, metadata)
     }
 
 
-    post("/v1/omsorgspenge/journalforing") {
+    post(OMSORGSPENGESØKNAD.urlPath) {
         val melding = call.receive<MeldingV1>()
         val metadata = call.genererMetadata(OMSORGSPENGESØKNAD)
         journalfør(melding, metadata)
     }
 
-    post("/v1/omsorgspenge/ettersending/journalforing") {
+    post(OMSORGSPENGESØKNAD_ETTERSENDING.urlPath) {
         val melding = call.receive<MeldingV1>()
         val metadata = call.genererMetadata(OMSORGSPENGESØKNAD_ETTERSENDING)
         journalfør(melding, metadata)
@@ -113,57 +113,69 @@ fun Route.journalforingApis(journalforingV1Service: JournalforingV1Service) {
         }
     }
 
-    post("/v1/omsorgsdageroverforing/journalforing") {
+    post(OMSORGSPENGESØKNAD_OVERFØRING_AV_DAGER.urlPath) {
         val melding = call.receive<MeldingV1>()
         val metadata = call.genererMetadata(OMSORGSPENGESØKNAD_OVERFØRING_AV_DAGER)
         journalfør(melding, metadata)
     }
 
-    post("/v1/omsorgsdagerdeling/journalforing") {
+    post(OMSORGSPENGEMELDING_DELING_AV_DAGER.urlPath) {
         val melding = call.receive<MeldingV1>()
         val metadata = call.genererMetadata(OMSORGSPENGEMELDING_DELING_AV_DAGER)
         journalfør(melding, metadata)
     }
 
-    post("/v1/omsorgsdagerdeling/ettersending/journalforing") {
+    post(OMSORGSPENGEMELDING_DELING_AV_DAGER_ETTERSENDING.urlPath) {
         val melding = call.receive<MeldingV1>()
         val metadata = call.genererMetadata(OMSORGSPENGEMELDING_DELING_AV_DAGER_ETTERSENDING)
         journalfør(melding, metadata)
     }
 
-    post("/v1/opplæringspenge/journalforing") {
+    post(OPPLÆRINGSPENGESØKNAD.urlPath) {
         val melding = call.receive<MeldingV1>()
         val metadata = call.genererMetadata(OPPLÆRINGSPENGESØKNAD)
         journalfør(melding, metadata)
     }
 
-    post("/v1/frisinn/journalforing") {
+    post(FRISINNSØKNAD.urlPath) {
         val melding = call.receive<MeldingV1>()
         val metadata = call.genererMetadata(FRISINNSØKNAD)
         journalfør(melding, metadata)
     }
 
-    post("/v1/omsorgspenger/midlertidig-alene/journalforing") {
+    post(OMSORGSPENGESØKNAD_MIDLERTIDIG_ALENE.urlPath) {
         val melding = call.receive<MeldingV1>()
         val metadata = call.genererMetadata(OMSORGSPENGESØKNAD_MIDLERTIDIG_ALENE)
         journalfør(melding, metadata)
     }
 
-    post("/v1/omsorgspenger/midlertidig-alene/ettersending/journalforing") {
+    post(OMSORGSPENGESØKNAD_MIDLERTIDIG_ALENE_ETTERSENDING.urlPath) {
         val melding = call.receive<MeldingV1>()
         val metadata = call.genererMetadata(OMSORGSPENGESØKNAD_MIDLERTIDIG_ALENE_ETTERSENDING)
         journalfør(melding, metadata)
     }
 
-    post("/v1/omsorgsdager/aleneomsorg/journalforing") {
+    post(OMSORGSDAGER_ALENEOMSORG.urlPath) {
         val melding = call.receive<MeldingV1>()
         val metadata = call.genererMetadata(OMSORGSDAGER_ALENEOMSORG)
         journalfør(melding, metadata)
     }
 
-    post("/v1/omsorgsdager/aleneomsorg/ettersending/journalforing") {
+    post(OMSORGSDAGER_ALENEOMSORG_ETTERSENDING.urlPath) {
         val melding = call.receive<MeldingV1>()
         val metadata = call.genererMetadata(OMSORGSDAGER_ALENEOMSORG_ETTERSENDING)
+        journalfør(melding, metadata)
+    }
+
+    post(UNGDOMSYTELSE_SØKNAD.urlPath) {
+        val melding = call.receive<MeldingV1>()
+        val metadata = call.genererMetadata(UNGDOMSYTELSE_SØKNAD)
+        journalfør(melding, metadata)
+    }
+
+    post(UNGDOMSYTELSE_ENDRINGSSØKNAD.urlPath) {
+        val melding = call.receive<MeldingV1>()
+        val metadata = call.genererMetadata(UNGDOMSYTELSE_ENDRINGSSØKNAD)
         journalfør(melding, metadata)
     }
 }

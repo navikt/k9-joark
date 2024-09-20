@@ -1,8 +1,10 @@
 package no.nav.helse
 
 import no.nav.helse.journalforing.v1.Søknadstype
+import org.junit.jupiter.api.Assertions.assertFalse
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertFails
 import kotlin.test.assertTrue
 
 internal class SøknadstypeTest {
@@ -18,7 +20,7 @@ internal class SøknadstypeTest {
         val enabled = Søknadstype.enabled(mapOf(
             "ENABLE_PLEIEPENGESKNAD" to "false"
         ))
-        assertTrue(enabled.keys.toSet().containsAll(Søknadstype.values().toSet()))
+        assertTrue(enabled.keys.toSet().containsAll(Søknadstype.entries.toSet()))
         val disabled = enabled.filterValues { !it }
         assertEquals(1, disabled.size)
         assertEquals(Søknadstype.PLEIEPENGESØKNAD, disabled.keys.firstOrNull())
@@ -48,8 +50,13 @@ internal class SøknadstypeTest {
             "ENABLE_FRISINNSKNAD" to "false",
             "ENABLE_OMSORGSDAGER_ALENEOMSORG" to "false",
             "ENABLE_OMSORGSDAGER_ALENEOMSORG_ETTERSENDING" to "false",
+            "ENABLE_UNGDOMSYTELSE_SKNAD" to "false",
+            "ENABLE_UNGDOMSYTELSE_ENDRINGSSKNAD" to "false",
         ))
         assertTrue(enabled.keys.toSet().containsAll(Søknadstype.entries.toSet()))
-        assertTrue(enabled.values.none { it })
+        for (entry in enabled.entries) {
+            assertFalse(entry.value, "Søknadstype ${entry.key} skulle vært disabled, men er enabled")
+        }
+        //assertTrue(enabled.values.none { it })
     }
 }

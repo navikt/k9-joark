@@ -19,7 +19,7 @@ object JournalPostRequestV1Factory {
         kanal: Kanal,
         dokumenter: List<List<Dokument>>,
         datoMottatt: ZonedDateTime,
-        journalpostinfo: Journalpostinfo,
+        søknadstype: Søknadstype,
         journalposttype: JournalPostType,
         avsenderMottakerIdType: AvsenderMottakerIdType,
         avsenderMottakerNavn: String?,
@@ -33,20 +33,20 @@ object JournalPostRequestV1Factory {
         val vedlegg = mutableListOf<JoarkDokument>()
 
         dokumenter.forEach { dokumentBolk ->
-                vedlegg.add(mapDokument(dokumentBolk, journalpostinfo.brevkode))
+                vedlegg.add(mapDokument(dokumentBolk, søknadstype.brevkode))
         }
 
         return JournalPostRequest(
             journalposttype = journalposttype.value,
             avsenderMottaker = AvsenderMottaker(mottaker, avsenderMottakerIdType.value, avsenderMottakerNavn), // I Versjon 1 er det kun innlogget bruker som laster opp vedlegg og fyller ut søknad, så bruker == avsender
             bruker = Bruker(mottaker, avsenderMottakerIdType.value),
-            tema = journalpostinfo.tema.value,
-            tittel = journalpostinfo.tittel,
+            tema = søknadstype.tema.kode,
+            tittel = søknadstype.tittel,
             kanal = kanal.value,
             journalfoerendeEnhet = "9999", //  NAV-enheten som har journalført, eventuelt skal journalføre, forsendelsen. Ved automatisk journalføring uten mennesker involvert skal enhet settes til "9999".
             datoMottatt = formatDate(datoMottatt),
             dokumenter = vedlegg,
-            innsendingstype = journalpostinfo.innsendingstype,
+            innsendingstype = søknadstype.innsendingstype,
             eksternReferanseId = eksternReferanseId
         )
     }

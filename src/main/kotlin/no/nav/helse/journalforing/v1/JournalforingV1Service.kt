@@ -10,7 +10,6 @@ import no.nav.helse.dusseldorf.ktor.core.ValidationProblemDetails
 import no.nav.helse.dusseldorf.ktor.core.Violation
 import no.nav.helse.journalforing.*
 import no.nav.helse.journalforing.gateway.JournalforingGateway
-import no.nav.helse.journalforing.v1.Journalpostinfo.Companion.somJournalpostinfo
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
@@ -59,15 +58,13 @@ class JournalforingV1Service(
         }
 
         logger.trace("Genererer request til Joark")
-        val journalpostinfo = metaData.søknadstype.somJournalpostinfo()
-
         val request = JournalPostRequestV1Factory.instance(
             journalposttype = JOURNALPOSTTYPE,
             mottaker = melding.norskIdent,
             kanal = NAV_NO_KANAL,
             dokumenter = alleDokumenter.toList(),
             datoMottatt = melding.mottatt,
-            journalpostinfo = journalpostinfo,
+            søknadstype = metaData.søknadstype,
             avsenderMottakerIdType = AVSENDER_MOTTAKER_ID_TYPE,
             avsenderMottakerNavn = melding.sokerNavn?.sammensattNavn(),
             eksternReferanseId = callId
