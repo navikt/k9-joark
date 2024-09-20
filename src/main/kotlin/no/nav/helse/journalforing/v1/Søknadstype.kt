@@ -14,7 +14,7 @@ enum class Søknadstype(
         urlPath = "/v1/pleiepenge/journalforing",
         brevkode = BrevKode(brevKode = "NAV 09-11.05", dokumentKategori = "SOK"),
         tittel = "Søknad om pleiepenger – sykt barn - NAV 09-11.05",
-        tema = Tema.KAPITTEL_9_YTELSER,
+        tema = Tema.K9_YTELSER,
         innsendingstype = Innsendingstype.SØKNAD
     ),
 
@@ -22,7 +22,7 @@ enum class Søknadstype(
         urlPath = "/v1/pleiepenge/endringsmelding/journalforing",
         brevkode = BrevKode(brevKode = "NAV 09-11.05", dokumentKategori = "SOK"),
         tittel = "Søknad om pleiepenger – sykt barn - NAV 09-11.05",
-        tema = Tema.KAPITTEL_9_YTELSER,
+        tema = Tema.K9_YTELSER,
         innsendingstype = Innsendingstype.ENDRING
     ),
 
@@ -30,7 +30,7 @@ enum class Søknadstype(
         urlPath = "/v1/pleiepenge/ettersending/journalforing",
         brevkode = BrevKode(brevKode = "NAVe 09-11.05", dokumentKategori = "SOK"),
         tittel = "Søknad om pleiepenger – sykt barn - NAVe 09-11.05",
-        tema = Tema.KAPITTEL_9_YTELSER,
+        tema = Tema.K9_YTELSER,
         innsendingstype = Innsendingstype.ETTERSENDELSE
     ),
 
@@ -38,7 +38,7 @@ enum class Søknadstype(
         urlPath = "/v1/pleiepenge/livets-sluttfase/journalforing",
         brevkode = BrevKode(brevKode = "NAV 09-12.05", dokumentKategori = "SOK"),
         tittel = "Søknad om pleiepenger ved pleie i hjemmet av nærstående i livets sluttfase - NAV 09-12.05",
-        tema = Tema.KAPITTEL_9_YTELSER,
+        tema = Tema.K9_YTELSER,
         innsendingstype = Innsendingstype.SØKNAD
     ),
 
@@ -46,7 +46,7 @@ enum class Søknadstype(
         urlPath = "/v1/pleiepenge/livets-sluttfase/ettersending/journalforing",
         brevkode = BrevKode(brevKode = "NAVe 09-12.05", dokumentKategori = "SOK"),
         tittel = "Søknad om pleiepenger ved pleie i hjemmet av nærstående i livets sluttfase - NAVe 09-12.05",
-        tema = Tema.KAPITTEL_9_YTELSER,
+        tema = Tema.K9_YTELSER,
         innsendingstype = Innsendingstype.ETTERSENDELSE
     ),
 
@@ -54,7 +54,7 @@ enum class Søknadstype(
         urlPath = "/v1/omsorgspenge/journalforing",
         brevkode = BrevKode(brevKode = "NAV 09-06.05", dokumentKategori = "SOK"),
         tittel = "Søknad om flere omsorgsdager - NAV 09-06.05",
-        tema = Tema.KAPITTEL_9_YTELSER,
+        tema = Tema.K9_YTELSER,
         innsendingstype = Innsendingstype.SØKNAD
     ),
 
@@ -62,7 +62,7 @@ enum class Søknadstype(
         urlPath = "/v1/omsorgspenge/ettersending/journalforing",
         brevkode = BrevKode(brevKode = "NAVe 09-06.05", dokumentKategori = "SOK"),
         tittel = "Søknad om flere omsorgsdager - NAVe 09-06.05",
-        tema = Tema.KAPITTEL_9_YTELSER,
+        tema = Tema.K9_YTELSER,
         innsendingstype = Innsendingstype.ETTERSENDELSE
     ),
 
@@ -70,7 +70,7 @@ enum class Søknadstype(
         urlPath = "/v1/omsorgspengeutbetaling/journalforing",
         brevkode = BrevKode(brevKode = "NAV 09-35.01", dokumentKategori = "SOK"), // TODO: Riktig kode er: NAV 09-09.03
         tittel = "Søknad om utbetaling av omsorgsdager frilanser/selvstendig - NAV 09-35.01",
-        tema = Tema.KAPITTEL_9_YTELSER,
+        tema = Tema.K9_YTELSER,
         innsendingstype = Innsendingstype.SØKNAD
     ),
 
@@ -81,7 +81,7 @@ enum class Søknadstype(
             dokumentKategori = "SOK"
         ), // TODO: Riktig kode er: NAVe 09-09.03
         tittel = "Søknad om utbetaling av omsorgsdager frilanser/selvstendig - NAVe 09-35.01",
-        tema = Tema.KAPITTEL_9_YTELSER,
+        tema = Tema.K9_YTELSER,
         innsendingstype = Innsendingstype.ETTERSENDELSE
     ),
 
@@ -89,7 +89,7 @@ enum class Søknadstype(
         urlPath = "/v1/omsorgspengeutbetaling/journalforing",
         brevkode = BrevKode(brevKode = "NAV 09-35.02", dokumentKategori = "SOK"), // TODO: Riktig kode er: NAV 09-09.01
         tittel = "Søknad om utbetaling av omsorgspenger for arbeidstakere - NAV 09-35.02",
-        tema = Tema.KAPITTEL_9_YTELSER,
+        tema = Tema.K9_YTELSER,
         innsendingstype = Innsendingstype.SØKNAD
     ),
 
@@ -100,7 +100,7 @@ enum class Søknadstype(
             dokumentKategori = "SOK"
         ), // TODO: Riktig kode er: NAVe 09-09.01
         tittel = "Søknad om utbetaling av omsorgspenger for arbeidstakere - NAVe 09-35.02",
-        tema = Tema.KAPITTEL_9_YTELSER,
+        tema = Tema.K9_YTELSER,
         innsendingstype = Innsendingstype.ETTERSENDELSE
     ),
 
@@ -108,7 +108,7 @@ enum class Søknadstype(
         urlPath = "/v1/omsorgsdageroverforing/journalforing",
         brevkode = BrevKode(brevKode = "NAV 09-06.08", dokumentKategori = "SOK"),
         tittel = "Søknad om overføring av omsorgsdager - NAV 09-06.08",
-        tema = Tema.KAPITTEL_9_YTELSER,
+        tema = Tema.K9_YTELSER,
         innsendingstype = Innsendingstype.MELDING
     ),
 
@@ -116,7 +116,7 @@ enum class Søknadstype(
         urlPath = "/v1/omsorgsdagerdeling/journalforing",
         brevkode = BrevKode(brevKode = "NAV 09-06.08", dokumentKategori = "SOK"),
         tittel = "Melding om deling av omsorgsdager - NAV 09-06.08",
-        tema = Tema.KAPITTEL_9_YTELSER,
+        tema = Tema.K9_YTELSER,
         innsendingstype = Innsendingstype.MELDING
     ),
 
@@ -124,7 +124,7 @@ enum class Søknadstype(
         urlPath = "/v1/omsorgsdagerdeling/ettersending/journalforing",
         brevkode = BrevKode(brevKode = "NAVe 09-06.08", dokumentKategori = "SOK"),
         tittel = "Melding om deling av omsorgsdager - NAVe 09-06.08",
-        tema = Tema.KAPITTEL_9_YTELSER,
+        tema = Tema.K9_YTELSER,
         innsendingstype = Innsendingstype.ETTERSENDELSE
     ),
 
@@ -132,7 +132,7 @@ enum class Søknadstype(
         urlPath = "/v1/omsorgspenger/midlertidig-alene/journalforing",
         brevkode = BrevKode(brevKode = "NAV 09-06.07", dokumentKategori = "SOK"),
         tittel = "Søknad om ekstra omsorgsdager når den andre forelderen ikke kan ha tilsyn med barn - NAV 09-06.07",
-        tema = Tema.KAPITTEL_9_YTELSER,
+        tema = Tema.K9_YTELSER,
         innsendingstype = Innsendingstype.SØKNAD
     ),
 
@@ -140,7 +140,7 @@ enum class Søknadstype(
         urlPath = "/v1/omsorgspenger/midlertidig-alene/ettersending/journalforing",
         brevkode = BrevKode(brevKode = "NAVe 09-06.07", dokumentKategori = "SOK"),
         tittel = "Søknad om å bli regnet som alene  - NAVe 09-06.07",
-        tema = Tema.KAPITTEL_9_YTELSER,
+        tema = Tema.K9_YTELSER,
         innsendingstype = Innsendingstype.ETTERSENDELSE
     ),
 
@@ -148,7 +148,7 @@ enum class Søknadstype(
         urlPath = "/v1/omsorgsdager/aleneomsorg/journalforing",
         brevkode = BrevKode(brevKode = "NAV 09-06.10", dokumentKategori = "SOK"),
         tittel = "Registrering av aleneomsorg for omsorgsdager - NAV 09-06.10",
-        tema = Tema.KAPITTEL_9_YTELSER,
+        tema = Tema.K9_YTELSER,
         innsendingstype = Innsendingstype.MELDING
     ),
 
@@ -156,7 +156,7 @@ enum class Søknadstype(
         urlPath = "/v1/omsorgsdager/aleneomsorg/ettersending/journalforing",
         brevkode = BrevKode(brevKode = "NAVe 09-06.10", dokumentKategori = "SOK"),
         tittel = "Registrering av aleneomsorg for omsorgsdager - NAVe 09-06.10",
-        tema = Tema.KAPITTEL_9_YTELSER,
+        tema = Tema.K9_YTELSER,
         innsendingstype = Innsendingstype.ETTERSENDELSE
     ),
 
@@ -164,7 +164,7 @@ enum class Søknadstype(
         urlPath = "/v1/opplæringspenge/journalforing",
         brevkode = BrevKode(brevKode = "NAV 09-11.08", dokumentKategori = "SOK"),
         tittel = "Søknad om opplæringspenger - NAV 09-11.08",
-        tema = Tema.KAPITTEL_9_YTELSER,
+        tema = Tema.K9_YTELSER,
         innsendingstype = Innsendingstype.SØKNAD
     ),
 
@@ -180,7 +180,7 @@ enum class Søknadstype(
         urlPath = "/v1/ungdomsytelse/soknad/journalforing",
         brevkode = BrevKode(brevKode = "UNG Søknad", dokumentKategori = "SOK"),
         tittel = "Søknad om ungdomsytelse - UNG Søknad",
-        tema = Tema.UNGDOMSYTELSE,
+        tema = Tema.K9_YTELSER, // TODO Bruk Tema.UNGDOMSYTELSE før lansering
         innsendingstype = Innsendingstype.SØKNAD
     ),
 
@@ -188,7 +188,7 @@ enum class Søknadstype(
         urlPath = "/v1/ungdomsytelse/endringssoknad/journalforing",
         brevkode = BrevKode(brevKode = "UNG Endringssøknad", dokumentKategori = "SOK"),
         tittel = "Endringssøknad for ungdomsytelsen - UNG Endringssøknad",
-        tema = Tema.UNGDOMSYTELSE,
+        tema = Tema.K9_YTELSER, // TODO Bruk Tema.UNGDOMSYTELSE før lansering
         innsendingstype = Innsendingstype.SØKNAD
     )
     ;

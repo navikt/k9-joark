@@ -6,6 +6,7 @@ import com.typesafe.config.ConfigFactory
 import io.ktor.server.config.*
 import io.ktor.http.*
 import io.ktor.server.testing.*
+import no.nav.helse.DokarkivResponseTransformer.Companion.BREVKODE_MED_FORVENTET_JOURNALPOST_ID
 import no.nav.helse.dusseldorf.testsupport.wiremock.WireMockBuilder
 import no.nav.helse.journalforing.v1.MeldingV1
 import no.nav.helse.journalforing.v1.Navn
@@ -81,30 +82,14 @@ class K9JoarkTest {
         @JvmStatic
         fun søknaderForJournalføring(): List<Journalføring> {
             return Søknadstype.entries.map {
-                // Id må matche med no/nav/helse/DokarkivResponseTransformer.kt:17
-                val (urlPath, forventetJournalpostId) = when (it) {
-                    Søknadstype.PLEIEPENGESØKNAD -> it.urlPath to "1"
-                    Søknadstype.PLEIEPENGESØKNAD_ENDRINGSMELDING -> it.urlPath to "1"
-                    Søknadstype.OMSORGSPENGESØKNAD -> it.urlPath to "2"
-                    Søknadstype.OMSORGSPENGESØKNAD_UTBETALING_FRILANSER_SELVSTENDIG -> it.urlPath + "?arbeidstype=frilanser&arbeidstype=selvstendig-naeringsdrivende" to "3"
-                    Søknadstype.OMSORGSPENGESØKNAD_UTBETALING_ARBEIDSTAKER -> it.urlPath + "?arbeidstype=arbeidstaker" to "4"
-                    Søknadstype.OMSORGSPENGESØKNAD_OVERFØRING_AV_DAGER -> it.urlPath to "5"
-                    Søknadstype.OMSORGSPENGEMELDING_DELING_AV_DAGER -> it.urlPath to "5"
-                    Søknadstype.OPPLÆRINGSPENGESØKNAD -> it.urlPath to "6"
-                    Søknadstype.FRISINNSØKNAD -> it.urlPath to "7"
-                    Søknadstype.OMSORGSPENGESØKNAD_MIDLERTIDIG_ALENE -> it.urlPath to "8"
-                    Søknadstype.PLEIEPENGESØKNAD_ETTERSENDING -> it.urlPath to "9"
-                    Søknadstype.OMSORGSPENGESØKNAD_ETTERSENDING -> it.urlPath to "10"
-                    Søknadstype.OMSORGSPENGESØKNAD_UTBETALING_FRILANSER_SELVSTENDIG_ETTERSENDING -> it.urlPath + "?arbeidstype=frilanser&arbeidstype=selvstendig-naeringsdrivende" to "11"
-                    Søknadstype.OMSORGSPENGESØKNAD_UTBETALING_ARBEIDSTAKER_ETTERSENDING -> it.urlPath + "?arbeidstype=arbeidstaker" to "12"
-                    Søknadstype.OMSORGSPENGESØKNAD_MIDLERTIDIG_ALENE_ETTERSENDING -> it.urlPath to "13"
-                    Søknadstype.OMSORGSPENGEMELDING_DELING_AV_DAGER_ETTERSENDING -> it.urlPath to "14"
-                    Søknadstype.OMSORGSDAGER_ALENEOMSORG -> it.urlPath to "15"
-                    Søknadstype.PLEIEPENGESØKNAD_LIVETS_SLUTTFASE -> it.urlPath to "16"
-                    Søknadstype.PLEIEPENGESØKNAD_LIVETS_SLUTTFASE_ETTERSENDING -> it.urlPath to "17"
-                    Søknadstype.OMSORGSDAGER_ALENEOMSORG_ETTERSENDING -> it.urlPath to "18"
-                    Søknadstype.UNGDOMSYTELSE_SØKNAD -> it.urlPath to "19"
-                    Søknadstype.UNGDOMSYTELSE_ENDRINGSSØKNAD -> it.urlPath to "20"
+                val journalpostId = BREVKODE_MED_FORVENTET_JOURNALPOST_ID.getValue(it)
+
+                val (urlPath, forventetJournalpostId) = when(it) {
+                    Søknadstype.OMSORGSPENGESØKNAD_UTBETALING_FRILANSER_SELVSTENDIG -> it.urlPath + "?arbeidstype=frilanser&arbeidstype=selvstendig-naeringsdrivende" to journalpostId
+                    Søknadstype.OMSORGSPENGESØKNAD_UTBETALING_ARBEIDSTAKER -> it.urlPath + "?arbeidstype=arbeidstaker" to journalpostId
+                    Søknadstype.OMSORGSPENGESØKNAD_UTBETALING_FRILANSER_SELVSTENDIG_ETTERSENDING -> it.urlPath + "?arbeidstype=frilanser&arbeidstype=selvstendig-naeringsdrivende" to journalpostId
+                    Søknadstype.OMSORGSPENGESØKNAD_UTBETALING_ARBEIDSTAKER_ETTERSENDING -> it.urlPath + "?arbeidstype=arbeidstaker" to journalpostId
+                    else -> it.urlPath to journalpostId
                 }
 
                 Journalføring(urlPath, forventetJournalpostId)
