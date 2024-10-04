@@ -1,15 +1,15 @@
 import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
-val dusseldorfKtorVersion = "5.0.6"
+val dusseldorfKtorVersion = "5.0.9"
 val ktorVersion = "2.3.12"
 val pdfBoxVersion = "3.0.3"
 val imageIOVersion = "3.11.0"
 val jsonassertVersion = "1.5.3"
 val fuelVersion = "2.3.1"
-val tokenSupportVersion = "5.0.3"
+val tokenSupportVersion = "5.0.5"
 val mockOauth2ServerVersion = "2.1.9"
-val junitVersion = "5.9.3"
+val junitVersion = "5.11.2"
 
 val mainClass = "no.nav.helse.K9JoarkKt"
 
